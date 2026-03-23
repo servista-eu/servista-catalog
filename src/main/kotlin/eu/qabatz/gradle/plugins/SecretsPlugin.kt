@@ -24,12 +24,12 @@ class SecretsPlugin : Plugin<Project> {
         project.dependencies.apply {
             add(
                 "implementation",
-                "eu.qabatz:qabatz-kotlin-commons-secrets:${Versions.QABATZ_COMMONS_SECRETS}"
+                "eu.qabatz:qabatz-kotlin-commons-secrets:${Versions.QABATZ_COMMONS}"
             )
             add(
                 "testImplementation",
                 project.dependencies.create(
-                    "eu.qabatz:qabatz-kotlin-commons-secrets:${Versions.QABATZ_COMMONS_SECRETS}"
+                    "eu.qabatz:qabatz-kotlin-commons-secrets:${Versions.QABATZ_COMMONS}"
                 ).apply {
                     (this as org.gradle.api.artifacts.ExternalModuleDependency)
                         .capabilities {

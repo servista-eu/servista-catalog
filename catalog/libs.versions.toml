@@ -17,6 +17,7 @@ immudb4j = "1.0.1"
 jedis = "5.2.0"
 lettuce = "6.5.3.RELEASE"
 nimbus-jose-jwt = "10.8"
+otel = "1.47.0"
 otel-agent = "2.20.0"
 micrometer = "1.16.3"
 mockk = "1.14.7"
@@ -28,10 +29,14 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 kotlin-logging = "7.0.3"
 logback = "1.5.32"
+logstash-logback-encoder = "8.1"
+janino = "3.1.12"
+slf4j = "2.0.17"
 detekt = "2.0.0-alpha.2"
 konform = "0.11.0"
 tink = "1.13.0"
-qabatz-commons-secrets = "0.1.1"
+qabatz-kotlin-commons = "0.2.0"
+qabatz-kotlin-ktor = "0.1.1"
 
 [libraries]
 # Ktor Server
@@ -86,18 +91,44 @@ konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 
 # Qabatz Commons
-qabatz-commons-secrets = { module = "eu.qabatz:qabatz-kotlin-commons-secrets", version.ref = "qabatz-commons-secrets" }
+qabatz-commons-core = { module = "eu.qabatz:qabatz-kotlin-commons-core", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-kafka = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-kafka", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-valkey = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-valkey", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-jooq = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-jooq", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-otel = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-otel", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-micrometer = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-micrometer", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-adapter-konform = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-konform", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-kafka-avro = { module = "eu.qabatz:qabatz-kotlin-commons-kafka-avro", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-secrets = { module = "eu.qabatz:qabatz-kotlin-commons-secrets", version.ref = "qabatz-kotlin-commons" }
+
+# Qabatz Ktor
+qabatz-ktor = { module = "eu.qabatz:qabatz-kotlin-ktor", version.ref = "qabatz-kotlin-ktor" }
 
 # Observability
+otel-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "otel" }
+otel-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "otel" }
+otel-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "otel" }
+otel-sdk-testing = { module = "io.opentelemetry:opentelemetry-sdk-testing", version.ref = "otel" }
+otel-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "otel" }
+otel-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "otel" }
+otel-extension-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "otel" }
 otel-agent = { module = "io.opentelemetry.javaagent:opentelemetry-javaagent", version.ref = "otel-agent" }
+micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer" }
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
+
+# Logging
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
+janino = { module = "org.codehaus.janino:janino", version.ref = "janino" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 # Kotlin Extensions
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
-logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Testing
 junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }

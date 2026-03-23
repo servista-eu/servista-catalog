@@ -25,5 +25,5 @@ object Versions {
     const val MOCKK = "1.14.7"
     const val TESTCONTAINERS = "2.0.3"
     const val KOTEST = "6.1.4"
-    const val QABATZ_COMMONS_SECRETS = "0.1.1"
+    const val QABATZ_COMMONS = "0.2.0"
 }
