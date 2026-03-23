@@ -1,0 +1,57 @@
+# Shared detekt configuration for all Qabatz projects.
+# Detekt 2.x format. Conservative defaults.
+
+config:
+  validation: true
+
+comments:
+  active: true
+
+complexity:
+  active: true
+  CyclomaticComplexMethod:
+    active: true
+    allowedComplexity: 15
+  LongMethod:
+    active: true
+    allowedLines: 60
+  LargeClass:
+    active: true
+    allowedLines: 600
+  TooManyFunctions:
+    active: true
+    allowedFunctionsPerFile: 15
+    allowedFunctionsPerClass: 15
+
+coroutines:
+  active: true
+
+empty-blocks:
+  active: true
+
+exceptions:
+  active: true
+
+naming:
+  active: true
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+style:
+  active: true
+  MagicNumber:
+    ignoreNumbers:
+      - "-1"
+      - "0"
+      - "1"
+      - "2"
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: true
+    ignoreAnnotation: true
+    ignoreEnums: true
+  MaxLineLength:
+    maxLineLength: 120
