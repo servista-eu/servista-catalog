@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Delete all source files and strip build.gradle.kts to catalog-only
+- [x] 01-01-PLAN.md -- Delete all source files and strip build.gradle.kts to catalog-only
 - [ ] 01-02-PLAN.md -- Clean up internal version catalog and verify final build
 
 ### Phase 2: Verify Catalog

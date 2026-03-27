@@ -17,11 +17,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Cleanup
 
-- [ ] **CLN-01**: All 8 convention plugin classes are removed
-- [ ] **CLN-02**: Versions.kt and JooqExtension.kt are removed
-- [ ] **CLN-03**: Bundled detekt.yml configuration is removed
-- [ ] **CLN-04**: Plugin-related build configuration (gradlePlugin block, functional test source set) is removed
-- [ ] **CLN-05**: Build.gradle.kts only contains version catalog publishing logic
+- [x] **CLN-01**: All 8 convention plugin classes are removed
+- [x] **CLN-02**: Versions.kt and JooqExtension.kt are removed
+- [x] **CLN-03**: Bundled detekt.yml configuration is removed
+- [x] **CLN-04**: Plugin-related build configuration (gradlePlugin block, functional test source set) is removed
+- [x] **CLN-05**: Build.gradle.kts only contains version catalog publishing logic
 
 ### Rename
 
@@ -65,11 +65,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAT-03 | Phase 3 | Pending |
 | CAT-04 | Phase 3 | Pending |
 | CAT-05 | Phase 4 | Pending |
-| CLN-01 | Phase 1 | Pending |
-| CLN-02 | Phase 1 | Pending |
-| CLN-03 | Phase 1 | Pending |
-| CLN-04 | Phase 2 | Pending |
-| CLN-05 | Phase 2 | Pending |
+| CLN-01 | Phase 1 | Complete |
+| CLN-02 | Phase 1 | Complete |
+| CLN-03 | Phase 1 | Complete |
+| CLN-04 | Phase 2 | Complete |
+| CLN-05 | Phase 2 | Complete |
 | REN-01 | Phase 5 | Pending |
 | REN-02 | Phase 5 | Pending |
 | REN-03 | Phase 5 | Pending |
