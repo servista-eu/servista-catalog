@@ -10,7 +10,7 @@ requires:
     provides: "Published catalog artifact at eu.qabatz:qabatz-catalog:0.1.0"
 provides:
   - "Forgejo repository renamed to qabatz/qabatz-catalog"
-  - "Push mirror targeting github.com/servista-eu/qabatz-catalog.git"
+  - "Push mirror targeting github.com/poupapaa/qabatz-catalog.git"
   - "Git remote URL pointing to qabatz-catalog.git"
   - "Old Maven packages (qabatz-gradle-plugins*) deleted from registry"
 affects: [04-02-PLAN, 05-configure-mirror, 06-update-consumers]
@@ -42,7 +42,7 @@ completed: 2026-03-27
 
 # Phase 4 Plan 1: Rename and Migrate Summary
 
-**Forgejo repo renamed to qabatz-catalog via API PATCH, push mirror configured to github.com/servista-eu/qabatz-catalog.git, old Maven packages purged from registry**
+**Forgejo repo renamed to qabatz-catalog via API PATCH, push mirror configured to github.com/poupapaa/qabatz-catalog.git, old Maven packages purged from registry**
 
 ## Performance
 
@@ -55,7 +55,7 @@ completed: 2026-03-27
 ## Accomplishments
 
 - Renamed Forgejo repository from `qabatz/qabatz-gradle-plugins` to `qabatz/qabatz-catalog` via API PATCH (D-01 primary path)
-- Created new push mirror targeting `https://github.com/servista-eu/qabatz-catalog.git` with sync_on_commit enabled (D-03)
+- Created new push mirror targeting `https://github.com/poupapaa/qabatz-catalog.git` with sync_on_commit enabled (D-03)
 - Deleted old broken push mirror (`remote_mirror_PnJFYFp9VQX` pointing to `poupapaa/qabatz-gradle-plugins.git`)
 - Updated local git remote URL to `qabatz-catalog.git`
 - Deleted all 3 old Maven packages from Forgejo registry: `qabatz-gradle-plugins-catalog:0.2.0`, `qabatz-gradle-plugins-catalog:0.1.0`, `qabatz-gradle-plugins:0.2.0` (D-04)
@@ -77,7 +77,7 @@ Each task was committed atomically:
 
 - **Forgejo API PATCH** `repos/qabatz/qabatz-gradle-plugins` -> renamed to `qabatz-catalog` (HTTP 200)
 - **Forgejo API DELETE** `push_mirrors/remote_mirror_PnJFYFp9VQX` - removed old broken mirror (HTTP 204)
-- **Forgejo API POST** `push_mirrors` - created new mirror to `github.com/servista-eu/qabatz-catalog.git` (HTTP 200)
+- **Forgejo API POST** `push_mirrors` - created new mirror to `github.com/poupapaa/qabatz-catalog.git` (HTTP 200)
 - **git remote set-url** - updated origin to `qabatz-catalog.git`
 - **Forgejo API DELETE** 3 old Maven packages (all HTTP 204)
 
@@ -110,7 +110,7 @@ None -- no external service configuration required beyond the GitHub PAT already
 | Old package catalog:0.2.0 | 404 | 404 | PASS |
 | Old package catalog:0.1.0 | 404 | 404 | PASS |
 | Old package plugins:0.2.0 | 404 | 404 | PASS |
-| Push mirror address | `servista-eu/qabatz-catalog.git` | `servista-eu/qabatz-catalog.git` | PASS |
+| Push mirror address | `poupapaa/qabatz-catalog.git` | `poupapaa/qabatz-catalog.git` | PASS |
 | Push mirror sync_on_commit | true | true | PASS |
 | Push mirror last_error | empty | empty | PASS |
 | git ls-remote origin HEAD | returns hash | `a5293c4...` | PASS |
