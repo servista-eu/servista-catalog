@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Catalog
 
-- [ ] **CAT-01**: Version catalog (`libs.versions.toml`) is the sole published artifact
-- [ ] **CAT-02**: Catalog includes all current dependency versions (35 versions, 75 libraries, 6 plugins)
-- [ ] **CAT-03**: Catalog includes qabatz-kotlin-commons library entries
-- [ ] **CAT-04**: Catalog includes qabatz-kotlin-ktor library entries
+- [x] **CAT-01**: Version catalog (`libs.versions.toml`) is the sole published artifact
+- [x] **CAT-02**: Catalog includes all current dependency versions (35 versions, 75 libraries, 6 plugins)
+- [x] **CAT-03**: Catalog includes qabatz-kotlin-commons library entries
+- [x] **CAT-04**: Catalog includes qabatz-kotlin-ktor library entries
 - [ ] **CAT-05**: Catalog is published to Forgejo Maven registry as `eu.qabatz:qabatz-catalog`
 
 ### Cleanup
@@ -60,10 +60,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CAT-01 | Phase 3 | Pending |
-| CAT-02 | Phase 3 | Pending |
-| CAT-03 | Phase 3 | Pending |
-| CAT-04 | Phase 3 | Pending |
+| CAT-01 | Phase 3 | Complete |
+| CAT-02 | Phase 3 | Complete |
+| CAT-03 | Phase 3 | Complete |
+| CAT-04 | Phase 3 | Complete |
 | CAT-05 | Phase 4 | Pending |
 | CLN-01 | Phase 1 | Complete |
 | CLN-02 | Phase 1 | Complete |
