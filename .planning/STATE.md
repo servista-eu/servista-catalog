@@ -4,12 +4,12 @@ milestone: v1.0
 milestone_name: milestone
 status: completed
 stopped_at: Completed phase 04-rename-project (all plans)
-last_updated: "2026-03-27T15:13:37.882Z"
+last_updated: "2026-03-27T15:14:07.209Z"
 last_activity: 2026-03-27
 progress:
-  total_phases: 5
+  total_phases: 4
   completed_phases: 4
-  total_plans: 7
+  total_plans: 6
   completed_plans: 6
   percent: 100
 ---

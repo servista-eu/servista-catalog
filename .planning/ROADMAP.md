@@ -16,7 +16,6 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Verify Catalog** - Confirm version catalog content is complete and correct
 - [x] **Phase 3: Publish Catalog** - Publish catalog to Forgejo under new artifact coordinates
 - [x] **Phase 4: Rename Project** - Rename project locally and on Forgejo, update git remote
-- [ ] **Phase 5: Configure Mirror** - Set up GitHub push mirror for the renamed repository
 
 ## Phase Details
 
@@ -77,14 +76,3 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md -- Rename Forgejo repo, create push mirror (D-03), update git remote, clean up old packages
 - [x] 04-02-PLAN.md -- Rename local directory, update documentation, fix REQUIREMENTS.md traceability
-
-### Phase 5: Configure Mirror
-**Goal**: The GitHub push mirror is configured for the renamed repository
-**Depends on**: Phase 4
-**Requirements**: REN-04
-**Success Criteria** (what must be TRUE):
-  1. Push mirror is configured to target `https://github.com/poupapaa/qabatz-catalog.git`
-  2. Pushes to Forgejo are mirrored to the GitHub repository
-**Plans**: TBD
-
-Plans:
