@@ -44,12 +44,13 @@ Plans:
 **Requirements**: CAT-01, CAT-02, CAT-03, CAT-04
 **Success Criteria** (what must be TRUE):
   1. The version catalog is the only artifact produced by the build
-  2. libs.versions.toml contains all ~40 versions, ~140 library aliases, and 6 plugin aliases
+  2. libs.versions.toml contains all 35 versions, 75 library aliases, and 6 plugin aliases
   3. qabatz-kotlin-commons library entries are present in the catalog
   4. qabatz-kotlin-ktor library entries are present in the catalog
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
+- [ ] 02-01-PLAN.md -- Verify catalog integrity and update documentation with correct counts
 
 ### Phase 3: Publish Catalog
 **Goal**: The catalog is published to the Forgejo Maven registry under its new artifact coordinates
@@ -104,8 +105,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Strip Plugin Sources & Simplify Build | 0/2 | Planning | - |
-| 2. Verify Catalog | 0/0 | Not started | - |
+| 1. Strip Plugin Sources & Simplify Build | 2/2 | Complete | 2026-03-27 |
+| 2. Verify Catalog | 0/1 | Planning | - |
 | 3. Publish Catalog | 0/0 | Not started | - |
 | 4. Rename Project | 0/0 | Not started | - |
 | 5. Configure Mirror | 0/0 | Not started | - |
