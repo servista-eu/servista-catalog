@@ -15,15 +15,15 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 - ✓ Published version catalog with ~40 versions, ~140 library aliases, 6 plugin aliases — existing
 - ✓ Consumed by qabatz-kotlin-commons (0.2.0) — existing
 - ✓ Includes qabatz-kotlin-commons (0.2.0) and qabatz-kotlin-ktor (0.1.1) library entries — existing
+- ✓ Strip all convention plugins (8 plugins, Versions.kt, JooqExtension.kt, bundled detekt.yml) — Validated in Phase 1: Strip Plugin Sources
+- ✓ Simplify build.gradle.kts to only publish the version catalog — Validated in Phase 1: Strip Plugin Sources
 
 ### Active
 
-- [ ] Strip all convention plugins (8 plugins, Versions.kt, JooqExtension.kt, bundled detekt.yml)
 - [ ] Rename project from `qabatz-gradle-plugins` to `qabatz-catalog`
 - [ ] Rename Forgejo repository (or delete and recreate as `qabatz-catalog`)
 - [ ] Update push mirror to `https://github.com/servista-eu/qabatz-catalog.git` (reuse existing GitHub token)
 - [ ] Update published artifact coordinates to `eu.qabatz:qabatz-catalog`
-- [ ] Simplify build.gradle.kts to only publish the version catalog
 - [ ] Update consuming projects' references (kotlin-commons settings.gradle.kts catalog import)
 
 ### Out of Scope
@@ -53,7 +53,7 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Remove all 8 convention plugins | Each project owns build-logic locally; plugins are unused by kotlin-commons and will be unused by kotlin-ktor after its refactoring | — Pending |
+| Remove all 8 convention plugins | Each project owns build-logic locally; plugins are unused by kotlin-commons and will be unused by kotlin-ktor after its refactoring | ✓ Done (Phase 1) |
 | Rename to qabatz-catalog | Reflects the project's actual purpose (version catalog only, not plugins) | — Pending |
 | Preserve JooqPlugin via docs, not code | Complex logic (177 lines) preserved in git history + migration doc in kotlin-ktor; no active consumers after ktor refactoring | — Pending |
 
@@ -75,4 +75,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after initialization*
+*Last updated: 2026-03-27 after Phase 1 completion*
