@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Catalog
 
 - [ ] **CAT-01**: Version catalog (`libs.versions.toml`) is the sole published artifact
-- [ ] **CAT-02**: Catalog includes all current dependency versions (~40 versions, ~140 libraries, 6 plugins)
+- [ ] **CAT-02**: Catalog includes all current dependency versions (35 versions, 75 libraries, 6 plugins)
 - [ ] **CAT-03**: Catalog includes qabatz-kotlin-commons library entries
 - [ ] **CAT-04**: Catalog includes qabatz-kotlin-ktor library entries
 - [ ] **CAT-05**: Catalog is published to Forgejo Maven registry as `eu.qabatz:qabatz-catalog`

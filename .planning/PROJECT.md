@@ -12,7 +12,7 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 
 ### Validated
 
-- ✓ Published version catalog with ~40 versions, ~140 library aliases, 6 plugin aliases — existing
+- ✓ Published version catalog with 35 versions, 75 library aliases, 6 plugin aliases — existing
 - ✓ Consumed by qabatz-kotlin-commons (0.2.0) — existing
 - ✓ Includes qabatz-kotlin-commons (0.2.0) and qabatz-kotlin-ktor (0.1.1) library entries — existing
 - ✓ Strip all convention plugins (8 plugins, Versions.kt, JooqExtension.kt, bundled detekt.yml) — Validated in Phase 1: Strip Plugin Sources
