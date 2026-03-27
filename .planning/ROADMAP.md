@@ -12,9 +12,9 @@ Transform `qabatz-gradle-plugins` into `qabatz-catalog` by stripping all convent
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Strip Plugin Sources & Simplify Build** - Remove all convention plugin code, extensions, bundled configuration, and strip build to catalog-only
-- [ ] **Phase 2: Verify Catalog** - Confirm version catalog content is complete and correct
-- [ ] **Phase 3: Publish Catalog** - Publish catalog to Forgejo under new artifact coordinates
+- [x] **Phase 1: Strip Plugin Sources & Simplify Build** - Remove all convention plugin code, extensions, bundled configuration, and strip build to catalog-only
+- [x] **Phase 2: Verify Catalog** - Confirm version catalog content is complete and correct
+- [x] **Phase 3: Publish Catalog** - Publish catalog to Forgejo under new artifact coordinates
 - [ ] **Phase 4: Rename Project** - Rename project locally and on Forgejo, update git remote
 - [ ] **Phase 5: Configure Mirror** - Set up GitHub push mirror for the renamed repository
 - [ ] **Phase 6: Update Consumers** - Migrate consuming projects to the new catalog coordinates
