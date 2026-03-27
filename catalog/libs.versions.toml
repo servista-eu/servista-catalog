@@ -1,5 +1,5 @@
 # Published version catalog for Qabatz-based projects.
-# Consumers import via: from("eu.qabatz:qabatz-gradle-plugins-catalog:<version>")
+# Consumers import via: from("eu.qabatz:qabatz-catalog:<version>")
 
 [versions]
 kotlin = "2.3.10"

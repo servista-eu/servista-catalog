@@ -16,7 +16,7 @@ publishing {
     publications {
         create<MavenPublication>("versionCatalog") {
             from(components["versionCatalog"])
-            artifactId = "qabatz-gradle-plugins-catalog"
+            artifactId = "qabatz-catalog"
         }
     }
 
