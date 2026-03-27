@@ -1,1 +1,1 @@
-rootProject.name = "qabatz-gradle-plugins"
+rootProject.name = "qabatz-catalog"
