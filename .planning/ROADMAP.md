@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Strip Plugin Sources & Simplify Build** - Remove all convention plugin code, extensions, bundled configuration, and strip build to catalog-only
 - [x] **Phase 2: Verify Catalog** - Confirm version catalog content is complete and correct
 - [x] **Phase 3: Publish Catalog** - Publish catalog to Forgejo under new artifact coordinates
-- [ ] **Phase 4: Rename Project** - Rename project locally and on Forgejo, update git remote
+- [x] **Phase 4: Rename Project** - Rename project locally and on Forgejo, update git remote
 - [ ] **Phase 5: Configure Mirror** - Set up GitHub push mirror for the renamed repository
 - [ ] **Phase 6: Update Consumers** - Migrate consuming projects to the new catalog coordinates
 
@@ -77,7 +77,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md -- Rename Forgejo repo, create push mirror (D-03), update git remote, clean up old packages
-- [ ] 04-02-PLAN.md -- Rename local directory, update documentation, fix REQUIREMENTS.md traceability
+- [x] 04-02-PLAN.md -- Rename local directory, update documentation, fix REQUIREMENTS.md traceability
 
 ### Phase 5: Configure Mirror
 **Goal**: The GitHub push mirror is configured for the renamed repository
@@ -111,6 +111,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Strip Plugin Sources & Simplify Build | 2/2 | Complete | 2026-03-27 |
 | 2. Verify Catalog | 1/1 | Complete | 2026-03-27 |
 | 3. Publish Catalog | 1/1 | Complete | 2026-03-27 |
-| 4. Rename Project | 0/2 | Not started | - |
+| 4. Rename Project | 2/2 | Complete | 2026-03-27 |
 | 5. Configure Mirror | 0/0 | Not started | - |
 | 6. Update Consumers | 0/0 | Not started | - |
