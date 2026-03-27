@@ -9,7 +9,7 @@ A shared Gradle version catalog providing centralized dependency version alignme
 
 ### Constraints
 
-- **Backward compatibility**: Consuming projects reference `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` — coordinate change requires updating all consumers
+- **Backward compatibility**: Consuming projects previously referenced `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` -- now published as `eu.qabatz:qabatz-catalog:0.1.0`
 - **Forgejo credentials**: Repository uses embedded token in git remote URL (user `heaphopdancer`)
 - **GitHub mirror**: Push mirror token must be reused from current Forgejo repo configuration
 <!-- GSD:project-end -->
@@ -69,8 +69,7 @@ A shared Gradle version catalog providing centralized dependency version alignme
 - `publishUrl` - Override Maven publish URL (default: `https://git.hestia-ng.eu/api/packages/qabatz/maven`)
 - `forgejoUser` / `forgejoToken` - Alternative to environment variables
 - `publishToken` - Alternative token property
-- Plugin artifacts: `eu.qabatz:qabatz-gradle-plugins:0.2.0`
-- Version catalog artifact: `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0`
+- Catalog artifact: `eu.qabatz:qabatz-catalog:0.1.0`
 ## Platform Requirements
 - JDK 21+
 - Gradle 9.3.1 (use wrapper: `./gradlew`)
@@ -191,9 +190,9 @@ A shared Gradle version catalog providing centralized dependency version alignme
 - Triggers: Gradle plugin resolution when consumers use `id("qabatz.xxx")`
 - Maps plugin IDs to implementation classes:
 - Location: `build.gradle.kts` lines 40-44
-- Artifact: `eu.qabatz:qabatz-gradle-plugins-catalog`
+- Artifact: `eu.qabatz:qabatz-catalog`
 - Source: `catalog/libs.versions.toml`
-- Consumers import via: `from("eu.qabatz:qabatz-gradle-plugins-catalog:x.y.z")`
+- Consumers import via: `from("eu.qabatz:qabatz-catalog:x.y.z")`
 ## Error Handling
 - `LibraryPlugin` registers `validateProjectStructure` task that throws `GradleException` if `src/main/kotlin`, `src/main/resources`, or `src/test/kotlin` directories are missing
 - `JooqPlugin` uses `onlyIf { ext.packageName.isPresent }` to gracefully skip code generation when not configured, rather than failing

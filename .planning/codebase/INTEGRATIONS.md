@@ -36,7 +36,7 @@ This project is a set of Gradle convention plugins. It does not connect to exter
 The published version catalog (`catalog/libs.versions.toml`) defines the complete Qabatz platform dependency surface. Consumer projects import it via:
 
 ```kotlin
-from("eu.qabatz:qabatz-gradle-plugins-catalog:<version>")
+from("eu.qabatz:qabatz-catalog:<version>")
 ```
 
 ### Web Framework - Ktor 3.4.0
@@ -167,8 +167,7 @@ from("eu.qabatz:qabatz-gradle-plugins-catalog:<version>")
 - Auth: `FORGEJO_USER`/`FORGEJO_TOKEN` env vars or Gradle properties
 
 **Published Artifacts:**
-- `eu.qabatz:qabatz-gradle-plugins:0.2.0` - Convention plugins (auto-published by `java-gradle-plugin`)
-- `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` - Version catalog
+- `eu.qabatz:qabatz-catalog:0.1.0` - Version catalog
 
 **Consumer Usage:**
 ```kotlin
@@ -181,7 +180,7 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            from("eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0")
+            from("eu.qabatz:qabatz-catalog:0.1.0")
         }
     }
 }

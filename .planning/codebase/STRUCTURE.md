@@ -5,7 +5,7 @@
 ## Directory Layout
 
 ```
-qabatz-gradle-plugins/
+qabatz-catalog/
 ├── build.gradle.kts                  # Build config: plugin registration, publishing, dependencies
 ├── settings.gradle.kts               # Root project name (single-project build)
 ├── gradle.properties                 # group=eu.qabatz, version=0.2.0
@@ -51,7 +51,7 @@ qabatz-gradle-plugins/
 - Purpose: Holds the PUBLISHED version catalog that downstream Qabatz projects import
 - Contains: `libs.versions.toml` with all platform dependency versions and coordinates
 - Key files: `catalog/libs.versions.toml`
-- Consumers reference via: `from("eu.qabatz:qabatz-gradle-plugins-catalog:<version>")`
+- Consumers reference via: `from("eu.qabatz:qabatz-catalog:<version>")`
 - This is NOT used to build the plugins project itself
 
 **`gradle/`:**
@@ -84,7 +84,7 @@ qabatz-gradle-plugins/
 
 **Entry Points:**
 - `build.gradle.kts`: Build configuration, plugin registration (lines 61-98), publishing config, source sets
-- `settings.gradle.kts`: Single line -- sets `rootProject.name = "qabatz-gradle-plugins"`
+- `settings.gradle.kts`: Single line -- sets `rootProject.name = "qabatz-catalog"`
 
 **Configuration:**
 - `gradle.properties`: Group (`eu.qabatz`) and version (`0.2.0`)
@@ -165,7 +165,7 @@ qabatz-gradle-plugins/
 - Purpose: Published version catalog source file
 - Generated: No (hand-maintained)
 - Committed: Yes
-- Published as: `eu.qabatz:qabatz-gradle-plugins-catalog` Maven artifact
+- Published as: `eu.qabatz:qabatz-catalog` Maven artifact
 
 **`src/functionalTest/`:**
 - Purpose: Gradle TestKit functional tests (separate source set)
@@ -186,7 +186,7 @@ This project maintains TWO separate version catalogs -- understanding the distin
 | Catalog | Location | Purpose | Used by |
 |---------|----------|---------|---------|
 | Internal | `gradle/libs.versions.toml` | Build dependencies for compiling/testing the plugins project itself | This project's `build.gradle.kts` |
-| Published | `catalog/libs.versions.toml` | Platform dependency catalog for all downstream Qabatz services | Consumer projects via `from("eu.qabatz:qabatz-gradle-plugins-catalog:x.y.z")` |
+| Published | `catalog/libs.versions.toml` | Platform dependency catalog for all downstream Qabatz services | Consumer projects via `from("eu.qabatz:qabatz-catalog:x.y.z")` |
 
 The internal catalog contains Gradle plugin artifacts (kotlin-gradle-plugin, detekt-gradle-plugin, ktfmt-gradle-plugin) and test libraries. The published catalog contains the full Qabatz platform dependency set (Ktor, Kafka, jOOQ, OTel, Testcontainers, Qabatz commons, etc.).
 

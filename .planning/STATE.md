@@ -76,7 +76,7 @@ Recent decisions affecting current work:
 - [Phase 03]: Changed artifactId from qabatz-gradle-plugins-catalog to qabatz-catalog (clean break per D-01)
 - [Phase 03]: Reset version to 0.1.0 for new artifact identity (per D-02)
 - [Phase 04]: D-01 primary path succeeded: Forgejo API PATCH rename worked on first attempt (no fallback migration needed)
-- [Phase 04]: D-03 completed in Plan 1: Push mirror created to github.com/servista-eu/qabatz-catalog.git with user-provided GitHub PAT
+- [Phase 04]: D-03 completed in Plan 1: Push mirror created to github.com/poupapaa/qabatz-catalog.git with user-provided GitHub PAT
 - [Phase 04]: D-04 clean break: All 3 old Maven packages deleted from Forgejo registry
 
 ### Pending Todos

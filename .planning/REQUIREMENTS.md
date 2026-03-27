@@ -28,7 +28,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **REN-01**: Project name changed to `qabatz-catalog` in settings.gradle.kts
 - [x] **REN-02**: Forgejo repository renamed (or recreated) as `qabatz/qabatz-catalog`
 - [x] **REN-03**: Git remote URL updated to new repository name
-- [ ] **REN-04**: Push mirror configured to `https://github.com/servista-eu/qabatz-catalog.git` using existing GitHub token
+- [ ] **REN-04**: Push mirror configured to `https://github.com/poupapaa/qabatz-catalog.git` using existing GitHub token
 
 ### Consumers
 
@@ -64,17 +64,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAT-02 | Phase 3 | Complete |
 | CAT-03 | Phase 3 | Complete |
 | CAT-04 | Phase 3 | Complete |
-| CAT-05 | Phase 4 | Complete |
+| CAT-05 | Phase 3 | Complete |
 | CLN-01 | Phase 1 | Complete |
 | CLN-02 | Phase 1 | Complete |
 | CLN-03 | Phase 1 | Complete |
-| CLN-04 | Phase 2 | Complete |
-| CLN-05 | Phase 2 | Complete |
-| REN-01 | Phase 5 | Complete |
-| REN-02 | Phase 5 | Complete |
-| REN-03 | Phase 5 | Complete |
-| REN-04 | Phase 6 | Pending |
-| CON-01 | Phase 7 | Pending |
+| CLN-04 | Phase 1 | Complete |
+| CLN-05 | Phase 1 | Complete |
+| REN-01 | Phase 4 | Complete |
+| REN-02 | Phase 4 | Complete |
+| REN-03 | Phase 4 | Complete |
+| REN-04 | Phase 5 | Pending |
+| CON-01 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total

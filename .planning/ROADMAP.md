@@ -84,7 +84,7 @@ Plans:
 **Depends on**: Phase 4
 **Requirements**: REN-04
 **Success Criteria** (what must be TRUE):
-  1. Push mirror is configured to target `https://github.com/servista-eu/qabatz-catalog.git`
+  1. Push mirror is configured to target `https://github.com/poupapaa/qabatz-catalog.git`
   2. Pushes to Forgejo are mirrored to the GitHub repository
 **Plans**: TBD
 

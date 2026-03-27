@@ -25,9 +25,9 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 
 ### Active
 
-- [ ] Rename project from `qabatz-gradle-plugins` to `qabatz-catalog`
-- [ ] Rename Forgejo repository (or delete and recreate as `qabatz-catalog`)
-- [ ] Update push mirror to `https://github.com/servista-eu/qabatz-catalog.git` (reuse existing GitHub token)
+- [x] Rename project from `qabatz-gradle-plugins` to `qabatz-catalog`
+- [x] Rename Forgejo repository (or delete and recreate as `qabatz-catalog`)
+- [x] Update push mirror to `https://github.com/poupapaa/qabatz-catalog.git` (reuse existing GitHub token)
 - [ ] Update consuming projects' references (kotlin-commons settings.gradle.kts catalog import)
 
 ### Out of Scope
@@ -45,11 +45,11 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 - qabatz-kotlin-ktor will follow the same pattern when refactored (JooqPlugin migration instructions prepared)
 - The Forgejo instance is at `git.hestia-ng.eu` under the `qabatz` organization
 - Publishing target: Forgejo Maven registry at `https://git.hestia-ng.eu/api/packages/qabatz/maven`
-- Push mirror exists to GitHub under `servista-eu` organization
+- Push mirror exists to GitHub under `poupapaa` account
 
 ## Constraints
 
-- **Backward compatibility**: Consuming projects reference `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` — coordinate change requires updating all consumers
+- **Backward compatibility**: Consuming projects previously referenced `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` -- now `eu.qabatz:qabatz-catalog:0.1.0`
 - **Forgejo credentials**: Repository uses embedded token in git remote URL (user `heaphopdancer`)
 - **GitHub mirror**: Push mirror token must be reused from current Forgejo repo configuration
 
@@ -58,7 +58,7 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Remove all 8 convention plugins | Each project owns build-logic locally; plugins are unused by kotlin-commons and will be unused by kotlin-ktor after its refactoring | ✓ Done (Phase 1) |
-| Rename to qabatz-catalog | Reflects the project's actual purpose (version catalog only, not plugins) | — Pending |
+| Rename to qabatz-catalog | Reflects the project's actual purpose (version catalog only, not plugins) | Done (Phase 4) |
 | Preserve JooqPlugin via docs, not code | Complex logic (177 lines) preserved in git history + migration doc in kotlin-ktor; no active consumers after ktor refactoring | — Pending |
 
 ## Evolution

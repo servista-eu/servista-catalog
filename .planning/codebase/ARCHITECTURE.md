@@ -74,7 +74,7 @@ Because Gradle plugin application is idempotent, consumers can safely apply mult
 **Plugin Application Flow (consumer perspective):**
 
 1. Consumer applies `id("qabatz.jooq")` in their `plugins {}` block
-2. Gradle resolves plugin from the `qabatz-gradle-plugins` artifact
+2. Gradle resolves catalog from the `qabatz-catalog` artifact
 3. `JooqPlugin.apply()` calls `project.plugins.apply(LibraryPlugin::class.java)`
 4. `LibraryPlugin.apply()` applies Kotlin/JVM + detekt + ktfmt, sets JVM 21, registers `validateProjectStructure`
 5. `JooqPlugin.apply()` creates the `jooq {}` extension, adds runtime dependencies, registers `generateJooq` task
@@ -133,9 +133,9 @@ Because Gradle plugin application is idempotent, consumers can safely apply mult
 
 **Version Catalog Publication:**
 - Location: `build.gradle.kts` lines 40-44
-- Artifact: `eu.qabatz:qabatz-gradle-plugins-catalog`
+- Artifact: `eu.qabatz:qabatz-catalog`
 - Source: `catalog/libs.versions.toml`
-- Consumers import via: `from("eu.qabatz:qabatz-gradle-plugins-catalog:x.y.z")`
+- Consumers import via: `from("eu.qabatz:qabatz-catalog:x.y.z")`
 
 ## Error Handling
 

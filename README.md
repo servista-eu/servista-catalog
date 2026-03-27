@@ -1,3 +1,3 @@
-# qabatz-gradle-plugins
+# qabatz-catalog
 
-Gradle convention plugins for the Qabatz platform.
+Shared Gradle version catalog providing centralized dependency version alignment for all Qabatz Kotlin projects.

@@ -110,8 +110,7 @@ The `Versions.kt` object contains only the subset of versions that plugins refer
 - `publishToken` - Alternative token property
 
 **Build Output:**
-- Plugin artifacts: `eu.qabatz:qabatz-gradle-plugins:0.2.0`
-- Version catalog artifact: `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0`
+- Catalog artifact: `eu.qabatz:qabatz-catalog:0.1.0`
 
 ## Platform Requirements
 
