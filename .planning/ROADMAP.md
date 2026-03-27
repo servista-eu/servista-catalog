@@ -76,7 +76,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Rename Forgejo repo, create push mirror (D-03), update git remote, clean up old packages
+- [x] 04-01-PLAN.md -- Rename Forgejo repo, create push mirror (D-03), update git remote, clean up old packages
 - [ ] 04-02-PLAN.md -- Rename local directory, update documentation, fix REQUIREMENTS.md traceability
 
 ### Phase 5: Configure Mirror
