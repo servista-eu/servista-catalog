@@ -21,13 +21,13 @@ Single source of truth for dependency versions across the entire Qabatz ecosyste
 - ✓ Catalog entry counts verified: 35 versions, 75 libraries, 6 plugins (CAT-02) — Validated in Phase 2: Verify Catalog
 - ✓ 9 qabatz-kotlin-commons entries present in catalog (CAT-03) — Validated in Phase 2: Verify Catalog
 - ✓ 1 qabatz-kotlin-ktor entry present in catalog (CAT-04) — Validated in Phase 2: Verify Catalog
+- ✓ Published artifact coordinates updated to `eu.qabatz:qabatz-catalog:0.1.0` (CAT-05) — Validated in Phase 3: Publish Catalog
 
 ### Active
 
 - [ ] Rename project from `qabatz-gradle-plugins` to `qabatz-catalog`
 - [ ] Rename Forgejo repository (or delete and recreate as `qabatz-catalog`)
 - [ ] Update push mirror to `https://github.com/servista-eu/qabatz-catalog.git` (reuse existing GitHub token)
-- [ ] Update published artifact coordinates to `eu.qabatz:qabatz-catalog`
 - [ ] Update consuming projects' references (kotlin-commons settings.gradle.kts catalog import)
 
 ### Out of Scope
@@ -79,4 +79,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after Phase 2 completion*
+*Last updated: 2026-03-27 after Phase 3 completion*
