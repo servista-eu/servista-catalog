@@ -63,7 +63,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md -- Update artifact coordinates and publish catalog to Forgejo registry
+- [x] 03-01-PLAN.md -- Update artifact coordinates and publish catalog to Forgejo registry
 
 ### Phase 4: Rename Project
 **Goal**: The project is named qabatz-catalog everywhere -- locally, on Forgejo, and in the git remote
@@ -107,8 +107,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Strip Plugin Sources & Simplify Build | 2/2 | Complete | 2026-03-27 |
-| 2. Verify Catalog | 0/1 | Planning | - |
-| 3. Publish Catalog | 0/1 | Planning | - |
+| 2. Verify Catalog | 1/1 | Complete | 2026-03-27 |
+| 3. Publish Catalog | 1/1 | Complete | 2026-03-27 |
 | 4. Rename Project | 0/0 | Not started | - |
 | 5. Configure Mirror | 0/0 | Not started | - |
 | 6. Update Consumers | 0/0 | Not started | - |
