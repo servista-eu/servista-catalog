@@ -60,27 +60,27 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CAT-01 | — | Pending |
-| CAT-02 | — | Pending |
-| CAT-03 | — | Pending |
-| CAT-04 | — | Pending |
-| CAT-05 | — | Pending |
-| CLN-01 | — | Pending |
-| CLN-02 | — | Pending |
-| CLN-03 | — | Pending |
-| CLN-04 | — | Pending |
-| CLN-05 | — | Pending |
-| REN-01 | — | Pending |
-| REN-02 | — | Pending |
-| REN-03 | — | Pending |
-| REN-04 | — | Pending |
-| CON-01 | — | Pending |
+| CAT-01 | Phase 3 | Pending |
+| CAT-02 | Phase 3 | Pending |
+| CAT-03 | Phase 3 | Pending |
+| CAT-04 | Phase 3 | Pending |
+| CAT-05 | Phase 4 | Pending |
+| CLN-01 | Phase 1 | Pending |
+| CLN-02 | Phase 1 | Pending |
+| CLN-03 | Phase 1 | Pending |
+| CLN-04 | Phase 2 | Pending |
+| CLN-05 | Phase 2 | Pending |
+| REN-01 | Phase 5 | Pending |
+| REN-02 | Phase 5 | Pending |
+| REN-03 | Phase 5 | Pending |
+| REN-04 | Phase 6 | Pending |
+| CON-01 | Phase 7 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total
-- Mapped to phases: 0
-- Unmapped: 15 ⚠️
+- Mapped to phases: 15
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-27 after initial definition*
+*Last updated: 2026-03-27 after roadmap creation*
