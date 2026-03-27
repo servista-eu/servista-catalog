@@ -73,9 +73,11 @@ Plans:
   1. settings.gradle.kts declares the project name as `qabatz-catalog`
   2. The Forgejo repository is accessible at `qabatz/qabatz-catalog`
   3. The local git remote URL points to the renamed Forgejo repository
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
+- [ ] 04-01-PLAN.md -- Rename Forgejo repo, update git remote, clean up old packages and mirror
+- [ ] 04-02-PLAN.md -- Configure push mirror (if PAT available), rename local directory, update documentation
 
 ### Phase 5: Configure Mirror
 **Goal**: The GitHub push mirror is configured for the renamed repository
@@ -109,6 +111,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Strip Plugin Sources & Simplify Build | 2/2 | Complete | 2026-03-27 |
 | 2. Verify Catalog | 1/1 | Complete | 2026-03-27 |
 | 3. Publish Catalog | 1/1 | Complete | 2026-03-27 |
-| 4. Rename Project | 0/0 | Not started | - |
+| 4. Rename Project | 0/2 | Not started | - |
 | 5. Configure Mirror | 0/0 | Not started | - |
 | 6. Update Consumers | 0/0 | Not started | - |
