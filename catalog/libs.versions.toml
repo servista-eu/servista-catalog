@@ -4,23 +4,28 @@
 [versions]
 kotlin = "2.3.10"
 ktor = "3.4.0"
-koin = "4.1.1"
+koin = "4.2.0"
 jooq = "3.20.11"
 flyway = "12.0.3"
 hikari = "7.0.2"
 postgresql-jdbc = "42.7.10"
+mysql-connector = "9.6.0"
 kafka = "4.1.1"
 avro = "1.12.1"
 apicurio-serdes = "3.0.0.M4"
 openfga = "0.9.6"
 immudb4j = "1.0.1"
 jedis = "5.2.0"
-lettuce = "6.5.3.RELEASE"
+lettuce = "7.5.0.RELEASE"
+netty = "4.2.5.Final"
+xmemcached = "2.4.7"
 nimbus-jose-jwt = "10.8"
 otel = "1.47.0"
 otel-agent = "2.20.0"
 micrometer = "1.16.3"
 mockk = "1.14.7"
+mockito = "5.18.0"
+mockito-kotlin = "5.4.0"
 testcontainers = "2.0.3"
 junit5 = "5.14.2"
 kotest = "6.1.4"
@@ -35,11 +40,17 @@ slf4j = "2.0.17"
 detekt = "2.0.0-alpha.2"
 konform = "0.11.0"
 tink = "1.13.0"
-qabatz-kotlin-commons = "0.2.0"
+vault-java-driver = "6.2.0"
+aws-sdk = "2.42.23"
+azure-storage-blob = "12.33.2"
+azure-keyvault-secrets = "4.10.6"
+azure-resourcemanager-network = "2.58.1"
+qabatz-kotlin-commons = "0.1.0"
 qabatz-kotlin-ktor = "0.1.1"
 
 [libraries]
 # Ktor Server
+ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
@@ -57,8 +68,10 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
 # Dependency Injection
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
@@ -71,8 +84,10 @@ jooq-codegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
 jooq-meta-extensions = { module = "org.jooq:jooq-meta-extensions", version.ref = "jooq" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 postgresql-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql-jdbc" }
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
 
 # Kafka
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
@@ -86,20 +101,59 @@ openfga-sdk = { module = "dev.openfga:openfga-sdk", version.ref = "openfga" }
 immudb4j = { module = "io.codenotary:immudb4j", version.ref = "immudb4j" }
 jedis = { module = "redis.clients:jedis", version.ref = "jedis" }
 lettuce = { module = "io.lettuce:lettuce-core", version.ref = "lettuce" }
+netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
+xmemcached = { module = "com.googlecode.xmemcached:xmemcached", version.ref = "xmemcached" }
 nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
 konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
+vault-java-driver = { module = "io.github.jopenlibs:vault-java-driver", version.ref = "vault-java-driver" }
+
+# AWS
+aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk" }
+aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
+aws-secretsmanager = { module = "software.amazon.awssdk:secretsmanager", version.ref = "aws-sdk" }
+aws-route53 = { module = "software.amazon.awssdk:route53", version.ref = "aws-sdk" }
+
+# Azure
+azure-storage-blob = { module = "com.azure:azure-storage-blob", version.ref = "azure-storage-blob" }
+azure-keyvault-secrets = { module = "com.azure:azure-security-keyvault-secrets", version.ref = "azure-keyvault-secrets" }
+azure-resourcemanager-network = { module = "com.azure.resourcemanager:azure-resourcemanager-network", version.ref = "azure-resourcemanager-network" }
 
 # Qabatz Commons
-qabatz-commons-core = { module = "eu.qabatz:qabatz-kotlin-commons-core", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-kafka = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-kafka", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-valkey = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-valkey", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-jooq = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-jooq", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-otel = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-otel", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-micrometer = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-micrometer", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-adapter-konform = { module = "eu.qabatz:qabatz-kotlin-commons-adapter-konform", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-kafka-avro = { module = "eu.qabatz:qabatz-kotlin-commons-kafka-avro", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-secrets = { module = "eu.qabatz:qabatz-kotlin-commons-secrets", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-bom = { module = "eu.qabatz:commons-bom", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-core = { module = "eu.qabatz:commons-core", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-messaging-kafka = { module = "eu.qabatz:commons-messaging-kafka", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-messaging-kafka-avro = { module = "eu.qabatz:commons-messaging-kafka-avro", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-db-postgres = { module = "eu.qabatz:commons-db-postgres", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-db-mysql = { module = "eu.qabatz:commons-db-mysql", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-observability-otel = { module = "eu.qabatz:commons-observability-otel", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-observability-micrometer = { module = "eu.qabatz:commons-observability-micrometer", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-validation-konform = { module = "eu.qabatz:commons-validation-konform", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-secrets-openbao = { module = "eu.qabatz:commons-secrets-openbao", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-secrets-aws = { module = "eu.qabatz:commons-secrets-aws", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-secrets-azure = { module = "eu.qabatz:commons-secrets-azure", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-cache-lettuce = { module = "eu.qabatz:commons-cache-lettuce", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-cache-memcached = { module = "eu.qabatz:commons-cache-memcached", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-id-lettuce = { module = "eu.qabatz:commons-id-lettuce", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-storage-s3 = { module = "eu.qabatz:commons-storage-s3", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-storage-azure = { module = "eu.qabatz:commons-storage-azure", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-http-ktor = { module = "eu.qabatz:commons-http-ktor", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-dns-cloudflare = { module = "eu.qabatz:commons-dns-cloudflare", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-dns-route53 = { module = "eu.qabatz:commons-dns-route53", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-gateway-apisix = { module = "eu.qabatz:commons-gateway-apisix", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-gateway-azure = { module = "eu.qabatz:commons-gateway-azure", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-testing = { module = "eu.qabatz:commons-testing", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-cache = { module = "eu.qabatz:commons-wiring-koin-cache", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-db = { module = "eu.qabatz:commons-wiring-koin-db", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-messaging = { module = "eu.qabatz:commons-wiring-koin-messaging", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-observability = { module = "eu.qabatz:commons-wiring-koin-observability", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-validation = { module = "eu.qabatz:commons-wiring-koin-validation", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-secrets = { module = "eu.qabatz:commons-wiring-koin-secrets", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-storage = { module = "eu.qabatz:commons-wiring-koin-storage", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-http = { module = "eu.qabatz:commons-wiring-koin-http", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-dns = { module = "eu.qabatz:commons-wiring-koin-dns", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-gateway-apisix = { module = "eu.qabatz:commons-wiring-koin-gateway-apisix", version.ref = "qabatz-kotlin-commons" }
+qabatz-commons-wiring-koin-gateway-azure = { module = "eu.qabatz:commons-wiring-koin-gateway-azure", version.ref = "qabatz-kotlin-commons" }
 
 # Qabatz Ktor
 qabatz-ktor = { module = "eu.qabatz:qabatz-kotlin-ktor", version.ref = "qabatz-kotlin-ktor" }
@@ -124,18 +178,26 @@ janino = { module = "org.codehaus.janino:janino", version.ref = "janino" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 # Kotlin Extensions
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # Testing
 junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", version.ref = "testcontainers" }
+testcontainers-mysql = { module = "org.testcontainers:testcontainers-mysql", version.ref = "testcontainers" }
+testcontainers-minio = { module = "org.testcontainers:testcontainers-minio", version.ref = "testcontainers" }
+testcontainers-azure = { module = "org.testcontainers:testcontainers-azure", version.ref = "testcontainers" }
+testcontainers-localstack = { module = "org.testcontainers:testcontainers-localstack", version.ref = "testcontainers" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 
 [plugins]
