@@ -1,7 +1,7 @@
-# qabatz-catalog
+# servista-catalog
 
-Shared Gradle version catalog providing centralized dependency version alignment for all Qabatz
-Kotlin projects. Published as `eu.qabatz:qabatz-catalog` to the Forgejo Maven registry.
+Shared Gradle version catalog providing centralized dependency version alignment for all servista
+Kotlin projects. Published as `eu.servista:servista-catalog` to the Forgejo Maven registry.
 
 **Current version:** 0.4.0
 
@@ -13,7 +13,7 @@ Consume the catalog in your `settings.gradle.kts`:
 dependencyResolutionManagement {
     repositories {
         maven {
-            url = uri("https://git.hestia-ng.eu/api/packages/qabatz/maven")
+            url = uri("https://git.hestia-ng.eu/api/packages/servista/maven")
             credentials {
                 username = System.getenv("FORGEJO_USER") ?: "token"
                 password = System.getenv("FORGEJO_TOKEN") ?: ""
@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
     versionCatalogs {
-        create("libs") { from("eu.qabatz:qabatz-catalog:0.4.0") }
+        create("libs") { from("eu.servista:servista-catalog:0.4.0") }
     }
 }
 ```
@@ -36,13 +36,13 @@ plugins {
 }
 
 dependencies {
-    // Qabatz commons (all referenced as libs.qabatz.commons.*)
-    implementation(libs.qabatz.commons.core)
-    implementation(libs.qabatz.commons.db.postgres)
-    implementation(libs.qabatz.commons.observability.otel)
+    // servista commons (all referenced as libs.servista.commons.*)
+    implementation(libs.servista.commons.core)
+    implementation(libs.servista.commons.db.postgres)
+    implementation(libs.servista.commons.observability.otel)
 
-    // Qabatz service runtime (bootstrap + auth + observability + health)
-    implementation(libs.qabatz.service.runtime)
+    // servista service runtime (bootstrap + auth + observability + health)
+    implementation(libs.servista.service.runtime)
 
     // Third-party libs pinned by the catalog
     implementation(libs.ktor.server.core)
@@ -53,7 +53,7 @@ dependencies {
 
 ## What the catalog pins
 
-- **Qabatz internal:** commons (0.3.1), service-runtime (0.4.0)
+- **servista internal:** commons (0.3.1), service-runtime (0.4.0)
 - **Core Kotlin:** Kotlin 2.3.10, Ktor 3.4.0, Koin 4.2.0
 - **Database:** jOOQ, Flyway, HikariCP, PostgreSQL + MySQL drivers
 - **Messaging:** Kafka, Avro, Apicurio Serdes

@@ -4,7 +4,7 @@ plugins {
 }
 
 // Published version catalog -- loaded from catalog/ directory.
-// Consumers import via: from("eu.qabatz:qabatz-catalog:x.y.z")
+// Consumers import via: from("eu.servista:servista-catalog:x.y.z")
 catalog {
     versionCatalog {
         from(files("catalog/libs.versions.toml"))
@@ -16,7 +16,7 @@ publishing {
     publications {
         create<MavenPublication>("versionCatalog") {
             from(components["versionCatalog"])
-            artifactId = "qabatz-catalog"
+            artifactId = "servista-catalog"
         }
     }
 
@@ -25,7 +25,7 @@ publishing {
             name = "Forgejo"
             val repoUrl =
                 findProperty("publishUrl")?.toString()
-                    ?: "https://git.hestia-ng.eu/api/packages/qabatz/maven"
+                    ?: "https://git.hestia-ng.eu/api/packages/servista/maven"
             url = uri(repoUrl)
             isAllowInsecureProtocol = repoUrl.startsWith("http://")
             credentials {

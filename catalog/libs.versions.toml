@@ -1,5 +1,5 @@
-# Published version catalog for Qabatz-based projects.
-# Consumers import via: from("eu.qabatz:qabatz-catalog:<version>")
+# Published version catalog for servista-based projects.
+# Consumers import via: from("eu.servista:servista-catalog:<version>")
 
 [versions]
 kotlin = "2.3.10"
@@ -45,8 +45,8 @@ aws-sdk = "2.42.23"
 azure-storage-blob = "12.33.2"
 azure-keyvault-secrets = "4.10.6"
 azure-resourcemanager-network = "2.58.1"
-qabatz-kotlin-commons = "0.3.1"
-qabatz-service-runtime = "0.4.0"
+servista-kotlin-commons = "0.3.1"
+servista-service-runtime = "0.4.0"
 
 [libraries]
 # Ktor Server
@@ -119,44 +119,44 @@ azure-storage-blob = { module = "com.azure:azure-storage-blob", version.ref = "a
 azure-keyvault-secrets = { module = "com.azure:azure-security-keyvault-secrets", version.ref = "azure-keyvault-secrets" }
 azure-resourcemanager-network = { module = "com.azure.resourcemanager:azure-resourcemanager-network", version.ref = "azure-resourcemanager-network" }
 
-# Qabatz Commons
-qabatz-commons-bom = { module = "eu.qabatz:commons-bom", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-core = { module = "eu.qabatz:commons-core", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-messaging-kafka = { module = "eu.qabatz:commons-messaging-kafka", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-messaging-kafka-avro = { module = "eu.qabatz:commons-messaging-kafka-avro", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-db-postgres = { module = "eu.qabatz:commons-db-postgres", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-db-mysql = { module = "eu.qabatz:commons-db-mysql", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-observability-otel = { module = "eu.qabatz:commons-observability-otel", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-observability-micrometer = { module = "eu.qabatz:commons-observability-micrometer", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-validation-konform = { module = "eu.qabatz:commons-validation-konform", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-secrets-openbao = { module = "eu.qabatz:commons-secrets-openbao", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-secrets-aws = { module = "eu.qabatz:commons-secrets-aws", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-secrets-azure = { module = "eu.qabatz:commons-secrets-azure", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-cache-lettuce = { module = "eu.qabatz:commons-cache-lettuce", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-cache-memcached = { module = "eu.qabatz:commons-cache-memcached", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-id-lettuce = { module = "eu.qabatz:commons-id-lettuce", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-storage-s3 = { module = "eu.qabatz:commons-storage-s3", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-storage-azure = { module = "eu.qabatz:commons-storage-azure", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-http-ktor = { module = "eu.qabatz:commons-http-ktor", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-dns-cloudflare = { module = "eu.qabatz:commons-dns-cloudflare", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-dns-route53 = { module = "eu.qabatz:commons-dns-route53", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-gateway-apisix = { module = "eu.qabatz:commons-gateway-apisix", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-gateway-azure = { module = "eu.qabatz:commons-gateway-azure", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-testing = { module = "eu.qabatz:commons-testing", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-cache = { module = "eu.qabatz:commons-wiring-koin-cache", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-db = { module = "eu.qabatz:commons-wiring-koin-db", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-messaging = { module = "eu.qabatz:commons-wiring-koin-messaging", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-observability = { module = "eu.qabatz:commons-wiring-koin-observability", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-validation = { module = "eu.qabatz:commons-wiring-koin-validation", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-secrets = { module = "eu.qabatz:commons-wiring-koin-secrets", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-storage = { module = "eu.qabatz:commons-wiring-koin-storage", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-http = { module = "eu.qabatz:commons-wiring-koin-http", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-dns = { module = "eu.qabatz:commons-wiring-koin-dns", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-gateway-apisix = { module = "eu.qabatz:commons-wiring-koin-gateway-apisix", version.ref = "qabatz-kotlin-commons" }
-qabatz-commons-wiring-koin-gateway-azure = { module = "eu.qabatz:commons-wiring-koin-gateway-azure", version.ref = "qabatz-kotlin-commons" }
+# servista Commons
+servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
+servista-commons-core = { module = "eu.servista:commons-core", version.ref = "servista-kotlin-commons" }
+servista-commons-messaging-kafka = { module = "eu.servista:commons-messaging-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-messaging-kafka-avro = { module = "eu.servista:commons-messaging-kafka-avro", version.ref = "servista-kotlin-commons" }
+servista-commons-db-postgres = { module = "eu.servista:commons-db-postgres", version.ref = "servista-kotlin-commons" }
+servista-commons-db-mysql = { module = "eu.servista:commons-db-mysql", version.ref = "servista-kotlin-commons" }
+servista-commons-observability-otel = { module = "eu.servista:commons-observability-otel", version.ref = "servista-kotlin-commons" }
+servista-commons-observability-micrometer = { module = "eu.servista:commons-observability-micrometer", version.ref = "servista-kotlin-commons" }
+servista-commons-validation-konform = { module = "eu.servista:commons-validation-konform", version.ref = "servista-kotlin-commons" }
+servista-commons-secrets-openbao = { module = "eu.servista:commons-secrets-openbao", version.ref = "servista-kotlin-commons" }
+servista-commons-secrets-aws = { module = "eu.servista:commons-secrets-aws", version.ref = "servista-kotlin-commons" }
+servista-commons-secrets-azure = { module = "eu.servista:commons-secrets-azure", version.ref = "servista-kotlin-commons" }
+servista-commons-cache-lettuce = { module = "eu.servista:commons-cache-lettuce", version.ref = "servista-kotlin-commons" }
+servista-commons-cache-memcached = { module = "eu.servista:commons-cache-memcached", version.ref = "servista-kotlin-commons" }
+servista-commons-id-lettuce = { module = "eu.servista:commons-id-lettuce", version.ref = "servista-kotlin-commons" }
+servista-commons-storage-s3 = { module = "eu.servista:commons-storage-s3", version.ref = "servista-kotlin-commons" }
+servista-commons-storage-azure = { module = "eu.servista:commons-storage-azure", version.ref = "servista-kotlin-commons" }
+servista-commons-http-ktor = { module = "eu.servista:commons-http-ktor", version.ref = "servista-kotlin-commons" }
+servista-commons-dns-cloudflare = { module = "eu.servista:commons-dns-cloudflare", version.ref = "servista-kotlin-commons" }
+servista-commons-dns-route53 = { module = "eu.servista:commons-dns-route53", version.ref = "servista-kotlin-commons" }
+servista-commons-gateway-apisix = { module = "eu.servista:commons-gateway-apisix", version.ref = "servista-kotlin-commons" }
+servista-commons-gateway-azure = { module = "eu.servista:commons-gateway-azure", version.ref = "servista-kotlin-commons" }
+servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-cache = { module = "eu.servista:commons-wiring-koin-cache", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-db = { module = "eu.servista:commons-wiring-koin-db", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-messaging = { module = "eu.servista:commons-wiring-koin-messaging", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-observability = { module = "eu.servista:commons-wiring-koin-observability", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-validation = { module = "eu.servista:commons-wiring-koin-validation", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-secrets = { module = "eu.servista:commons-wiring-koin-secrets", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-storage = { module = "eu.servista:commons-wiring-koin-storage", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-http = { module = "eu.servista:commons-wiring-koin-http", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-dns = { module = "eu.servista:commons-wiring-koin-dns", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-gateway-apisix = { module = "eu.servista:commons-wiring-koin-gateway-apisix", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-gateway-azure = { module = "eu.servista:commons-wiring-koin-gateway-azure", version.ref = "servista-kotlin-commons" }
 
-# Qabatz Service Runtime
-qabatz-service-runtime = { module = "eu.qabatz:qabatz-service-runtime", version.ref = "qabatz-service-runtime" }
+# servista Service Runtime
+servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
 
 # Observability
 otel-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "otel" }

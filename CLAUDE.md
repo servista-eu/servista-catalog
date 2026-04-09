@@ -1,15 +1,15 @@
 <!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
-**qabatz-catalog**
+**servista-catalog**
 
-A shared Gradle version catalog providing centralized dependency version alignment for all Qabatz Kotlin projects. Published as `eu.qabatz:qabatz-catalog` to the Forgejo Maven registry, consumed by projects like qabatz-kotlin-commons, qabatz-kotlin-ktor, and future Qabatz services. Each consuming project owns its own build-logic convention plugins locally; this project only manages the version catalog.
+A shared Gradle version catalog providing centralized dependency version alignment for all servista Kotlin projects. Published as `eu.servista:servista-catalog` to the Forgejo Maven registry, consumed by projects like servista-kotlin-commons, servista-kotlin-ktor, and future servista services. Each consuming project owns its own build-logic convention plugins locally; this project only manages the version catalog.
 
-**Core Value:** Single source of truth for dependency versions across the entire Qabatz ecosystem — preventing version drift and dependency conflicts between projects.
+**Core Value:** Single source of truth for dependency versions across the entire servista ecosystem — preventing version drift and dependency conflicts between projects.
 
 ### Constraints
 
-- **Backward compatibility**: Consuming projects previously referenced `eu.qabatz:qabatz-gradle-plugins-catalog:0.2.0` -- now published as `eu.qabatz:qabatz-catalog:0.1.0`
+- **Backward compatibility**: Consuming projects previously referenced `eu.servista:servista-gradle-plugins-catalog:0.2.0` -- now published as `eu.servista:servista-catalog:0.1.0`
 - **Forgejo credentials**: Repository uses embedded token in git remote URL (user `heaphopdancer`)
 - **GitHub mirror**: Push mirror token must be reused from current Forgejo repo configuration
 <!-- GSD:project-end -->
@@ -35,20 +35,20 @@ A shared Gradle version catalog providing centralized dependency version alignme
 - `dev.detekt` 2.0.0-alpha.2 - Static analysis for the plugin project itself
 - `build.gradle.kts` - Main build script
 - `settings.gradle.kts` - Single-line root project name declaration
-- `gradle.properties` - Group (`eu.qabatz`) and version (`0.2.0`)
+- `gradle.properties` - Group (`eu.servista`) and version (`0.2.0`)
 - `gradle/libs.versions.toml` - Internal version catalog for building the plugins project
 - `catalog/libs.versions.toml` - Published version catalog for consumer projects
 ## Convention Plugins (8 total)
 | Plugin ID | Implementation Class | Purpose |
 |---|---|---|
-| `qabatz.library` | `eu.qabatz.gradle.plugins.LibraryPlugin` | Base plugin: Kotlin/JVM 21, detekt, ktfmt, directory validation, coroutines, datetime |
-| `qabatz.testing` | `eu.qabatz.gradle.plugins.TestingPlugin` | Test dependencies: JUnit 5, MockK, Kotest, Testcontainers, Ktor test host, Koin test |
-| `qabatz.observability` | `eu.qabatz.gradle.plugins.ObservabilityPlugin` | Logging and metrics: kotlin-logging, Logback, Micrometer Prometheus |
-| `qabatz.kafka-consumer` | `eu.qabatz.gradle.plugins.KafkaConsumerPlugin` | Kafka client dependency for consumers |
-| `qabatz.kafka-producer` | `eu.qabatz.gradle.plugins.KafkaProducerPlugin` | Kafka client dependency for producers |
-| `qabatz.pipeline-service` | `eu.qabatz.gradle.plugins.PipelineServicePlugin` | Kafka Streams dependency for stream processing |
-| `qabatz.jooq` | `eu.qabatz.gradle.plugins.JooqPlugin` | Database: jOOQ + HikariCP + Flyway + PostgreSQL + DDL-based code generation |
-| `qabatz.secrets` | `eu.qabatz.gradle.plugins.SecretsPlugin` | Secret store access via qabatz-kotlin-commons-secrets |
+| `servista.library` | `eu.servista.gradle.plugins.LibraryPlugin` | Base plugin: Kotlin/JVM 21, detekt, ktfmt, directory validation, coroutines, datetime |
+| `servista.testing` | `eu.servista.gradle.plugins.TestingPlugin` | Test dependencies: JUnit 5, MockK, Kotest, Testcontainers, Ktor test host, Koin test |
+| `servista.observability` | `eu.servista.gradle.plugins.ObservabilityPlugin` | Logging and metrics: kotlin-logging, Logback, Micrometer Prometheus |
+| `servista.kafka-consumer` | `eu.servista.gradle.plugins.KafkaConsumerPlugin` | Kafka client dependency for consumers |
+| `servista.kafka-producer` | `eu.servista.gradle.plugins.KafkaProducerPlugin` | Kafka client dependency for producers |
+| `servista.pipeline-service` | `eu.servista.gradle.plugins.PipelineServicePlugin` | Kafka Streams dependency for stream processing |
+| `servista.jooq` | `eu.servista.gradle.plugins.JooqPlugin` | Database: jOOQ + HikariCP + Flyway + PostgreSQL + DDL-based code generation |
+| `servista.secrets` | `eu.servista.gradle.plugins.SecretsPlugin` | Secret store access via servista-kotlin-commons-secrets |
 ## Plugin Hierarchy
 ## Key Dependencies
 - `org.jetbrains.kotlin:kotlin-gradle-plugin` 2.3.10 - Kotlin compiler plugin on classpath
@@ -59,17 +59,17 @@ A shared Gradle version catalog providing centralized dependency version alignme
 - `gradleTestKit()` - Gradle TestKit for functional testing
 - `org.junit.jupiter:junit-jupiter` 5.14.2 - JUnit 5
 - `io.kotest:kotest-assertions-core` 6.1.4 - Kotest assertion matchers
-- Defined in `src/main/kotlin/eu/qabatz/gradle/Versions.kt`
+- Defined in `src/main/kotlin/eu/servista/gradle/Versions.kt`
 - Must stay in sync with `catalog/libs.versions.toml`
 ## Version Management
 - `gradle/libs.versions.toml` - Used only for building the plugins project itself (referenced as `libs.*` in `build.gradle.kts`)
 ## Configuration
 - `FORGEJO_USER` - Username for Forgejo Maven registry (default: "token")
 - `FORGEJO_TOKEN` - Token for Forgejo Maven registry
-- `publishUrl` - Override Maven publish URL (default: `https://git.hestia-ng.eu/api/packages/qabatz/maven`)
+- `publishUrl` - Override Maven publish URL (default: `https://git.hestia-ng.eu/api/packages/servista/maven`)
 - `forgejoUser` / `forgejoToken` - Alternative to environment variables
 - `publishToken` - Alternative token property
-- Catalog artifact: `eu.qabatz:qabatz-catalog:0.1.0`
+- Catalog artifact: `eu.servista:servista-catalog:0.1.0`
 ## Platform Requirements
 - JDK 21+
 - Gradle 9.3.1 (use wrapper: `./gradlew`)
@@ -80,23 +80,23 @@ A shared Gradle version catalog providing centralized dependency version alignme
 ## Conventions
 
 ## Naming Patterns
-- Format: `qabatz.<feature-name>` with lowercase kebab-case for multi-word names
-- Examples: `qabatz.library`, `qabatz.kafka-consumer`, `qabatz.pipeline-service`, `qabatz.jooq`
+- Format: `servista.<feature-name>` with lowercase kebab-case for multi-word names
+- Examples: `servista.library`, `servista.kafka-consumer`, `servista.pipeline-service`, `servista.jooq`
 - Registration key in `build.gradle.kts` matches the feature portion: `create("library")`, `create("kafka-consumer")`
 - Format: `PascalCase` + `Plugin` suffix
-- Location: `src/main/kotlin/eu/qabatz/gradle/plugins/`
+- Location: `src/main/kotlin/eu/servista/gradle/plugins/`
 - Examples: `LibraryPlugin`, `KafkaConsumerPlugin`, `PipelineServicePlugin`, `JooqPlugin`
 - Each class implements `Plugin<Project>`
 - Format: `PascalCase` + `Extension` suffix
-- Location: `src/main/kotlin/eu/qabatz/gradle/` (one level above plugins)
-- Example: `JooqExtension` at `src/main/kotlin/eu/qabatz/gradle/JooqExtension.kt`
+- Location: `src/main/kotlin/eu/servista/gradle/` (one level above plugins)
+- Example: `JooqExtension` at `src/main/kotlin/eu/servista/gradle/JooqExtension.kt`
 - Format: `PascalCase` object name
-- Example: `Versions` object at `src/main/kotlin/eu/qabatz/gradle/Versions.kt`
+- Example: `Versions` object at `src/main/kotlin/eu/servista/gradle/Versions.kt`
 - Format: `SCREAMING_SNAKE_CASE` const values inside `Versions` object
 - Examples: `KOTLINX_COROUTINES`, `POSTGRESQL_JDBC`, `KOTLIN_LOGGING`
-- Base package: `eu.qabatz.gradle`
-- Plugins subpackage: `eu.qabatz.gradle.plugins`
-- Extensions and utilities live directly in `eu.qabatz.gradle`
+- Base package: `eu.servista.gradle`
+- Plugins subpackage: `eu.servista.gradle.plugins`
+- Extensions and utilities live directly in `eu.servista.gradle`
 ## Code Style
 - Tool: ktfmt (via `com.ncorti.ktfmt.gradle` plugin v0.25.0)
 - Style: `kotlinLangStyle()` (Kotlin official style)
@@ -153,46 +153,46 @@ A shared Gradle version catalog providing centralized dependency version alignme
 ```
 ```
 ## Layers
-- Purpose: Establish the Kotlin/JVM compilation baseline and code quality tooling for every Qabatz project
-- Location: `src/main/kotlin/eu/qabatz/gradle/plugins/LibraryPlugin.kt`
+- Purpose: Establish the Kotlin/JVM compilation baseline and code quality tooling for every servista project
+- Location: `src/main/kotlin/eu/servista/gradle/plugins/LibraryPlugin.kt`
 - Applies: `org.jetbrains.kotlin.jvm`, `dev.detekt`, `com.ncorti.ktfmt.gradle`
 - Configures: JVM 21 toolchain, detekt with bundled config from classpath, ktfmt with `kotlinLangStyle()`
 - Registers: `validateProjectStructure` task (verifies `src/main/kotlin`, `src/main/resources`, `src/test/kotlin` exist)
 - Adds dependencies: `kotlinx-coroutines-core`, `kotlinx-datetime`
 - Used by: All other plugins (mandatory transitive base)
 - Purpose: Add curated dependency sets for specific platform concerns
-- Location: `src/main/kotlin/eu/qabatz/gradle/plugins/`
+- Location: `src/main/kotlin/eu/servista/gradle/plugins/`
 - Pattern: Apply `LibraryPlugin`, then add `implementation` and/or `testImplementation` dependencies
 - Contains:
 - Purpose: Full database access setup with DDL-based jOOQ code generation
-- Location: `src/main/kotlin/eu/qabatz/gradle/plugins/JooqPlugin.kt`
-- Extension: `JooqExtension` at `src/main/kotlin/eu/qabatz/gradle/JooqExtension.kt`
+- Location: `src/main/kotlin/eu/servista/gradle/plugins/JooqPlugin.kt`
+- Extension: `JooqExtension` at `src/main/kotlin/eu/servista/gradle/JooqExtension.kt`
 - Configures: custom `jooqCodegen` configuration, `generateJooq` JavaExec task, source set wiring
 - Adds dependencies: jOOQ (core + kotlin + kotlin-coroutines), HikariCP, Flyway (core + PostgreSQL), PostgreSQL JDBC
 - Code generation: Uses `org.jooq.meta.extensions.ddl.DDLDatabase` to parse Flyway SQL migrations without a live database
-- `src/main/kotlin/eu/qabatz/gradle/Versions.kt` -- Centralized version constants; must stay in sync with `catalog/libs.versions.toml`
-- `src/main/kotlin/eu/qabatz/gradle/JooqExtension.kt` -- Gradle extension class for the jOOQ plugin
+- `src/main/kotlin/eu/servista/gradle/Versions.kt` -- Centralized version constants; must stay in sync with `catalog/libs.versions.toml`
+- `src/main/kotlin/eu/servista/gradle/JooqExtension.kt` -- Gradle extension class for the jOOQ plugin
 - `src/main/resources/detekt/detekt.yml` -- Shared detekt configuration distributed to all consumers via classpath resource loading
 ## Data Flow
 ## Key Abstractions
 - Purpose: Standard Gradle contract for all convention plugins
-- Examples: All 8 plugin classes in `src/main/kotlin/eu/qabatz/gradle/plugins/`
+- Examples: All 8 plugin classes in `src/main/kotlin/eu/servista/gradle/plugins/`
 - Pattern: Each class implements `Plugin<Project>` with a single `apply(project: Project)` method
 - Purpose: Consumer-facing configuration DSL for jOOQ code generation
-- Location: `src/main/kotlin/eu/qabatz/gradle/JooqExtension.kt`
+- Location: `src/main/kotlin/eu/servista/gradle/JooqExtension.kt`
 - Properties:
 - Pattern: Gradle lazy properties (`Property<T>`, `DirectoryProperty`) with conventions
 - Purpose: Single source of truth for dependency versions used by plugin code at apply-time
-- Location: `src/main/kotlin/eu/qabatz/gradle/Versions.kt`
+- Location: `src/main/kotlin/eu/servista/gradle/Versions.kt`
 - Pattern: Kotlin `object` with `const val` constants -- hardcoded, not derived from catalog at runtime
 ## Entry Points
 - Location: `build.gradle.kts` lines 61-98
-- Triggers: Gradle plugin resolution when consumers use `id("qabatz.xxx")`
+- Triggers: Gradle plugin resolution when consumers use `id("servista.xxx")`
 - Maps plugin IDs to implementation classes:
 - Location: `build.gradle.kts` lines 40-44
-- Artifact: `eu.qabatz:qabatz-catalog`
+- Artifact: `eu.servista:servista-catalog`
 - Source: `catalog/libs.versions.toml`
-- Consumers import via: `from("eu.qabatz:qabatz-catalog:x.y.z")`
+- Consumers import via: `from("eu.servista:servista-catalog:x.y.z")`
 ## Error Handling
 - `LibraryPlugin` registers `validateProjectStructure` task that throws `GradleException` if `src/main/kotlin`, `src/main/resources`, or `src/test/kotlin` directories are missing
 - `JooqPlugin` uses `onlyIf { ext.packageName.isPresent }` to gracefully skip code generation when not configured, rather than failing
@@ -201,12 +201,12 @@ A shared Gradle version catalog providing centralized dependency version alignme
 - Decision: Versions are duplicated as compile-time constants in `Versions.kt` AND in `catalog/libs.versions.toml`
 - Trade-off: Simpler plugin code (no catalog parsing at apply-time), but requires manual sync when bumping versions
 - Risk: Version drift between `Versions.kt` and `catalog/libs.versions.toml` if only one is updated
-- Decision: `project.plugins.apply(LibraryPlugin::class.java)` rather than `project.plugins.apply("qabatz.library")`
+- Decision: `project.plugins.apply(LibraryPlugin::class.java)` rather than `project.plugins.apply("servista.library")`
 - Trade-off: Direct class reference is faster and avoids plugin resolution overhead; but creates compile-time coupling within the plugin project (which is acceptable since they ship in the same artifact)
 - Decision: Separate plugins with the same dependency (`kafka-clients`)
 - Trade-off: Semantic clarity for consumers (express intent), at the cost of code duplication
 - Future: These may diverge as consumer-specific or producer-specific dependencies are added
-- Decision: `SecretsPlugin` hardcodes the Qabatz Forgejo Maven URL and reads credentials from environment variables
+- Decision: `SecretsPlugin` hardcodes the servista Forgejo Maven URL and reads credentials from environment variables
 - Trade-off: Convenience for consumers (they don't need to configure the repo), but couples the plugin to a specific registry URL
 - Decision: Uses `DDLDatabase` to parse SQL files rather than connecting to a running PostgreSQL
 - Trade-off: Faster builds, no database needed in CI; but may miss runtime-only PostgreSQL features or extensions not supported by DDLDatabase parser

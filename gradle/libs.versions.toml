@@ -1,4 +1,4 @@
-# Internal version catalog for building the qabatz-catalog project itself.
+# Internal version catalog for building the servista-catalog project itself.
 # Currently empty -- no build dependencies beyond Gradle built-in plugins.
 
 [versions]

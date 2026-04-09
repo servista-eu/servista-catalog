@@ -1,1 +1,1 @@
-rootProject.name = "qabatz-catalog"
+rootProject.name = "servista-catalog"
