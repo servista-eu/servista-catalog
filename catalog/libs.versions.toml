@@ -45,7 +45,7 @@ aws-sdk = "2.42.23"
 azure-storage-blob = "12.33.2"
 azure-keyvault-secrets = "4.10.6"
 azure-resourcemanager-network = "2.58.1"
-qabatz-kotlin-commons = "0.2.0"
+qabatz-kotlin-commons = "0.3.1"
 qabatz-kotlin-ktor = "0.1.1"
 
 [libraries]
