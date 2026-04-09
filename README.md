@@ -3,7 +3,7 @@
 Shared Gradle version catalog providing centralized dependency version alignment for all Qabatz
 Kotlin projects. Published as `eu.qabatz:qabatz-catalog` to the Forgejo Maven registry.
 
-**Current version:** 0.3.0
+**Current version:** 0.4.0
 
 ## Usage
 
@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
     versionCatalogs {
-        create("libs") { from("eu.qabatz:qabatz-catalog:0.3.0") }
+        create("libs") { from("eu.qabatz:qabatz-catalog:0.4.0") }
     }
 }
 ```
@@ -41,8 +41,8 @@ dependencies {
     implementation(libs.qabatz.commons.db.postgres)
     implementation(libs.qabatz.commons.observability.otel)
 
-    // Qabatz ktor scaffolding
-    implementation(libs.qabatz.ktor)
+    // Qabatz service runtime (bootstrap + auth + observability + health)
+    implementation(libs.qabatz.service.runtime)
 
     // Third-party libs pinned by the catalog
     implementation(libs.ktor.server.core)
@@ -53,7 +53,7 @@ dependencies {
 
 ## What the catalog pins
 
-- **Qabatz internal:** commons (0.3.1), ktor scaffolding (0.3.1)
+- **Qabatz internal:** commons (0.3.1), service-runtime (0.4.0)
 - **Core Kotlin:** Kotlin 2.3.10, Ktor 3.4.0, Koin 4.2.0
 - **Database:** jOOQ, Flyway, HikariCP, PostgreSQL + MySQL drivers
 - **Messaging:** Kafka, Avro, Apicurio Serdes
