@@ -3,6 +3,12 @@ plugins {
     `version-catalog`
 }
 
+// The shared jvm-library CI pipeline invokes `test` and `detekt`. This project
+// is a pure version catalog with no sources, so register them as no-ops.
+tasks.register("test") { group = "verification" }
+
+tasks.register("detekt") { group = "verification" }
+
 // Published version catalog -- loaded from catalog/ directory.
 // Consumers import via: from("eu.servista:servista-catalog:x.y.z")
 catalog {
