@@ -46,7 +46,7 @@ aws-sdk = "2.42.23"
 azure-storage-blob = "12.33.2"
 azure-keyvault-secrets = "4.10.6"
 azure-resourcemanager-network = "2.58.1"
-servista-kotlin-commons = "0.6.0"
+servista-kotlin-commons = "0.6.1"
 servista-service-runtime = "0.1.2"
 
 [libraries]
@@ -143,6 +143,7 @@ servista-commons-dns-cloudflare = { module = "eu.servista:commons-dns-cloudflare
 servista-commons-dns-route53 = { module = "eu.servista:commons-dns-route53", version.ref = "servista-kotlin-commons" }
 servista-commons-gateway-apisix = { module = "eu.servista:commons-gateway-apisix", version.ref = "servista-kotlin-commons" }
 servista-commons-gateway-azure = { module = "eu.servista:commons-gateway-azure", version.ref = "servista-kotlin-commons" }
+servista-commons-edge-auth-core = { module = "eu.servista:commons-edge-auth-core", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-core = { module = "eu.servista:commons-trl-core", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-redis-protocol = { module = "eu.servista:commons-trl-redis-protocol", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-valkey = { module = "eu.servista:commons-trl-valkey", version.ref = "servista-kotlin-commons" }
