@@ -46,7 +46,7 @@ aws-sdk = "2.42.23"
 azure-storage-blob = "12.33.2"
 azure-keyvault-secrets = "4.10.6"
 azure-resourcemanager-network = "2.58.1"
-servista-kotlin-commons = "0.6.2"
+servista-kotlin-commons = "0.7.3"
 servista-service-runtime = "0.1.2"
 
 [libraries]
