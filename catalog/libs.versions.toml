@@ -168,6 +168,7 @@ servista-commons-wiring-koin-trl-azure-cache-redis = { module = "eu.servista:com
 
 # servista Service Runtime
 servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
+servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version = "0.1.0" }
 
 # Observability
 otel-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "otel" }
