@@ -47,7 +47,7 @@ azure-storage-blob = "12.33.2"
 azure-keyvault-secrets = "4.10.6"
 azure-resourcemanager-network = "2.58.1"
 servista-kotlin-commons = "0.7.5"
-servista-service-runtime = "0.1.2"
+servista-service-runtime = "0.1.4"
 
 [libraries]
 # Ktor Server
@@ -168,7 +168,7 @@ servista-commons-wiring-koin-trl-azure-cache-redis = { module = "eu.servista:com
 
 # servista Service Runtime
 servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
-servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version = "0.1.0" }
+servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version = "0.1.1" }
 
 # Observability
 otel-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "otel" }
