@@ -123,8 +123,8 @@ azure-resourcemanager-network = { module = "com.azure.resourcemanager:azure-reso
 # servista Commons
 servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
 servista-commons-core = { module = "eu.servista:commons-core", version.ref = "servista-kotlin-commons" }
-servista-commons-messaging-kafka = { module = "eu.servista:commons-messaging-kafka", version.ref = "servista-kotlin-commons" }
-servista-commons-messaging-kafka-avro = { module = "eu.servista:commons-messaging-kafka-avro", version.ref = "servista-kotlin-commons" }
+servista-commons-events-kafka = { module = "eu.servista:commons-events-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-events-kafka-avro = { module = "eu.servista:commons-events-kafka-avro", version.ref = "servista-kotlin-commons" }
 servista-commons-db-postgres = { module = "eu.servista:commons-db-postgres", version.ref = "servista-kotlin-commons" }
 servista-commons-db-mysql = { module = "eu.servista:commons-db-mysql", version.ref = "servista-kotlin-commons" }
 servista-commons-observability-otel = { module = "eu.servista:commons-observability-otel", version.ref = "servista-kotlin-commons" }
@@ -153,7 +153,7 @@ servista-commons-trl-testing = { module = "eu.servista:commons-trl-testing", ver
 servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-cache = { module = "eu.servista:commons-wiring-koin-cache", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-db = { module = "eu.servista:commons-wiring-koin-db", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-messaging = { module = "eu.servista:commons-wiring-koin-messaging", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-events-kafka = { module = "eu.servista:commons-wiring-koin-events-kafka", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-observability = { module = "eu.servista:commons-wiring-koin-observability", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-validation = { module = "eu.servista:commons-wiring-koin-validation", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-secrets = { module = "eu.servista:commons-wiring-koin-secrets", version.ref = "servista-kotlin-commons" }
