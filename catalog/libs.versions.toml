@@ -3,20 +3,20 @@
 
 [versions]
 kotlin = "2.3.10"
-ktor = "3.4.0"
+ktor = "3.4.3"
 koin = "4.2.0"
 jooq = "3.20.11"
 flyway = "12.0.3"
 hikari = "7.0.2"
-postgresql-jdbc = "42.7.10"
-kafka = "4.1.1"
+postgresql-jdbc = "42.7.11"
+kafka = "4.2.0"
 avro = "1.12.1"
 apicurio-serdes = "3.0.0.M4"
-openfga = "0.9.6"
+openfga = "0.9.7"
 lettuce = "7.5.0.RELEASE"
 netty = "4.2.5.Final"
 nimbus-jose-jwt = "10.8"
-otel = "1.47.0"
+otel = "1.54.0"
 otel-agent = "2.20.0"
 micrometer = "1.16.3"
 mockk = "1.14.7"
@@ -35,8 +35,8 @@ slf4j = "2.0.17"
 detekt = "2.0.0-alpha.2"
 konform = "0.11.0"
 tink = "1.13.0"
-vault-java-driver = "6.2.0"
-aws-sdk = "2.42.23"
+vault-java-driver = "6.2.1"
+aws-sdk = "2.44.1"
 servista-kotlin-commons = "0.1.0"
 servista-service-runtime = "0.1.0"
 
@@ -128,9 +128,11 @@ servista-commons-wiring-koin-secrets = { module = "eu.servista:commons-wiring-ko
 servista-commons-wiring-koin-storage = { module = "eu.servista:commons-wiring-koin-storage", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-http = { module = "eu.servista:commons-wiring-koin-http", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-trl-valkey = { module = "eu.servista:commons-wiring-koin-trl-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-openfga = { module = "eu.servista:commons-wiring-koin-openfga", version.ref = "servista-kotlin-commons" }
 
 # servista Service Runtime
 servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
+servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version.ref = "servista-service-runtime" }
 
 # Observability
 otel-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "otel" }
