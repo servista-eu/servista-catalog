@@ -18,6 +18,8 @@ netty = "4.2.5.Final"
 nimbus-jose-jwt = "10.8"
 otel = "1.54.0"
 otel-agent = "2.20.0"
+otel-instrumentation = "2.20.0-alpha"
+pyroscope = "1.0.4"
 micrometer = "1.16.3"
 mockk = "1.14.7"
 testcontainers = "2.0.3"
@@ -149,7 +151,10 @@ otel-sdk-testing = { module = "io.opentelemetry:opentelemetry-sdk-testing", vers
 otel-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "otel" }
 otel-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "otel" }
 otel-extension-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "otel" }
+otel-sdk-logs = { module = "io.opentelemetry:opentelemetry-sdk-logs", version.ref = "otel" }
+otel-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "otel-instrumentation" }
 otel-agent = { module = "io.opentelemetry.javaagent:opentelemetry-javaagent", version.ref = "otel-agent" }
+pyroscope-otel = { module = "io.pyroscope:otel", version.ref = "pyroscope" }
 micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer" }
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
 
