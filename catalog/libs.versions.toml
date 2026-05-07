@@ -9,6 +9,7 @@ jooq = "3.20.11"
 flyway = "12.0.3"
 hikari = "7.0.2"
 postgresql-jdbc = "42.7.11"
+oracle-jdbc = "23.7.0.25.01"
 kafka = "4.2.0"
 avro = "1.12.1"
 apicurio-serdes = "3.0.0.M4"
@@ -82,8 +83,11 @@ jooq-codegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
 jooq-meta-extensions = { module = "org.jooq:jooq-meta-extensions", version.ref = "jooq" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+flyway-oracle = { module = "org.flywaydb:flyway-database-oracle", version.ref = "flyway" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 postgresql-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql-jdbc" }
+oracle-jdbc = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "oracle-jdbc" }
+oracle-ucp = { module = "com.oracle.database.jdbc:ucp11", version.ref = "oracle-jdbc" }
 
 # Kafka
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
