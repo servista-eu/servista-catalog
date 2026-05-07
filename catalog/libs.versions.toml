@@ -38,6 +38,7 @@ slf4j = "2.0.17"
 detekt = "2.0.0-alpha.2"
 dokka = "2.2.0"
 ktfmt = "0.25.0"
+bcv = "0.18.1"
 shadow = "9.0.0-beta12"
 konform = "0.11.0"
 tink = "1.13.0"
@@ -204,4 +205,7 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 jooq-codegen = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
+bcv = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "bcv" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
