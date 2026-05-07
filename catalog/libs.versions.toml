@@ -39,9 +39,10 @@ detekt = "2.0.0-alpha.2"
 shadow = "9.0.0-beta12"
 konform = "0.11.0"
 tink = "1.13.0"
+bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.1.6"
+servista-kotlin-commons = "0.1.7"
 servista-service-runtime = "0.5.0"
 servista-avro-schemas = "0.1.0"
 
@@ -103,6 +104,7 @@ netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
 nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
 konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
+bouncycastle-provider = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
 vault-java-driver = { module = "io.github.jopenlibs:vault-java-driver", version.ref = "vault-java-driver" }
 
 # AWS (S3 SDK used for Garage S3-compatible storage)
