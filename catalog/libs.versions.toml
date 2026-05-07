@@ -33,12 +33,13 @@ logstash-logback-encoder = "8.1"
 janino = "3.1.12"
 slf4j = "2.0.17"
 detekt = "2.0.0-alpha.2"
+shadow = "9.0.0-beta12"
 konform = "0.11.0"
 tink = "1.13.0"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.1.0"
-servista-service-runtime = "0.1.0"
+servista-kotlin-commons = "0.1.1"
+servista-service-runtime = "0.2.0"
 servista-avro-schemas = "0.1.0"
 
 [libraries]
@@ -183,3 +184,4 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 jooq-codegen = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
