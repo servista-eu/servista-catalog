@@ -3,7 +3,7 @@
 Shared Gradle version catalog providing centralized dependency version alignment for all servista
 Kotlin projects. Published as `eu.servista:servista-catalog` to the Forgejo Maven registry.
 
-**Version:** 0.1.0
+**Version:** 0.2.0
 
 ## Usage
 
@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
     versionCatalogs {
-        create("libs") { from("eu.servista:servista-catalog:0.1.0") }
+        create("libs") { from("eu.servista:servista-catalog:0.2.0") }
     }
 }
 ```
@@ -51,8 +51,8 @@ dependencies {
 | Library | Version |
 |---------|---------|
 | `servista-kotlin-commons` (all modules) | 0.1.0 |
-| `servista-service-runtime` | 0.1.0 |
-| `servista-service-runtime-events` | 0.1.0 |
+| `servista-service-runtime` | 0.2.0 |
+| `servista-service-runtime-events` | 0.2.0 |
 
 ### Third-party dependencies
 
