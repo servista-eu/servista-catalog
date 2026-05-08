@@ -46,7 +46,7 @@ bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
 servista-kotlin-commons = "0.2.2"
-servista-service-runtime = "0.2.0"
+servista-service-runtime = "0.2.1"
 servista-avro-schemas = "0.1.0"
 
 [libraries]
