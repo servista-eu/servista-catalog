@@ -45,8 +45,8 @@ tink = "1.13.0"
 bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.1.5"
-servista-service-runtime = "0.2.5"
+servista-kotlin-commons = "0.1.6"
+servista-service-runtime = "0.2.7"
 servista-avro-schemas = "0.1.0"
 
 [libraries]
