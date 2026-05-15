@@ -45,8 +45,8 @@ tink = "1.13.0"
 bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.1.6"
-servista-service-runtime = "0.2.7"
+servista-kotlin-commons = "0.2.0"
+servista-service-runtime = "0.3.0"
 servista-avro-schemas = "0.1.0"
 
 [libraries]
@@ -115,36 +115,75 @@ vault-java-driver = { module = "io.github.jopenlibs:vault-java-driver", version.
 aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk" }
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
 
-# servista Commons
+# servista Commons — Core
 servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
 servista-commons-core = { module = "eu.servista:commons-core", version.ref = "servista-kotlin-commons" }
-servista-commons-events-kafka = { module = "eu.servista:commons-events-kafka", version.ref = "servista-kotlin-commons" }
-servista-commons-events-kafka-avro = { module = "eu.servista:commons-events-kafka-avro", version.ref = "servista-kotlin-commons" }
-servista-commons-db-postgres = { module = "eu.servista:commons-db-postgres", version.ref = "servista-kotlin-commons" }
-servista-commons-observability-otel = { module = "eu.servista:commons-observability-otel", version.ref = "servista-kotlin-commons" }
-servista-commons-validation-konform = { module = "eu.servista:commons-validation-konform", version.ref = "servista-kotlin-commons" }
-servista-commons-secrets-openbao = { module = "eu.servista:commons-secrets-openbao", version.ref = "servista-kotlin-commons" }
-servista-commons-cache-lettuce = { module = "eu.servista:commons-cache-lettuce", version.ref = "servista-kotlin-commons" }
-servista-commons-id-lettuce = { module = "eu.servista:commons-id-lettuce", version.ref = "servista-kotlin-commons" }
-servista-commons-storage-s3 = { module = "eu.servista:commons-storage-s3", version.ref = "servista-kotlin-commons" }
-servista-commons-http-ktor = { module = "eu.servista:commons-http-ktor", version.ref = "servista-kotlin-commons" }
-servista-commons-openfga = { module = "eu.servista:commons-openfga", version.ref = "servista-kotlin-commons" }
 servista-commons-edge-auth-core = { module = "eu.servista:commons-edge-auth-core", version.ref = "servista-kotlin-commons" }
+servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-core = { module = "eu.servista:commons-trl-core", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-redis-protocol = { module = "eu.servista:commons-trl-redis-protocol", version.ref = "servista-kotlin-commons" }
-servista-commons-trl-valkey = { module = "eu.servista:commons-trl-valkey", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-testing = { module = "eu.servista:commons-trl-testing", version.ref = "servista-kotlin-commons" }
-servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-cache = { module = "eu.servista:commons-wiring-koin-cache", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-db = { module = "eu.servista:commons-wiring-koin-db", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-events-kafka = { module = "eu.servista:commons-wiring-koin-events-kafka", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-observability = { module = "eu.servista:commons-wiring-koin-observability", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-validation = { module = "eu.servista:commons-wiring-koin-validation", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-secrets = { module = "eu.servista:commons-wiring-koin-secrets", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-storage = { module = "eu.servista:commons-wiring-koin-storage", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-http = { module = "eu.servista:commons-wiring-koin-http", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-trl-valkey = { module = "eu.servista:commons-wiring-koin-trl-valkey", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-openfga = { module = "eu.servista:commons-wiring-koin-openfga", version.ref = "servista-kotlin-commons" }
+
+# servista Commons — Runtime adapters (rt)
+servista-commons-rt-db-foss-postgres = { module = "eu.servista:commons-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-db-oracle = { module = "eu.servista:commons-rt-db-oracle", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-cache-foss-valkey = { module = "eu.servista:commons-rt-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-id-foss-valkey = { module = "eu.servista:commons-rt-id-foss-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-storage-s3 = { module = "eu.servista:commons-rt-storage-s3", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-events-foss-kafka = { module = "eu.servista:commons-rt-events-foss-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-events-foss-kafka-avro = { module = "eu.servista:commons-rt-events-foss-kafka-avro", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-secrets-foss-openbao = { module = "eu.servista:commons-rt-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-authz-foss-openfga = { module = "eu.servista:commons-rt-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-o11y-foss-otel = { module = "eu.servista:commons-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-validation-foss-konform = { module = "eu.servista:commons-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-trl-foss-valkey = { module = "eu.servista:commons-rt-trl-foss-valkey", version.ref = "servista-kotlin-commons" }
+
+# servista Commons — Runtime wiring (koin)
+servista-commons-wiring-koin-rt-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-cache-foss-valkey = { module = "eu.servista:commons-wiring-koin-rt-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-storage-s3 = { module = "eu.servista:commons-wiring-koin-rt-storage-s3", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-events-foss-kafka = { module = "eu.servista:commons-wiring-koin-rt-events-foss-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-secrets-foss-openbao = { module = "eu.servista:commons-wiring-koin-rt-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-authz-foss-openfga = { module = "eu.servista:commons-wiring-koin-rt-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-http-foss-ktor = { module = "eu.servista:commons-wiring-koin-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons-wiring-koin-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-validation-foss-konform = { module = "eu.servista:commons-wiring-koin-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-rt-trl-foss-valkey = { module = "eu.servista:commons-wiring-koin-rt-trl-foss-valkey", version.ref = "servista-kotlin-commons" }
+
+# servista Commons — Infra ports
+servista-commons-infra-core = { module = "eu.servista:commons-infra-core", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-db = { module = "eu.servista:commons-infra-db", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-cache = { module = "eu.servista:commons-infra-cache", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-storage = { module = "eu.servista:commons-infra-storage", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-secrets = { module = "eu.servista:commons-infra-secrets", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-dns = { module = "eu.servista:commons-infra-dns", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-events = { module = "eu.servista:commons-infra-events", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-gateway = { module = "eu.servista:commons-infra-gateway", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-authz = { module = "eu.servista:commons-infra-authz", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-block-storage = { module = "eu.servista:commons-infra-block-storage", version.ref = "servista-kotlin-commons" }
+
+# servista Commons — Infra adapters
+servista-commons-infra-db-foss-postgres = { module = "eu.servista:commons-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-cache-foss-valkey = { module = "eu.servista:commons-infra-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-storage-foss-garage = { module = "eu.servista:commons-infra-storage-foss-garage", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-secrets-foss-openbao = { module = "eu.servista:commons-infra-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-dns-cloudflare = { module = "eu.servista:commons-infra-dns-cloudflare", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-events-foss-kafka = { module = "eu.servista:commons-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-gateway-foss-apisix = { module = "eu.servista:commons-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-authz-foss-openfga = { module = "eu.servista:commons-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
+servista-commons-infra-block-storage-local = { module = "eu.servista:commons-infra-block-storage-local", version.ref = "servista-kotlin-commons" }
+
+# servista Commons — Infra wiring (koin)
+servista-commons-wiring-koin-infra-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-cache-foss-valkey = { module = "eu.servista:commons-wiring-koin-infra-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-storage-foss-garage = { module = "eu.servista:commons-wiring-koin-infra-storage-foss-garage", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-secrets-foss-openbao = { module = "eu.servista:commons-wiring-koin-infra-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-dns-cloudflare = { module = "eu.servista:commons-wiring-koin-infra-dns-cloudflare", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-events-foss-kafka = { module = "eu.servista:commons-wiring-koin-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-gateway-foss-apisix = { module = "eu.servista:commons-wiring-koin-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-authz-foss-openfga = { module = "eu.servista:commons-wiring-koin-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
+servista-commons-wiring-koin-infra-block-storage-local = { module = "eu.servista:commons-wiring-koin-infra-block-storage-local", version.ref = "servista-kotlin-commons" }
 
 # servista Service Runtime
 servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
