@@ -45,7 +45,7 @@ tink = "1.13.0"
 bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.2.5"
+servista-kotlin-commons = "0.2.8"
 servista-service-runtime = "0.3.3"
 servista-avro-schemas = "0.1.0"
 
@@ -237,6 +237,8 @@ gradle-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serializat
 gradle-detekt = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 gradle-ktfmt = { module = "com.ncorti.ktfmt.gradle:plugin", version.ref = "ktfmt" }
+gradle-jooq-codegen = { module = "org.jooq:jooq-codegen-gradle", version.ref = "jooq" }
+jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
