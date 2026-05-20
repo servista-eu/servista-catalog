@@ -23,6 +23,8 @@ otel-instrumentation = "2.27.0-alpha"
 pyroscope = "1.0.4"
 micrometer = "1.16.3"
 mockk = "1.14.7"
+mockito = "5.17.0"
+mockito-kotlin = "5.4.0"
 testcontainers = "2.0.3"
 junit5 = "5.14.2"
 junit-platform-launcher = "1.14.2"
@@ -45,7 +47,7 @@ tink = "1.13.0"
 bouncycastle = "1.80"
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
-servista-kotlin-commons = "0.5.0"
+servista-kotlin-commons = "0.5.1"
 servista-service-runtime = "0.3.3"
 servista-avro-schemas = "0.1.0"
 
@@ -226,6 +228,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", version.ref = "testcontainers" }
