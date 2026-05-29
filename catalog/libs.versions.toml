@@ -10,7 +10,9 @@ flyway = "12.0.3"
 hikari = "7.0.2"
 postgresql-jdbc = "42.7.11"
 oracle-jdbc = "23.7.0.25.01"
-kafka = "4.2.0"
+kafka = "4.2.0"                     # Kafka clients (produce/consume)
+flink = "2.2.1"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
+flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
 avro = "1.12.1"
 apicurio-serdes = "3.0.0.M4"
 openfga = "0.9.7"
@@ -95,10 +97,19 @@ postgresql-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgre
 oracle-jdbc = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "oracle-jdbc" }
 oracle-ucp = { module = "com.oracle.database.jdbc:ucp11", version.ref = "oracle-jdbc" }
 
-# Kafka
+# Kafka clients (produce/consume)
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
-kafka-streams = { module = "org.apache.kafka:kafka-streams", version.ref = "kafka" }
-kafka-streams-test = { module = "org.apache.kafka:kafka-streams-test-utils", version.ref = "kafka" }
+
+# Apache Flink — Silver streaming engine (broker-agnostic; ADR-019). Core modules track `flink`.
+flink-streaming-java = { module = "org.apache.flink:flink-streaming-java", version.ref = "flink" }
+flink-clients = { module = "org.apache.flink:flink-clients", version.ref = "flink" }
+flink-test-utils = { module = "org.apache.flink:flink-test-utils", version.ref = "flink" }
+flink-connector-kafka = { module = "org.apache.flink:flink-connector-kafka", version.ref = "flink-connector-kafka" }
+# State backend ships with the Flink distribution; pin only if needed at compile time.
+#   Flink 2.x options: flink-statebackend-rocksdb OR the new disaggregated flink-statebackend-forst — verify.
+# Other brokers (externalized connectors, versioned independently of Flink core — verify Flink 2.x compatibility):
+#   AWS Kinesis: org.apache.flink:flink-connector-aws-kinesis-streams:5.1.0-1.20  (AWS connector 5.x supports Flink 2.x)
+#   GCP Pub/Sub: org.apache.flink:flink-connector-gcp-pubsub — official connector lags (last release ~2023); verify before use
 avro = { module = "org.apache.avro:avro", version.ref = "avro" }
 apicurio-serdes-avro = { module = "io.apicurio:apicurio-registry-serdes-avro-serde", version.ref = "apicurio-serdes" }
 
