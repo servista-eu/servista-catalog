@@ -4,3 +4,10 @@ build/
 .idea/
 out/
 .claude
+
+# --- repo hygiene: never commit build artifacts / IDE / OS junk ---
+.DS_Store
+.kotlin/
+**/.kotlin/
+*.class
+*.hprof
