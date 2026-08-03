@@ -132,6 +132,7 @@ aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
 servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
 servista-commons-core = { module = "eu.servista:commons-core", version.ref = "servista-kotlin-commons" }
 servista-commons-billing-core = { module = "eu.servista:commons-billing-core", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-billing-foss-postgres = { module = "eu.servista:commons-rt-billing-foss-postgres", version.ref = "servista-kotlin-commons" }
 servista-commons-edge-auth-core = { module = "eu.servista:commons-edge-auth-core", version.ref = "servista-kotlin-commons" }
 servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
 servista-commons-trl-core = { module = "eu.servista:commons-trl-core", version.ref = "servista-kotlin-commons" }
