@@ -142,9 +142,6 @@ servista-commons-rt-payments-mock = { module = "eu.servista:commons-rt-payments-
 servista-commons-rt-payments-foss-hyperswitch = { module = "eu.servista:commons-rt-payments-foss-hyperswitch", version.ref = "servista-kotlin-commons" }
 servista-commons-edge-auth-core = { module = "eu.servista:commons-edge-auth-core", version.ref = "servista-kotlin-commons" }
 servista-commons-testing = { module = "eu.servista:commons-testing", version.ref = "servista-kotlin-commons" }
-servista-commons-trl-core = { module = "eu.servista:commons-trl-core", version.ref = "servista-kotlin-commons" }
-servista-commons-trl-redis-protocol = { module = "eu.servista:commons-trl-redis-protocol", version.ref = "servista-kotlin-commons" }
-servista-commons-trl-testing = { module = "eu.servista:commons-trl-testing", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Runtime adapters (rt)
 servista-commons-rt-db-foss-postgres = { module = "eu.servista:commons-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
@@ -159,7 +156,6 @@ servista-commons-rt-authz-foss-openfga = { module = "eu.servista:commons-rt-auth
 servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-o11y-foss-otel = { module = "eu.servista:commons-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-validation-foss-konform = { module = "eu.servista:commons-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
-servista-commons-rt-trl-foss-valkey = { module = "eu.servista:commons-rt-trl-foss-valkey", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Runtime wiring (koin)
 servista-commons-wiring-koin-rt-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
@@ -174,7 +170,6 @@ servista-commons-wiring-koin-rt-authz-foss-openfga = { module = "eu.servista:com
 servista-commons-wiring-koin-rt-http-foss-ktor = { module = "eu.servista:commons-wiring-koin-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons-wiring-koin-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-rt-validation-foss-konform = { module = "eu.servista:commons-wiring-koin-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-rt-trl-foss-valkey = { module = "eu.servista:commons-wiring-koin-rt-trl-foss-valkey", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Infra ports
 servista-commons-infra-core = { module = "eu.servista:commons-infra-core", version.ref = "servista-kotlin-commons" }
