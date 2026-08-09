@@ -83,7 +83,6 @@ dependencies {
 | `detekt` | `dev.detekt` |
 | `dokka` | `org.jetbrains.dokka` |
 | `ktfmt` | `com.ncorti.ktfmt.gradle` |
-| `bcv` | `org.jetbrains.kotlinx.binary-compatibility-validator` |
 | `shadow` | `com.gradleup.shadow` |
 
 The `[libraries]` section also includes `gradle-*` prefixed entries (e.g. `gradle-kotlin`, `gradle-detekt`) exposing plugin artifacts for use in `build-logic` convention plugins via `implementation(libs.gradle.kotlin)`.
