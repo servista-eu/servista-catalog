@@ -10,6 +10,13 @@ flyway = "12.0.3"
 hikari = "7.0.2"
 postgresql-jdbc = "42.7.11"
 oracle-jdbc = "23.7.0.25.01"
+# Trino JDBC — the client for the Iceberg lakehouse, on BOTH sides of the audit trail: the
+# audit writer (Phase 8 WP5) and the audit query API (WP6). ADR-028 settles it as the driver
+# rather than a hand-rolled REST client, because halt-not-degrade is exactly the property a
+# hand-written protocol client gets subtly wrong. ⚠️ The coordinators run 480 and this is 483:
+# a driver ahead of the server is the normal upgrade order for Trino, and 483 is what the ADR
+# measured — 10.44 MB against 480's 13.10 MB, well inside the image's margin under the edge cap.
+trino-jdbc = "483"
 kafka = "4.2.0"                     # Kafka clients (produce/consume)
 flink = "2.2.1"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
 flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
@@ -99,6 +106,7 @@ hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 postgresql-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql-jdbc" }
 oracle-jdbc = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "oracle-jdbc" }
 oracle-ucp = { module = "com.oracle.database.jdbc:ucp11", version.ref = "oracle-jdbc" }
+trino-jdbc = { module = "io.trino:trino-jdbc", version.ref = "trino-jdbc" }
 
 # Kafka clients (produce/consume)
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
