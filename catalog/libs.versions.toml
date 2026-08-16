@@ -17,7 +17,7 @@ oracle-jdbc = "23.7.0.25.01"
 # a driver ahead of the server is the normal upgrade order for Trino, and 483 is what the ADR
 # measured — 10.44 MB against 480's 13.10 MB, well inside the image's margin under the edge cap.
 trino-jdbc = "483"
-kafka = "4.2.0"                     # Kafka clients (produce/consume)
+kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.2.1"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
 flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
 avro = "1.12.1"
