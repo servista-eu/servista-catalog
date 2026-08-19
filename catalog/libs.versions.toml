@@ -53,6 +53,19 @@ logstash-logback-encoder = "9.0"
 # `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
 # declared. Same shape as A274 #431 D2's netty-bom.
 jackson = "3.2.2"
+# ⛔ JACKSON 2, AND IT IS HERE BECAUSE OF AN UPSTREAM POM DEFECT IN A LIBRARY THAT HAS NOTHING TO DO
+# WITH LOGGING. `dev.openfga:openfga-sdk` exposes `ApiClient.objectMapper` — a
+# `com.fasterxml.jackson.databind.ObjectMapper` — in its PUBLIC API while declaring jackson-databind
+# at `<scope>runtime</scope>`, so no consumer can call it unless something else puts that jar on
+# their compile classpath. Until 2026-08-19 that something else was `logstash-logback-encoder 8.1`,
+# and eight repositories' OpenFGA test bootstrap compiled by ACCIDENT, on a transitive from a
+# LOGGING library. Encoder 9.0 moved to the `tools.jackson` groupId and every one of them stopped
+# compiling. Declared explicitly in `commons-testing`, which is where the idiom is documented and
+# which all eight already have on the source set that uses it.
+# ⚠️ 2.22.2 is the latest 2.x and is advisory-CLEAN; the 2.21.1 the SDK itself resolves carries 10.
+# ⛔ That runtime copy is NOT fixed here — it is the OpenFGA unit's, and forcing it from a logging
+# unit would be widening.
+jackson2 = "2.22.2"
 # ⛔ `janino` WAS HERE AND IS GONE, 2026-08-19. It existed for exactly one reason: to evaluate the
 # `<if condition='…'>` attribute in servista-database's logback.xml. logback 1.5.37 REMOVED Janino
 # conditional evaluation under CVE-2026-13006 and three siblings, and that config now uses the
@@ -254,6 +267,9 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 # Applied as a platform where the encoder is declared — see the `jackson` version comment above.
 jackson-bom = { module = "tools.jackson:jackson-bom", version.ref = "jackson" }
+# ⛔ TEST-SCOPE ONLY, and only because openfga-sdk's public API returns a type its POM declares
+# runtime-only — see the `jackson2` version comment above. Declared once, in `commons-testing`.
+jackson2-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson2" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 # Kotlin Extensions
