@@ -42,9 +42,23 @@ kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
 kotlinx-datetime = "0.7.1"
 kotlin-logging = "7.0.3"
-logback = "1.5.32"
-logstash-logback-encoder = "8.1"
-janino = "3.1.12"
+logback = "1.6.3"
+logstash-logback-encoder = "9.0"
+# ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
+# Jackson 3 migration (`com.fasterxml.jackson.core` -> `tools.jackson.core`, a groupId change) and it
+# asks for 3.0.1, which carries 8 advisories; 3.2.2 carries 0. Measured against OSV: with this BOM
+# applied the WHOLE resolved logging closure — logback-classic, logback-core, the encoder,
+# jackson-databind, jackson-core and the legacy-groupId jackson-annotations it still drags — is
+# advisory-clean. ⚠️ A version catalog cannot force anything on its own; the force is
+# `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
+# declared. Same shape as A274 #431 D2's netty-bom.
+jackson = "3.2.2"
+# ⛔ `janino` WAS HERE AND IS GONE, 2026-08-19. It existed for exactly one reason: to evaluate the
+# `<if condition='…'>` attribute in servista-database's logback.xml. logback 1.5.37 REMOVED Janino
+# conditional evaluation under CVE-2026-13006 and three siblings, and that config now uses the
+# `<condition>` element, which needs no expression compiler. Measured absent-clean on 1.5.32 AND
+# 1.6.3, with and without the jar. It is the only ref this catalog has ever held whose sole reason
+# to exist was a feature upstream deleted — do not restore it without a new one.
 slf4j = "2.0.18"
 detekt = "2.0.0-alpha.5"
 dokka = "2.2.0"
@@ -238,7 +252,8 @@ micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
-janino = { module = "org.codehaus.janino:janino", version.ref = "janino" }
+# Applied as a platform where the encoder is declared — see the `jackson` version comment above.
+jackson-bom = { module = "tools.jackson:jackson-bom", version.ref = "jackson" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 # Kotlin Extensions
