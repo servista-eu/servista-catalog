@@ -41,7 +41,20 @@ kotest = "6.2.4"
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
 kotlinx-datetime = "0.7.1"
-kotlin-logging = "7.0.3"
+# ⛔ 8.x REMOVED 61 PUBLIC METHODS FROM `KLogger` AND THE ESTATE USES NONE OF THEM — measured, not
+# assumed: an init script forced 8.0.4 into every configuration and 23 of 23 repositories compiled
+# main+test and 11 of 11 integration source sets compiled, with ZERO source changes. 50 of the
+# removals are the SLF4J-style String API (`logger.info("fmt {}", a)`), which fails at COMPILE time;
+# the other 11 were merged into a `Marker` overload with a Kotlin default, which is source-compatible
+# and BINARY-incompatible — a jar compiled against 7.0.3 calling `isDebugEnabled()` throws
+# NoSuchMethodError and no compile reports it. The estate has 0 call sites of either.
+# ⛔ AND 8.0 ADDED A RAW `println` TO STDOUT ON EVERY JVM, defaulting on and mentioned in none of the
+# 17 release notes in the interval. 19 of 22 services keep stdout as pure JSON, so it is suppressed
+# with `-Dkotlin-logging.logStartupMessage=false` in every entrypoint. ⚠️ It CANNOT be suppressed
+# from Kotlin code — the estate's file-scope `KotlinLogging.logger {}` idiom initialises before
+# `main` — and `8.0.03` is the release that added the external switch, so the target is load-bearing.
+# W2c (F269 #426): governance/servista-planning/work/upgrades/components/W2c-kotlin-logging.md
+kotlin-logging = "8.0.4"
 logback = "1.6.3"
 logstash-logback-encoder = "9.0"
 # ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
