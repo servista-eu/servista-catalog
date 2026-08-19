@@ -31,9 +31,13 @@ otel-agent = "2.27.0"
 otel-instrumentation = "2.27.0-alpha"
 pyroscope = "1.0.4"
 micrometer = "1.17.0"
+# ⛔ mockk is the estate's ONE mocking library. `mockito` and `mockito-kotlin`
+# were retired by W2d (F269 #426, decision D-10, 2026-08-19) — RETIRED, not
+# bumped: mockito-kotlin is a syntax wrapper over a Java-semantics engine, and
+# its inability to match an inline `value class` in argument position is
+# structural (it matches on the JVM signature, where value classes are unboxed
+# and mangled) rather than a bug that 6.2.0 happened to fix. Do not re-add them.
 mockk = "1.14.11"
-mockito = "5.17.0"
-mockito-kotlin = "5.4.0"
 testcontainers = "2.0.5"
 junit5 = "5.14.2"
 junit-platform-launcher = "1.14.2"
@@ -297,8 +301,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", version.ref = "testcontainers" }
