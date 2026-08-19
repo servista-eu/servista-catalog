@@ -2,7 +2,7 @@
 # Consumers import via: from("eu.servista:servista-catalog:<version>")
 
 [versions]
-kotlin = "2.3.10"
+kotlin = "2.4.10"
 ktor = "3.5.2"
 koin = "4.2.2"
 jooq = "3.20.11"
