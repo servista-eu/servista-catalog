@@ -1,0 +1,126 @@
+Servista Platform — Proprietary Software Licence
+SPDX-License-Identifier: LicenseRef-Servista-Proprietary
+
+Copyright (c) 2026 Hestia, part of the Cronos Group. All rights reserved.
+
+
+1. OWNERSHIP
+
+   This software, including its source code, object code, build artifacts,
+   configuration, schemas, documentation and all accompanying materials
+   (together, the "Software"), is the confidential and proprietary property of
+   Hestia, part of the Cronos Group ("Hestia"), and is protected by copyright
+   and other intellectual property laws and by international treaties.
+
+   Title to the Software remains at all times with Hestia. No ownership
+   interest is transferred by possession of a copy, by access to a repository,
+   or by any act of this licence.
+
+
+2. NO LICENCE IS GRANTED BY THIS FILE
+
+   This file grants no rights of any kind.
+
+   Any right to use, run, copy, reproduce, install, deploy, host, display,
+   modify, adapt, translate, merge, publish, distribute, sublicense, sell,
+   lease, lend, or create derivative works of the Software exists only where
+   Hestia has granted it in a separate written agreement signed by Hestia, and
+   only to the extent, for the period, and for the purposes that agreement
+   states.
+
+   In the absence of such an agreement, all of the acts listed above are
+   prohibited.
+
+
+3. RESTRICTIONS
+
+   Except to the extent expressly permitted by a written agreement with Hestia,
+   or by a mandatory provision of applicable law that cannot be excluded by
+   contract, no person may:
+
+   (a) disclose, publish or otherwise make the Software available to any third
+       party;
+
+   (b) reverse engineer, decompile or disassemble the Software, or otherwise
+       attempt to derive its source code, structure, algorithms or ideas;
+
+   (c) remove, obscure or alter any copyright, trademark, licence or other
+       proprietary notice contained in or displayed by the Software, including
+       this file;
+
+   (d) use the Software to build, train, or evaluate a competing product or
+       service, or to provide the Software's functionality to third parties as
+       a service;
+
+   (e) use any Hestia or Cronos name, logo or trademark, which are not licensed
+       by this file and are reserved in full.
+
+
+4. CONFIDENTIALITY
+
+   The Software is confidential information of Hestia. Any person who obtains
+   access to it, by any means, shall keep it confidential, shall use it only as
+   permitted under a written agreement with Hestia, and shall protect it with no
+   less care than that person applies to their own confidential information of
+   comparable importance, and in no event with less than reasonable care.
+
+   Obtaining a copy of the Software, whether authorised or not, does not
+   diminish its confidential character.
+
+
+5. THIRD-PARTY COMPONENTS
+
+   The Software incorporates components authored by third parties and made
+   available under their own licence terms. Those components remain the property
+   of their respective owners and are licensed to you under their own terms, not
+   under this licence, and nothing in this licence restricts any right you have
+   under them.
+
+   Where this file is distributed as part of a build artifact, the licence texts
+   of the incorporated third-party components follow this notice in the same
+   file, and the corresponding attribution notices are reproduced in the
+   accompanying NOTICE file where one is present.
+
+
+6. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, AND NON-INFRINGEMENT.
+
+   This clause does not exclude or limit any warranty, representation or remedy
+   that is granted in a separate written agreement with Hestia, and it does not
+   exclude or limit any liability that cannot lawfully be excluded or limited.
+
+
+7. LIMITATION OF LIABILITY
+
+   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, HESTIA SHALL NOT BE LIABLE
+   FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR
+   OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS
+   USE.
+
+   Nothing in this clause excludes or limits liability for fraud, for wilful
+   misconduct, for death or personal injury caused by negligence, or for any
+   other liability that cannot lawfully be excluded or limited.
+
+
+8. TERMINATION
+
+   Any right granted under a separate written agreement terminates immediately
+   and without notice upon breach of that agreement or of this licence. On
+   termination, all copies of the Software must be destroyed or returned, and
+   the confidentiality obligation in clause 4 survives.
+
+
+9. GOVERNING LAW
+
+   This licence is governed by the laws of Belgium, without regard to its
+   conflict-of-laws rules. The courts of Belgium have exclusive jurisdiction
+   over any dispute arising out of or in connection with it.
+
+
+10. CONTACT
+
+   Hestia — part of the Cronos Group
+   https://hestia-ng.eu
