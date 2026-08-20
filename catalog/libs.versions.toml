@@ -39,8 +39,26 @@ micrometer = "1.17.0"
 # and mangled) rather than a bug that 6.2.0 happened to fix. Do not re-add them.
 mockk = "1.14.11"
 testcontainers = "2.0.5"
-junit5 = "5.14.2"
-junit-platform-launcher = "1.14.2"
+# ⛔ ONE ref for BOTH junit coordinates, and it is only possible because JUnit 6
+# renumbered the Platform from `1.x` to `6.x` to line up with Jupiter — so
+# `junit5 5.14.2 -> 6.1.3` and `junit-platform-launcher 1.14.2 -> 6.1.3` are the
+# SAME release, not two jumps. Until W2e (F269 #426, decision D-11, 2026-08-20)
+# these were two independent version refs that had to be moved together by hand;
+# raising one and forgetting the other is how an engine ends up beside a
+# mismatched API, which reports BUILD SUCCESSFUL over zero executed tests.
+# ⛔ THE LIBRARY ALIAS WAS `junit5` AND IS NOW `junit`, on the platform owner's
+# instruction of 2026-08-20: the `5` was the major, so the alias contradicted the
+# version it pointed at the moment this ref moved. ⚠️ `libs.junit` and
+# `libs.junit.platform.launcher` are legal siblings — Gradle generates an
+# accessor that is both a dependency and a namespace — but that was PROVEN on a
+# scratch build resolving both before the 56 call sites were touched, not assumed.
+# ⚠️ `org.junit:junit-bom` is NOT declared here on purpose: `junit-jupiter`
+# already depends on it, so it is in every resolved graph and aligns the
+# coordinates nobody declares. Declaring `platform(...)` in 56 build files was
+# measured and DECLINED — its only gain over this ref would be governing a third
+# party that declares junit HIGHER than we do, and the only one that declares it
+# at all (`kotlin-test-junit5`, at 5.10.1) declares it lower.
+junit = "6.1.3"
 kotest = "6.2.4"
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
@@ -298,8 +316,8 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # Testing
-junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
