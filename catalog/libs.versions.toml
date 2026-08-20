@@ -30,7 +30,7 @@ otel = "1.61.0"
 otel-agent = "2.27.0"
 otel-instrumentation = "2.27.0-alpha"
 pyroscope = "1.0.4"
-micrometer = "1.17.0"
+micrometer = "1.17.1"
 # ⛔ mockk is the estate's ONE mocking library. `mockito` and `mockito-kotlin`
 # were retired by W2d (F269 #426, decision D-10, 2026-08-19) — RETIRED, not
 # bumped: mockito-kotlin is a syntax wrapper over a Java-semantics engine, and
@@ -114,7 +114,16 @@ ktfmt = "0.27.0"
 shadow = "9.6.1"
 konform = "0.11.1"
 tink = "1.23.0"
-bouncycastle = "1.85"
+# ⛔ TWO refs on purpose — bcpkix is NOT behind.
+# BC patches per module: 1.85.2 was published for bcprov ONLY
+# (upstream: "only the bcprov jars are being published for this
+# release"). bcprov is the only LEAF of the three — bcpkix->bcutil
+# ->bcprov — which is why it can be patched, and pinned, alone.
+# ⚠️ bcutil is deliberately NOT pinned: bcpkix names it exactly,
+# so it cannot diverge. check-dependency-currency.mjs fails if
+# these two refs drift by more than a patch.
+bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
+bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
 vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
 servista-kotlin-commons = "0.1.0"
@@ -194,7 +203,7 @@ nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimb
 konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 bouncycastle-provider = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
-bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
+bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-pkix" }
 vault-java-driver = { module = "io.github.jopenlibs:vault-java-driver", version.ref = "vault-java-driver" }
 
 # AWS (S3 SDK used for Garage S3-compatible storage)
