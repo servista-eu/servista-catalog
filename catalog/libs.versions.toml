@@ -108,7 +108,7 @@ jackson2 = "2.22.2"
 # 1.6.3, with and without the jar. It is the only ref this catalog has ever held whose sole reason
 # to exist was a feature upstream deleted — do not restore it without a new one.
 slf4j = "2.0.18"
-detekt = "2.0.0-alpha.5"
+detekt = "2.0.0-alpha.6"
 dokka = "2.2.0"
 ktfmt = "0.27.0"
 shadow = "9.6.1"
