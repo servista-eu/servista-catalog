@@ -22,7 +22,15 @@ flink = "2.3.0"                     # latest stable (verified 2026-05); Silver s
 flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
 avro = "1.12.2"
 apicurio-serdes = "3.0.0.M4"
-openfga = "0.9.7"
+# W3-OF (F269 #426): governance/servista-planning/work/upgrades/components/W3-OF-openfga.md
+# ⛔ 0.9.8 is a PRERELEASE and 0.9.10 never reached the registry (upstream says so), so the interval
+# is 0.9.7 -> 0.9.11 and there is nothing in between to read. ⭐ The bump is also A277 #434's fix:
+# 0.9.11 imports jackson-bom 2.22.1 (0 advisories) where 0.9.7 imported 2.21.1 (10), and it promotes
+# jackson-core/-annotations/-databind, jsr305 and opentelemetry-api from `runtime` to `compile` in
+# its published POM — measured by diffing the two POMs, not read from a release note. That promotion
+# is what retired the `jackson2` ref this file used to carry; see the deletion note below.
+# ⚠️ It also moves opentelemetry-bom 1.59.0 -> 1.64.0, which is ABOVE this catalog's `otel` ref.
+openfga = "0.9.11"
 lettuce = "7.5.0.RELEASE"
 netty = "4.2.17.Final"
 nimbus-jose-jwt = "10.9.1"
@@ -98,19 +106,24 @@ logstash-logback-encoder = "9.0"
 # `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
 # declared. Same shape as A274 #431 D2's netty-bom.
 jackson = "3.2.2"
-# ⛔ JACKSON 2, AND IT IS HERE BECAUSE OF AN UPSTREAM POM DEFECT IN A LIBRARY THAT HAS NOTHING TO DO
-# WITH LOGGING. `dev.openfga:openfga-sdk` exposes `ApiClient.objectMapper` — a
-# `com.fasterxml.jackson.databind.ObjectMapper` — in its PUBLIC API while declaring jackson-databind
-# at `<scope>runtime</scope>`, so no consumer can call it unless something else puts that jar on
-# their compile classpath. Until 2026-08-19 that something else was `logstash-logback-encoder 8.1`,
-# and eight repositories' OpenFGA test bootstrap compiled by ACCIDENT, on a transitive from a
-# LOGGING library. Encoder 9.0 moved to the `tools.jackson` groupId and every one of them stopped
-# compiling. Declared explicitly in `commons-testing`, which is where the idiom is documented and
-# which all eight already have on the source set that uses it.
-# ⚠️ 2.22.2 is the latest 2.x and is advisory-CLEAN; the 2.21.1 the SDK itself resolves carries 10.
-# ⛔ That runtime copy is NOT fixed here — it is the OpenFGA unit's, and forcing it from a logging
-# unit would be widening.
-jackson2 = "2.22.2"
+# ⛔ `jackson2` WAS HERE AND IS GONE, 2026-08-21 (W3-OF, F269 #426) — deleted because UPSTREAM FIXED
+# THE DEFECT IT EXISTED FOR, which is the only reason a workaround ref may be removed rather than
+# bumped. It pinned `com.fasterxml.jackson.core:jackson-databind` at 2.22.2 for exactly one reason:
+# `dev.openfga:openfga-sdk` returns a `com.fasterxml.jackson.databind.ObjectMapper` from
+# `ApiClient.objectMapper` — a PUBLIC API method — while its POM declared jackson-databind at
+# `<scope>runtime</scope>`, so eight repositories' OpenFGA test bootstrap could not compile unless
+# something else put that jar on their compile classpath. (Until 2026-08-19 that something else was
+# `logstash-logback-encoder 8.1`, by ACCIDENT; encoder 9.0 moved to the `tools.jackson` groupId and
+# all eight broke at once. W2b, F269 #426.)
+# ✅ `openfga-sdk 0.9.11` promotes jackson-core, jackson-annotations, jackson-databind, jsr305 and
+# opentelemetry-api from `runtime` to `compile`, so every consumer that declares the SDK now gets
+# the mapper on its own compile classpath from the SDK itself. MEASURED by diffing the 0.9.7 and
+# 0.9.11 POMs, and PROVEN by the gates of the ten repositories that use the idiom.
+# ✅ It also closes the security half without a ref: 0.9.7 imported jackson-bom 2.21.1 (10 OSV
+# advisories) and 0.9.11 imports 2.22.1 (0), so the RUNTIME copy A277 #434 filed — the one this
+# comment used to say was "NOT fixed here" — is fixed by the bump rather than by a force.
+# ⛔ Do not restore this ref to "pin Jackson 2". It never pinned Jackson 2 for the estate; it put one
+# jar on one compile classpath, and the estate's own Jackson is `jackson` (3.x) above.
 # ⛔ `janino` WAS HERE AND IS GONE, 2026-08-19. It existed for exactly one reason: to evaluate the
 # `<if condition='…'>` attribute in servista-database's logback.xml. logback 1.5.37 REMOVED Janino
 # conditional evaluation under CVE-2026-13006 and three siblings, and that config now uses the
@@ -320,9 +333,9 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 # Applied as a platform where the encoder is declared — see the `jackson` version comment above.
 jackson-bom = { module = "tools.jackson:jackson-bom", version.ref = "jackson" }
-# ⛔ TEST-SCOPE ONLY, and only because openfga-sdk's public API returns a type its POM declares
-# runtime-only — see the `jackson2` version comment above. Declared once, in `commons-testing`.
-jackson2-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson2" }
+# ⛔ `jackson2-databind` WAS HERE AND IS GONE, 2026-08-21 (W3-OF). It was test-scope-only and existed
+# solely because openfga-sdk's public API returned a type its POM declared runtime-only.
+# `openfga-sdk 0.9.11` declares it `compile`; see the deleted `jackson2` version comment above.
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 # Kotlin Extensions
