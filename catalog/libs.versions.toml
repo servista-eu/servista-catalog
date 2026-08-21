@@ -134,7 +134,6 @@ tink = "1.23.0"
 # these two refs drift by more than a patch.
 bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
 bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
-vault-java-driver = "6.2.1"
 aws-sdk = "2.44.1"
 servista-kotlin-commons = "0.1.0"
 servista-service-runtime = "0.1.0"
@@ -214,7 +213,6 @@ konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 bouncycastle-provider = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
 bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-pkix" }
-vault-java-driver = { module = "io.github.jopenlibs:vault-java-driver", version.ref = "vault-java-driver" }
 
 # AWS (S3 SDK used for Garage S3-compatible storage)
 aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk" }
@@ -239,6 +237,7 @@ servista-commons-rt-id-foss-valkey = { module = "eu.servista:commons-rt-id-foss-
 servista-commons-rt-objectstorage-s3 = { module = "eu.servista:commons-rt-objectstorage-s3", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-events-foss-kafka = { module = "eu.servista:commons-rt-events-foss-kafka", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-events-foss-kafka-avro = { module = "eu.servista:commons-rt-events-foss-kafka-avro", version.ref = "servista-kotlin-commons" }
+servista-commons-secrets-foss-openbao-core = { module = "eu.servista:commons-secrets-foss-openbao-core", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-secrets-foss-openbao = { module = "eu.servista:commons-rt-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-authz-foss-openfga = { module = "eu.servista:commons-rt-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
