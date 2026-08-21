@@ -62,7 +62,17 @@ junit = "6.1.3"
 kotest = "6.2.4"
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
-kotlinx-datetime = "0.7.1"
+# ⛔ PIN THE BARE `0.8.0`, NEVER `0.8.0-0.6.x-compat` — and note that `maven-metadata.xml`'s
+# `<latest>` AND `<release>` BOTH name the compat variant, because it was published last. The
+# compat artifact still carries the removed `kotlinx.datetime.Instant`/`Clock` for third parties
+# that have not migrated; Servista imports neither, and upstream stops publishing compat releases
+# after the 0.8.x line. `check-dependency-currency.mjs` excludes it by rule, not by memory.
+# ⚠️ 0.8.0 "removes Instant and Clock" and removes ZERO CLASSES — they were typealiases, which live
+# in Kotlin metadata rather than bytecode. Measured by diffing the two jars: −0 classes, +2
+# (`LocalIsoWeekDate`), POM dependency identical at both versions.
+# ⛔ ONLY declare this where something IMPORTS it. W1-KD found it declared in 8 build files and
+# imported by NONE, which is how the estate ended up shipping it in 8 fat jars for nothing.
+kotlinx-datetime = "0.8.0"
 # ⛔ 8.x REMOVED 61 PUBLIC METHODS FROM `KLogger` AND THE ESTATE USES NONE OF THEM — measured, not
 # assumed: an init script forced 8.0.4 into every configuration and 23 of 23 repositories compiled
 # main+test and 11 of 11 integration source sets compiled, with ZERO source changes. 50 of the
