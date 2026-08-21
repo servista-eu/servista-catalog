@@ -8,7 +8,7 @@ koin = "4.2.2"
 jooq = "3.20.11"
 flyway = "12.0.3"
 hikari = "7.1.0"
-postgresql-jdbc = "42.7.11"
+postgresql-jdbc = "42.7.13"
 oracle-jdbc = "23.26.3.0.0"
 # Trino JDBC — the client for the Iceberg lakehouse, on BOTH sides of the audit trail: the
 # audit writer (Phase 8 WP5) and the audit query API (WP6). ADR-028 settles it as the driver
