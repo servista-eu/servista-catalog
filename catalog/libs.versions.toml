@@ -21,7 +21,30 @@ kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.3.0"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
 flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
 avro = "1.12.2"
-apicurio-serdes = "3.0.0.M4"
+# W3-AP (F269 #426): governance/servista-planning/work/upgrades/components/W3-AP-apicurio-strimzi-kafka.md
+# ⛔ THE COORDINATE MOVED AND THE OLD ONE IS DEAD. `io.apicurio:apicurio-registry-serdes-avro-serde`
+# was renamed to `io.apicurio:apicurio-registry-avro-serde-kafka` at 3.0.0.M5 — the release
+# immediately after the 3.0.0.M4 this ref used to pin, so M4 is not "an old milestone", it is the
+# LAST ARTIFACT EVER PUBLISHED under that name (maven-metadata lastUpdated 2025-07-16).
+# ⚠️ That is why check-dependency-currency.mjs reported this ref as `current-preview` against a
+# "latest" of 2.6.13.Final: the tool reads the metadata of the coordinate it is given, and that
+# coordinate's own metadata says its latest is M4. The tool was right; the coordinate was dead.
+# ⛔ A CURRENCY CHECK KEYED ON A COORDINATE CANNOT SEE A RENAME — F269 #426 D5 owns that gap.
+# ✅ The new line tracks the SERVER's version exactly (registry 3.3.1 ⇒ serde 3.3.1), which is a
+# strictly better place to be than a milestone that can never move again.
+# ⚠️ NOTHING CONSUMES THIS REF — measured 2026-08-22 with a passing control, zero declaration sites.
+# Servista speaks the registry's v3 REST API through its own SchemaRegistryClient in
+# commons-rt-events-foss-kafka-avro, which exists for a reason the vendor serde does not give for
+# free: it resolves the global id by the RECORD'S OWN schema rather than by the artifact's `latest`,
+# which is what A37 #153 cost 29 unreadable records. ⛔ Repointed rather than DELETED (owner
+# decision D-38, 2026-08-22): deleting it would assert a decision never taken — that this estate
+# will not use a vendor serde — and "nothing calls it" is not an argument about design.
+# ⛔ THE REF IS RENAMED TOO, and that is not cosmetic: the old artifact was `…-serdes-avro-serde`
+# (plural) and the new one is `…-avro-serde-kafka` (singular), so a ref still called
+# `apicurio-serdes` names the DEAD coordinate's vocabulary — and the ref name is the key both
+# `check-dependency-currency.mjs` and `check-doc-version-tables.mjs` are wired on, which is part of
+# why the rename stayed invisible for a year. Same disposition as W2e's `junit5` → `junit`.
+apicurio-avro-serde = "3.3.1"
 # W3-OF (F269 #426): governance/servista-planning/work/upgrades/components/W3-OF-openfga.md
 # ⛔ 0.9.8 is a PRERELEASE and 0.9.10 never reached the registry (upstream says so), so the interval
 # is 0.9.7 -> 0.9.11 and there is nothing in between to read. ⭐ The bump is also A277 #434's fix:
@@ -215,7 +238,7 @@ flink-connector-kafka = { module = "org.apache.flink:flink-connector-kafka", ver
 #   AWS Kinesis: org.apache.flink:flink-connector-aws-kinesis-streams:5.1.0-1.20  (AWS connector 5.x supports Flink 2.x)
 #   GCP Pub/Sub: org.apache.flink:flink-connector-gcp-pubsub — official connector lags (last release ~2023); verify before use
 avro = { module = "org.apache.avro:avro", version.ref = "avro" }
-apicurio-serdes-avro = { module = "io.apicurio:apicurio-registry-serdes-avro-serde", version.ref = "apicurio-serdes" }
+apicurio-avro-serde-kafka = { module = "io.apicurio:apicurio-registry-avro-serde-kafka", version.ref = "apicurio-avro-serde" }
 
 # Infrastructure Clients
 openfga-sdk = { module = "dev.openfga:openfga-sdk", version.ref = "openfga" }
