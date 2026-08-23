@@ -170,7 +170,7 @@ tink = "1.23.0"
 # these two refs drift by more than a patch.
 bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
 bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
-aws-sdk = "2.44.1"
+aws-sdk = "2.54.2"
 servista-kotlin-commons = "0.1.0"
 servista-service-runtime = "0.1.0"
 servista-avro-schemas = "0.1.0"
@@ -253,6 +253,15 @@ bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref 
 # AWS (S3 SDK used for Garage S3-compatible storage)
 aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk" }
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
+# ⛔ DECLARED, NOT INHERITED — D-50, 2026-08-23. At aws-sdk 2.46.0 the SDK replaced the
+# default `apache-client` with `apache5-client`, so a synchronous S3Client that configures
+# no HTTP client silently changed which one it uses (and `Expect: 100-Continue` from on to
+# off). That was filed under "Features", in a MINOR release. Servista's sync S3Client is
+# Garage's path, so this estate's wire was being decided by a transitive default that is
+# in no catalog and in no build file — i.e. invisible to every check we own, including
+# check-dependency-currency.mjs. Naming it here does not change behaviour: it IS the SDK's
+# current default. It makes the next such swap arrive as a reviewable diff instead.
+aws-apache5-client = { module = "software.amazon.awssdk:apache5-client", version.ref = "aws-sdk" }
 
 # servista Commons — Core
 servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
