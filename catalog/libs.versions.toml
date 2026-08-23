@@ -171,6 +171,35 @@ tink = "1.23.0"
 bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
 bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
 aws-sdk = "2.54.2"
+
+# ⛔ FIVE COORDINATES ADOPTED 2026-08-23 (`F285 #442` D3) — AND EVERY ONE IS ADOPTED AT THE VERSION
+# ALREADY IN USE, NOT AT LATEST. That is deliberate and it is the whole point of the clause.
+#
+# They were pinned inline in `api-organizations` and `servista-edge-auth-lambda`, governed by
+# nothing, and therefore **reported by nothing** — `check-dependency-currency.mjs` read this file
+# and this file did not mention them, so their drift produced no row at all. ⚠️ *A wrong target is
+# visible; a missing row is not.* D3 exists to make "ungoverned" stop being a silence.
+#
+# ⛔ ADOPTING AT LATEST WOULD HAVE SMUGGLED FIVE VERSION DECISIONS PAST `I2`/`I3` — *one component
+# at a time*, *read every release note in the interval* — inside a row whose subject is governance
+# and not currency. Adopted where they stand, the resolved classpath does not move by a single jar,
+# and the gap becomes an ORDINARY currency finding owned by `F269 #426` and the upgrade programme.
+# Measured against Maven Central the same day (`<release>`, with a passing 404 control):
+#
+#   nv-i18n          1.29    = latest — current
+#   libphonenumber   9.0.36  → 9.0.37   (one patch)
+#   aws-lambda-core  1.3.0   → 1.4.0    (one minor)
+#   aws-lambda-events 3.14.0 → 3.16.1   (two minors)
+#   typesafe-config  1.4.3   → 1.4.9    (six patches)
+#
+# ⚠️ So this edit makes the check REPORT FOUR NEW FINDINGS, and that is the deliverable rather than
+# a regression. Do not "fix" them by reverting the adoption.
+nv-i18n = "1.29"
+libphonenumber = "9.0.36"
+aws-lambda-java = "1.3.0"          # aws-lambda-java-core
+aws-lambda-java-events = "3.14.0"  # versioned separately by upstream — NOT one ref with core
+typesafe-config = "1.4.3"
+
 servista-kotlin-commons = "0.1.0"
 servista-service-runtime = "0.1.0"
 servista-avro-schemas = "0.1.0"
@@ -377,6 +406,22 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# Reference data and platform runtimes — adopted 2026-08-23 (F285 #442 D3); see the version block.
+# ⚠️ Single-consumer today, and that is NOT an argument against governing them: the catalog is the
+# estate's single version source, and the two edge-auth `bcprov 1.80` pins that sat through the
+# batch bumping this file OFF 1.80 (for a CRITICAL) were single-consumer too.
+# ISO 3166-1 / ISO 4217 identifiers; api-organizations only — see LibraryCountryCatalog.
+nv-i18n = { module = "com.neovisionaries:nv-i18n", version.ref = "nv-i18n" }
+# E.164 country calling codes; api-organizations only.
+libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
+# AWS Lambda runtime contract; servista-edge-auth-lambda only.
+# ⛔ TWO REFS ON PURPOSE — upstream versions `-core` and `-events` independently (1.3.0 vs 3.14.0),
+# so one ref would make a bump of either a lie about the other. Same reasoning as bouncycastle above.
+aws-lambda-java-core = { module = "com.amazonaws:aws-lambda-java-core", version.ref = "aws-lambda-java" }
+aws-lambda-java-events = { module = "com.amazonaws:aws-lambda-java-events", version.ref = "aws-lambda-java-events" }
+# HOCON config; servista-edge-auth-lambda only.
+typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-config" }
 
 # Testing
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
