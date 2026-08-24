@@ -58,7 +58,30 @@ lettuce = "7.7.0.RELEASE"
 netty = "4.2.17.Final"
 nimbus-jose-jwt = "10.9.1"
 otel = "1.61.0"
-otel-agent = "2.27.0"
+# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, decision `D-79`) — deleted because
+# IT RESOLVED TO NOTHING, which is a different reason from `jackson2`'s and `janino`'s below and is
+# worth keeping separate. Measured four ways with a firing control on each: 0 build files and 0
+# repositories declared `libs.otel.agent` (controls: `libs.otel.sdk` 23 files / 22 repos,
+# `libs.otel.logback.appender` 21 / 21); 0 `-javaagent` hits in either GitOps repository (control:
+# 121 files contain `image:`); 0 of 304 running containers declared one (control: 11 declare an
+# `OTEL_*` env var); and 0 anywhere for the non-agent JDBC route either.
+# ⚠️ `CLAUDE.md` §1's "never delete working plumbing" governs a feature that EXISTS and is DISABLED.
+# There was no plumbing here — no jar, no `JAVA_TOOL_OPTIONS`, no wired path, no flag — so this ref
+# was an assumption that got written down, not a capability somebody switched off.
+# ⛔ The CAPABILITY it stood in for — DB query spans — is kept, and is filed as F323 #490 with its
+# MECHANISM named in the first DoD clause: `io.opentelemetry.instrumentation:opentelemetry-jdbc`,
+# on the `otel-instrumentation` train below, wrapped around the DataSource that
+# `commons-rt-db-foss-postgres`'s `migrateDatabase()` already creates for every service.
+# ⛔ Do not restore this ref to "get JDBC spans back". The agent route is 22 images and 22
+# Deployments against one wrap in one shared module; it makes what is emitted a function of the
+# agent's version rather than of our code; ADR-034 already rejected that shape (a second implicit
+# plane beside an explicit one) for workload identity; and the agent's single live advisory is
+# `CVE-2026-54704`, "JDBC Auto-Instrumentation Logging Clear-Text Passwords" — this estate's most
+# repeated defect offered back as a feature.
+# ⚠️ For the record, because the number was quoted forward wrongly in three documents: that advisory
+# is first patched at `2.28.0-alpha`, NOT at `2.31.1`. `2.31.1` was the CURRENCY TARGET read as
+# though it were the fix. The advisory names ONLY `io.opentelemetry.javaagent:opentelemetry-javaagent`;
+# `opentelemetry-logback-appender-1.0` has zero advisories, so it never reached the train below.
 otel-instrumentation = "2.27.0-alpha"
 pyroscope = "1.0.4"
 micrometer = "1.17.1"
@@ -383,7 +406,11 @@ otel-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extensio
 otel-extension-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "otel" }
 otel-sdk-logs = { module = "io.opentelemetry:opentelemetry-sdk-logs", version.ref = "otel" }
 otel-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "otel-instrumentation" }
-otel-agent = { module = "io.opentelemetry.javaagent:opentelemetry-javaagent", version.ref = "otel-agent" }
+# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, `D-79`). Nothing resolved it — 0
+# build files, 0 repositories, 0 of 304 containers, every count with a firing control. See the
+# deleted `otel-agent` version comment above for the measurement, for why `CLAUDE.md` §1's
+# "never delete working plumbing" does not reach a ref with no plumbing behind it, and for the row
+# that carries the capability forward with its mechanism named.
 pyroscope-otel = { module = "io.pyroscope:otel", version.ref = "pyroscope" }
 micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer" }
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
