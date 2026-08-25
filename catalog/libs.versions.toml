@@ -5,7 +5,20 @@
 kotlin = "2.4.10"
 ktor = "3.5.2"
 koin = "4.2.2"
-jooq = "3.20.11"
+jooq = "3.21.7"
+# ⛔ CLASS II, AND ITS SERVER IS A HARD BOUND RATHER THAN A LOOSE ONE. jOOQ's Open Source Edition
+# supports exactly ONE PostgreSQL major per minor — the vendor's own legend is "The jOOQ Open
+# Source Edition always supports the latest dialect version", which makes the support matrix's
+# "Minimum version (OSS edition)" column simultaneously the MAXIMUM. So 3.20 -> PostgreSQL 17 and
+# 3.21 -> 18, and PostgreSQL 18 appears in NO edition of 3.20.
+# ⛔⛔ Production has run PostgreSQL 18 since 2026-04-27. This ref sat at 3.20.11 from the catalog's
+# first commit (2026-03-23) until 2026-08-25 — 120 days OUTSIDE the vendor's support window for the
+# server it dials, with no signal anywhere, because nothing on the CLIENT side moved.
+# ✅ `node tools/check-server-floor.mjs` in servista-planning is what now says so: it reads the
+# server major FROM THE CLUSTER and refuses on a jOOQ minor its table has never seen.
+# Moved by W1-JQ (D-94, 2026-08-25). ⚠️ Nine aliases share this ref and five have no consumer;
+# they are KEPT because the intersection rule verifies all nine at every bump and re-adding one
+# later is a line, while an unverified coordinate is a silent hole.
 flyway = "13.3.0"
 hikari = "7.1.0"
 postgresql-jdbc = "42.7.13"
