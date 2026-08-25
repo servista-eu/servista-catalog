@@ -572,12 +572,22 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 jooq-codegen = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
-# ⚠️ ZERO LIVE CONSUMERS since W1-FY (D-93, 2026-08-25). Six repositories applied this
-# plugin and configured none of them — 0 `flyway { }` blocks, 0 task references, 0 invocations
-# anywhere in scripts, Dockerfiles or GitOps; `api-accounts` runs the identical jOOQ DDLDatabase
-# codegen without it. Those six applications were deleted. ⛔ The alias is KEPT because
-# `retired/servista-api-subscriptions` still applies it and resolves this catalog at 0.1.0, so
-# removing it would make a retired repository unconfigurable — a record, not a build.
+# ⚠️ ZERO LIVE CONSUMERS since W1-FY (D-93, 2026-08-25). Six repositories applied this plugin and
+# configured none of them — 0 `flyway { }` blocks, 0 task references, 0 invocations anywhere in
+# scripts, Dockerfiles or GitOps; `api-accounts` runs the identical jOOQ DDLDatabase codegen
+# without it. Those six applications were deleted.
+#
+# ⛔ THE ALIAS IS KEPT BECAUSE `D-93` NAMED THE SIX APPLICATIONS AND NOT THE ALIAS — deleting it is
+# a decision nobody has taken, not a tidy-up.
+#
+# ⚠️ AND THE REASON THIS COMMENT FIRST GAVE WAS FALSE, WHICH IS WHY IT IS WRITTEN OUT RATHER THAN
+# QUIETLY REPLACED. It said the alias had to stay because `retired/servista-api-subscriptions`
+# still applies it and would become unconfigurable. Tested rather than asserted:
+# `./gradlew help --refresh-dependencies` in that repository fails with `Unresolved reference
+# 'junit5'` — a ref `W2e` renamed to `junit` on 2026-08-20, five days before this unit and for an
+# unrelated reason. That build file has not changed since 2026-07-09. **It was already
+# unconfigurable, so the alias was never what was protecting it.** The last remaining consumer of
+# this alias is a repository that cannot configure at all.
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
