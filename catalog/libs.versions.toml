@@ -19,7 +19,23 @@ oracle-jdbc = "23.26.3.0.0"
 trino-jdbc = "483"
 kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.3.0"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
-flink-connector-kafka = "4.0.1-2.0" # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2
+# ⛔ THE `-2.x` SUFFIX IS A RELEASE LABEL, NOT A COMPILE TARGET. This line read
+#    `4.0.1-2.0 # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2` until
+#    2026-08-25, and every clause of that was false or unverifiable. Measured (`W1-CJ`'s successor
+#    `W1-FK`, `D-92`): `flink-connector-kafka-parent` declares `flink.version 2.1.0` at BOTH
+#    `5.0.0-2.1` and `5.0.0-2.2`; the two parent POMs differ by one line, the `<version>` element;
+#    and the two jars have identical entry lists with **0 of 211 class files differing** (only
+#    `MANIFEST.MF`). ⭐ They are the SAME ARTIFACT. Control: `4.0.1-2.0 → 5.0.0-2.2` moves 125 of 185.
+# ⚠️ So this connector is built against Flink **2.1.0** while `flink` above is `2.3.0` — a two-minor
+#    gap that the bump NARROWS (from three) and nothing closes: there is no `-2.3` build, ever.
+# ⛔ AND IT IS CLASS II, NOT CLASS I: `org.apache.kafka:kafka-clients` is a COMPILE-scope,
+#    non-optional, transitive dependency, so this is a client of the deployed Strimzi broker. The
+#    bump takes that bundled client `3.9.1 → 4.2.0`, which is EXACTLY the broker's version.
+# ⚠️ LATENT CONFLICT for the first pipeline module that ever exists: `kafka` below is `4.3.1`, the
+#    broker runs `4.2.0`, and this connector is built against `4.2.0` — a module naming both refs
+#    resolves `kafka-clients` to `4.3.1` by Gradle's highest-wins, one minor ahead of what this was
+#    tested with. No gate anywhere says so, because there is no consumer yet.
+flink-connector-kafka = "5.0.0-2.2"
 avro = "1.12.2"
 # W3-AP (F269 #426): governance/servista-planning/work/upgrades/components/W3-AP-apicurio-strimzi-kafka.md
 # ⛔ THE COORDINATE MOVED AND THE OLD ONE IS DEAD. `io.apicurio:apicurio-registry-serdes-avro-serde`
