@@ -52,12 +52,31 @@ apicurio-avro-serde = "3.3.1"
 # jackson-core/-annotations/-databind, jsr305 and opentelemetry-api from `runtime` to `compile` in
 # its published POM — measured by diffing the two POMs, not read from a release note. That promotion
 # is what retired the `jackson2` ref this file used to carry; see the deletion note below.
-# ⚠️ It also moves opentelemetry-bom 1.59.0 -> 1.64.0, which is ABOVE this catalog's `otel` ref.
+# ⚠️ It also moves opentelemetry-bom 1.59.0 -> 1.64.0. ✅ That INVERSION IS RESOLVED as of
+# 2026-08-25: `D-86` took `otel` to `1.65.0`, which is above it. Kept because the shape recurs —
+# a transitive BOM can sit above a catalog ref and nothing in the build says so.
 openfga = "0.9.11"
 lettuce = "7.7.0.RELEASE"
 netty = "4.2.17.Final"
 nimbus-jose-jwt = "10.9.1"
-otel = "1.61.0"
+# W3-O11Y act 2 (F310 #476), decision `D-86`, 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
+# ⛔ The interval carries TEN `**BREAKING**` entries and every one of them was grepped against the
+# tree and reaches ZERO files (controls: a fabricated symbol 0, `libs.otel.sdk` 23). The one worth
+# knowing about is `1.62.0`'s Prometheus exporter default host moving `0.0.0.0` -> `localhost`: that
+# is `F310`'s own defect class — a healthy pod the store cannot reach — and it misses us only
+# because we do not use `opentelemetry-exporter-prometheus` at all.
+# ⚠️ `CVE-2026-45292` / `GHSA-rcgg-9c38-7xpx` (CVSS 5.3, unbounded allocation parsing W3C baggage)
+# names `io.opentelemetry:opentelemetry-api <= 1.61.0` — this ref's previous value exactly — and is
+# first patched at `1.62.0`. ⛔ It does NOT reach our configuration and the bump must not be quoted
+# as remediation: `OtelSetup.kt` registers `W3CTraceContextPropagator` alone, we declare
+# `opentelemetry-extension-trace-propagators` on zero classpaths, and nothing in our source calls
+# `.extract(` — the vulnerability is in the parser and we only ever inject. A scanner keyed to the
+# coordinate will still flag the old pin, correctly.
+# ⭐ Free with the bump and worth knowing: `1.65.0` fixes `OkHttpHttpSender` mTLS against the
+# platform default trust store (ADR-034 / A297 #461's path), and `1.64.0` stops
+# `BatchLogRecordProcessor`'s worker thread being killed by non-runtime exceptions — a log pipeline
+# that stops exporting with the pod still Ready, which is this estate's "never silently degrade".
+otel = "1.65.0"
 # ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, decision `D-79`) — deleted because
 # IT RESOLVED TO NOTHING, which is a different reason from `jackson2`'s and `janino`'s below and is
 # worth keeping separate. Measured four ways with a firing control on each: 0 build files and 0
@@ -82,8 +101,50 @@ otel = "1.61.0"
 # is first patched at `2.28.0-alpha`, NOT at `2.31.1`. `2.31.1` was the CURRENCY TARGET read as
 # though it were the fix. The advisory names ONLY `io.opentelemetry.javaagent:opentelemetry-javaagent`;
 # `opentelemetry-logback-appender-1.0` has zero advisories, so it never reached the train below.
-otel-instrumentation = "2.27.0-alpha"
-pyroscope = "1.0.4"
+# `D-86`, 2026-08-25: `2.27.0-alpha` -> `2.31.1-alpha`, six releases read.
+# ⛔ THIS REF AND `otel` ABOVE ARE ONE DECISION, and the vendor writes the binding down rather than
+# leaving it to be inferred (hazard 15): every release states the SDK it targets, and `2.31.1`
+# targets `1.65.0` exactly. Moving one without the other is the mistake this line exists to prevent.
+# ⚠️ We consume exactly ONE artifact from this train — `opentelemetry-logback-appender-1.0` — so the
+# interval's large breaking surface is javaagent and library instrumentations we do not have.
+# `2.28.0` REMOVED the appender's `captureEventName` builder setting: 0 hits in our tree.
+# ⛔ What DOES reach us is a DEPRECATION, not a removal: `2.31.0` deprecates the boolean capture
+# settings in favour of `.included`/`.excluded` selectors, and `servista-service-runtime`'s
+# `logback-base.xml` sets `captureExperimentalAttributes` and `captureKeyValuePairAttributes`.
+# `2.31.1` still honours them; migrating is an `I5` item, not a blocker.
+otel-instrumentation = "2.31.1-alpha"
+# `D-86`, 2026-08-25: `1.0.4` -> `2.1.2`, eleven releases read, crossing a major.
+# ⛔⛔ THE MAJOR IS AN ARTIFACT SPLIT AND IT IS WHY `pyroscope-agent` BELOW EXISTS. `2.0.0` made
+# `io.pyroscope:otel` the THIN library jar — measured, not read: 5,440,660 B / 2,074 entries at
+# `1.0.4` against 4,916 B / 9 entries at `2.1.2` — and moved everything it used to shade into
+# `io.pyroscope:agent`, which its POM now declares at `runtime` scope where `1.0.4` declared no
+# dependencies at all.
+# ⛔ A RUNTIME-SCOPED TRANSITIVE DEPENDENCY IS NOT ON THE COMPILE CLASSPATH, and
+# `ProfilingSetup.kt` compiles against `Config` and `PyroscopeAgent`. That is the whole reason the
+# ref below is separate rather than implied.
+# ⛔ AND `2.1.0` ADDS A CLIENT -> SERVER ORDERING CONSTRAINT, which is a PHASE II obligation this
+# comment carries because nothing else will: `trace_id` is emitted UNCONDITIONALLY and needs a
+# Pyroscope SERVER with grafana/pyroscope#5220, first shipped in server `v2.1.0`. Ours runs `2.0.6`
+# (D-83). On an older server `trace_id` is promoted to a PER-TRACE SERIES LABEL and inflates the
+# index. ⛔ THE SERVER REACHES `>= 2.1.0` BEFORE THE FLEET REBUILD, NOT AFTER.
+# ⚠️ Harmless today only because profiling is off fleet-wide and the store holds zero profiles —
+# a fact about a config, not about the code. One `PYROSCOPE_SERVER_ADDRESS` changes it.
+# ⚠️ And a correction to a sentence three documents quoted forward: the client was NEVER "a major
+# behind the 2.x server". `grafana/otel-profiling-java` and `grafana/pyroscope` are different
+# projects with independent version lines and the matching numbers are a coincidence.
+pyroscope = "2.1.2"
+# ⛔ NEW REF, 2026-08-25 (`D-86`). It is not a new dependency: it is the un-shaded half of what
+# `io.pyroscope:otel:1.0.4` already carried inside itself, now declared where the build can see it.
+# ⚠️ `2.9.1` is the latest stable and NOT the `2.6.0` the bridge's own POM names. The estate's
+# standing rule is to pin the latest stable, and it is satisfiable here without a compatibility
+# argument: every class `ProfilingSetup.kt` touches — `PyroscopeAgent`, `api.ConfigurationProvider`,
+# `config.Config`, `impl.DefaultConfigurationProvider` — plus `Config.build(ConfigurationProvider)`
+# and the four public fields it reads were verified present in the `2.9.1` jar, with a firing
+# control on a fabricated class name.
+# ⛔ IT IS A 5.7 MB SHADED FAT JAR CARRYING SIX `META-INF/*.kotlin_module` ENTRIES, so it inherits
+# the shadowJar handling that used to be written against `io.pyroscope:otel`. A build file that
+# still excludes the OLD coordinate excludes 4.9 KB and lets 5.7 MB through unhandled.
+pyroscope-agent = "2.9.1"
 micrometer = "1.17.1"
 # ⛔ mockk is the estate's ONE mocking library. `mockito` and `mockito-kotlin`
 # were retired by W2d (F269 #426, decision D-10, 2026-08-19) — RETIRED, not
@@ -412,6 +473,10 @@ otel-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemet
 # "never delete working plumbing" does not reach a ref with no plumbing behind it, and for the row
 # that carries the capability forward with its mechanism named.
 pyroscope-otel = { module = "io.pyroscope:otel", version.ref = "pyroscope" }
+# The un-shaded agent `pyroscope-otel` needs on the COMPILE classpath since its `2.0.0` split;
+# see the `pyroscope-agent` version comment above for why this is a declaration rather than a
+# new dependency, and for the Phase-II server-ordering constraint that rides with it.
+pyroscope-agent = { module = "io.pyroscope:agent", version.ref = "pyroscope-agent" }
 micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer" }
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
 
