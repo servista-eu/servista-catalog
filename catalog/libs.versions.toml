@@ -254,7 +254,7 @@ tink = "1.23.0"
 # these two refs drift by more than a patch.
 bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
 bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
-aws-sdk = "2.54.2"
+aws-sdk = "2.54.3"
 
 # ⛔ FIVE COORDINATES ADOPTED 2026-08-23 (`F285 #442` D3) — AND EVERY ONE IS ADOPTED AT THE VERSION
 # ALREADY IN USE, NOT AT LATEST. That is deliberate and it is the whole point of the clause.
@@ -273,16 +273,34 @@ aws-sdk = "2.54.2"
 #   nv-i18n          1.29    = latest — current
 #   libphonenumber   9.0.36  → 9.0.37   (one patch)
 #   aws-lambda-core  1.3.0   → 1.4.0    (one minor)
-#   aws-lambda-events 3.14.0 → 3.16.1   (two minors)
+#   aws-lambda-events 3.14.0 → 3.16.1   (two minors)   ⚠️ THREE releases, not two — 3.16.1 is a patch
 #   typesafe-config  1.4.3   → 1.4.9    (six patches)
 #
 # ⚠️ So this edit makes the check REPORT FOUR NEW FINDINGS, and that is the deliverable rather than
 # a regression. Do not "fix" them by reverting the adoption.
+#
+# ✅ ALL FOUR CLOSED 2026-08-25 by upgrade unit `W1-CJ` (`D-88`/`D-89`), which took them to the
+# targets listed above together with `aws-sdk 2.54.2 → 2.54.3`. Twelve release notes read, every
+# claim measured against the artifact rather than the note:
+#   · libphonenumber   0 class files differ; 22 of 544 metadata blobs do. The estate's ONE call is
+#                      getCountryCodeForRegion, and all 245 regions answer identically on both.
+#   · aws-lambda-core  one added `default` method (Context.getXrayTraceId) — nothing else.
+#   · aws-lambda-events 4 classes added, 12 changed, in four event families the Lambda does not
+#                      import. ⛔ 3.16.1 has NO release note, NO tag and NO changelog entry
+#                      upstream; its content was derived from the jar (a nested ConnectEvent.Queue).
+#   · typesafe-config  ⛔ NOT a bump: `ktor-server-core 3.5.2` already drags 1.4.9 onto every Ktor
+#                      service, so this ref was BEHIND the resolved graph and the only artifact
+#                      actually on 1.4.3 was `servista-edge-auth-lambda`, which has no Ktor to
+#                      out-vote the catalog. The bump removes a skew. See W1-CJ §3.6.
+#   · aws-sdk          0 class bytes move in `s3` (0 of 2,348) or `apache5-client`; only the
+#                      embedded pom files. Control: 2.50.0 → 2.54.3 moves 23.
+# ⛔ Read `dependencyInsight --configuration runtimeClasspath` before pricing a catalog bump: a
+# catalog ref moves the version only where the catalog is the WINNING declaration.
 nv-i18n = "1.29"
-libphonenumber = "9.0.36"
-aws-lambda-java = "1.3.0"          # aws-lambda-java-core
-aws-lambda-java-events = "3.14.0"  # versioned separately by upstream — NOT one ref with core
-typesafe-config = "1.4.3"
+libphonenumber = "9.0.37"
+aws-lambda-java = "1.4.0"          # aws-lambda-java-core
+aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
+typesafe-config = "1.4.9"
 
 servista-kotlin-commons = "0.1.0"
 servista-service-runtime = "0.1.0"
