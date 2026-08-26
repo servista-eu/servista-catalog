@@ -313,6 +313,8 @@ aws-sdk = "2.54.3"
 # claim measured against the artifact rather than the note:
 #   · libphonenumber   0 class files differ; 22 of 544 metadata blobs do. The estate's ONE call is
 #                      getCountryCodeForRegion, and all 245 regions answer identically on both.
+#                      ⛔ 9.0.37 IS NO LONGER THE PIN — see the 9.0.38 block below, which re-took
+#                      this measurement rather than inheriting it.
 #   · aws-lambda-core  one added `default` method (Context.getXrayTraceId) — nothing else.
 #   · aws-lambda-events 4 classes added, 12 changed, in four event families the Lambda does not
 #                      import. ⛔ 3.16.1 has NO release note, NO tag and NO changelog entry
@@ -325,8 +327,35 @@ aws-sdk = "2.54.3"
 #                      embedded pom files. Control: 2.50.0 → 2.54.3 moves 23.
 # ⛔ Read `dependencyInsight --configuration runtimeClasspath` before pricing a catalog bump: a
 # catalog ref moves the version only where the catalog is the WINNING declaration.
+# ⭐ libphonenumber 9.0.37 → 9.0.38 — bumped 2026-08-26 on the platform owner's instruction,
+# during W3-OF/D-108. ⛔ IT APPEARED UPSTREAM MID-SITTING: Maven Central's lastUpdated is
+# 20260826121311, about two hours after a check-docs run that read only two currency findings.
+#
+# ⛔ I3 SAYS READ EVERY RELEASE NOTE IN THE INTERVAL, AND THERE IS NONE. Google has published no
+# GitHub release, tag or changelog entry for v9.0.38 — the jar is on Maven Central and nothing
+# else exists. That is the aws-lambda-events 3.16.1 shape from W1-CJ, and the answer is the same:
+# DERIVE IT FROM THE ARTIFACT.
+#
+# Measured against the two jars, with a control that fires:
+#   · 0 of 67 class files differ (same class set). ⭐ Control: 9.0.30 → 9.0.38 moves 3, so the
+#     comparison can see a class change.
+#   · 11 of 544 metadata blobs differ — 3 build stamps (MANIFEST.MF, pom.properties, pom.xml) and
+#     EIGHT country metadata blobs: GM, HK, IN, JO, PG, SN, TZ, ZW.
+#   · What moved inside them, by pattern-string diff: national NUMBER-RANGE regexes (IN 31, ZW 19,
+#     HK 6, JO 5, PG 4, SN 4, GM 2, TZ 2) plus two formatting rules (JO, ZW).
+#     ⭐ Control: BE, a region whose blob did not change, shows 0 — so the diff discriminates.
+#   · ⛔ NOT ONE OF THEM IS A COUNTRY CALLING CODE, which is the estate's only call.
+#     getCountryCodeForRegion is identical on all 245 supported regions AND on all 676 possible
+#     ISO alpha-2 strings — a superset of the officially-assigned set the catalog actually passes.
+# ⚠️ AND THE HONEST LIMIT: a behavioural probe could NOT be made to tell these two jars apart —
+# not on getCountryCodeForRegion, not on getExampleNumber/isValidNumber, not on
+# getExampleNumberForType across every PhoneNumberType for the eight changed regions. The
+# load-bearing evidence is the class-file measurement and the located pattern diff, NOT a green
+# behavioural comparison whose control never fired.
+#
+# Consumer: ONE — api-organizations, LibraryCountryCatalog.kt, `getCountryCodeForRegion(alpha2)`.
 nv-i18n = "1.29"
-libphonenumber = "9.0.37"
+libphonenumber = "9.0.38"
 aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
