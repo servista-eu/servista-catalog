@@ -19,7 +19,7 @@ jooq = "3.21.7"
 # Moved by W1-JQ (D-94, 2026-08-25). ⚠️ Nine aliases share this ref and five have no consumer;
 # they are KEPT because the intersection rule verifies all nine at every bump and re-adding one
 # later is a line, while an unverified coordinate is a silent hole.
-flyway = "13.3.0"
+flyway = "13.4.0"
 hikari = "7.1.0"
 postgresql-jdbc = "42.7.13"
 oracle-jdbc = "23.26.3.0.0"
@@ -283,7 +283,7 @@ tink = "1.23.0"
 # these two refs drift by more than a patch.
 bouncycastle      = "1.85.2"   # bcprov-jdk18on (ships in images)
 bouncycastle-pkix = "1.85"     # bcpkix-jdk18on (test-only here)
-aws-sdk = "2.54.3"
+aws-sdk = "2.54.9"
 
 # ⛔ FIVE COORDINATES ADOPTED 2026-08-23 (`F285 #442` D3) — AND EVERY ONE IS ADOPTED AT THE VERSION
 # ALREADY IN USE, NOT AT LATEST. That is deliberate and it is the whole point of the clause.
