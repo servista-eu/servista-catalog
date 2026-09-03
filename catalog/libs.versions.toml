@@ -465,7 +465,6 @@ servista-commons-testing = { module = "eu.servista:commons-testing", version.ref
 
 # servista Commons — Runtime adapters (rt)
 servista-commons-rt-db-foss-postgres = { module = "eu.servista:commons-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
-servista-commons-rt-db-oracle = { module = "eu.servista:commons-rt-db-oracle", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-cache-foss-valkey = { module = "eu.servista:commons-rt-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-id-foss-valkey = { module = "eu.servista:commons-rt-id-foss-valkey", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-objectstorage-s3 = { module = "eu.servista:commons-rt-objectstorage-s3", version.ref = "servista-kotlin-commons" }
