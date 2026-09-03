@@ -360,9 +360,9 @@ aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
 
-servista-kotlin-commons = "0.1.0"
-servista-service-runtime = "0.1.0"
-servista-avro-schemas = "0.1.0"
+servista-kotlin-commons = "0.2.0"
+servista-service-runtime = "0.2.0"
+servista-avro-schemas = "0.2.0"
 
 [libraries]
 # Ktor Server
@@ -489,7 +489,6 @@ servista-commons-wiring-koin-rt-secrets-foss-openbao = { module = "eu.servista:c
 servista-commons-wiring-koin-rt-authz-foss-openfga = { module = "eu.servista:commons-wiring-koin-rt-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-rt-http-foss-ktor = { module = "eu.servista:commons-wiring-koin-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons-wiring-koin-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-rt-validation-foss-konform = { module = "eu.servista:commons-wiring-koin-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Infra ports
 servista-commons-infra-core = { module = "eu.servista:commons-infra-core", version.ref = "servista-kotlin-commons" }
@@ -501,7 +500,6 @@ servista-commons-infra-dns = { module = "eu.servista:commons-infra-dns", version
 servista-commons-infra-events = { module = "eu.servista:commons-infra-events", version.ref = "servista-kotlin-commons" }
 servista-commons-infra-gateway = { module = "eu.servista:commons-infra-gateway", version.ref = "servista-kotlin-commons" }
 servista-commons-infra-authz = { module = "eu.servista:commons-infra-authz", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-block-storage = { module = "eu.servista:commons-infra-block-storage", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Infra adapters
 servista-commons-infra-db-foss-postgres = { module = "eu.servista:commons-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
@@ -512,7 +510,6 @@ servista-commons-infra-dns-cloudflare = { module = "eu.servista:commons-infra-dn
 servista-commons-infra-events-foss-kafka = { module = "eu.servista:commons-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
 servista-commons-infra-gateway-foss-apisix = { module = "eu.servista:commons-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
 servista-commons-infra-authz-foss-openfga = { module = "eu.servista:commons-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-block-storage-local = { module = "eu.servista:commons-infra-block-storage-local", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Infra wiring (koin)
 servista-commons-wiring-koin-infra-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
@@ -523,10 +520,32 @@ servista-commons-wiring-koin-infra-dns-cloudflare = { module = "eu.servista:comm
 servista-commons-wiring-koin-infra-events-foss-kafka = { module = "eu.servista:commons-wiring-koin-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-infra-gateway-foss-apisix = { module = "eu.servista:commons-wiring-koin-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-infra-authz-foss-openfga = { module = "eu.servista:commons-wiring-koin-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-block-storage-local = { module = "eu.servista:commons-wiring-koin-infra-block-storage-local", version.ref = "servista-kotlin-commons" }
 
 # servista Service Runtime
-servista-service-runtime = { module = "eu.servista:servista-service-runtime", version.ref = "servista-service-runtime" }
+#
+# ⛔ THE AGGREGATE `servista-service-runtime` ALIAS IS GONE AT 0.2.0, DELIBERATELY. Until 0.1.0 this
+# was ONE artifact that every service took and that declared every infrastructure adapter
+# unconditionally — jOOQ, Kafka, the AWS SDK, Lettuce, OpenBao and a block-storage adapter with no
+# consumer at all — so 70% of a real service's runtime classpath and ≈444 MB across the fleet was
+# code no service loads (`work/shared-libraries/01-ANALYSIS.md` §3).
+#
+# ⚠️ The coordinate `eu.servista:servista-service-runtime:0.1.0` still RESOLVES and always will —
+# nothing is deleted under the immutable scheme. It simply has no 0.2.0. A repository that has not
+# moved keeps building against 0.1.0; one that moves takes `-core` plus the slices it uses, and the
+# compiler is the census.
+servista-service-runtime-core = { module = "eu.servista:servista-service-runtime-core", version.ref = "servista-service-runtime" }
+servista-service-runtime-database = { module = "eu.servista:servista-service-runtime-database", version.ref = "servista-service-runtime" }
+# ⛔ THE KAFKA DISPATCHER SLICE IS `-messaging`, NOT `-events`. `servista-service-runtime-events` is
+# a DIFFERENT, PRE-EXISTING artifact (the Avro envelope codec and the event-consumer bootstrap) that
+# 15 services already declare. Naming the dispatcher slice `-events` would collide with it.
+servista-service-runtime-messaging = { module = "eu.servista:servista-service-runtime-messaging", version.ref = "servista-service-runtime" }
+servista-service-runtime-authorization = { module = "eu.servista:servista-service-runtime-authorization", version.ref = "servista-service-runtime" }
+servista-service-runtime-cache = { module = "eu.servista:servista-service-runtime-cache", version.ref = "servista-service-runtime" }
+servista-service-runtime-objectstorage = { module = "eu.servista:servista-service-runtime-objectstorage", version.ref = "servista-service-runtime" }
+servista-service-runtime-secrets = { module = "eu.servista:servista-service-runtime-secrets", version.ref = "servista-service-runtime" }
+servista-service-runtime-saga = { module = "eu.servista:servista-service-runtime-saga", version.ref = "servista-service-runtime" }
+servista-service-runtime-idempotency = { module = "eu.servista:servista-service-runtime-idempotency", version.ref = "servista-service-runtime" }
+servista-service-runtime-webhook = { module = "eu.servista:servista-service-runtime-webhook", version.ref = "servista-service-runtime" }
 servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version.ref = "servista-service-runtime" }
 
 # servista Avro Schemas

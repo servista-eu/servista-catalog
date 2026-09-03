@@ -2,7 +2,7 @@
 
 **servista-catalog**
 
-A pure Gradle version catalog providing centralized dependency version alignment for all servista Kotlin projects. Published as `eu.servista:servista-catalog:0.1.0` to the Forgejo Maven registry, consumed by servista-kotlin-commons (root + build-logic), servista-service-runtime, and all servista services.
+A pure Gradle version catalog providing centralized dependency version alignment for all servista Kotlin projects. Published as `eu.servista:servista-catalog:0.2.0` to the Forgejo Maven registry, consumed by servista-kotlin-commons (root + build-logic), servista-service-runtime, and all servista services.
 
 **Core Value:** Single source of truth for dependency versions across the entire servista ecosystem — preventing version drift and dependency conflicts between projects.
 
@@ -23,7 +23,9 @@ A pure Gradle version catalog providing centralized dependency version alignment
 ## Build System
 - `maven-publish` + `version-catalog` plugins
 - `catalog/libs.versions.toml` — **The published artifact** consumed by all downstream projects
-- `gradle.properties` — Group (`eu.servista`) and version (`0.1.0`)
+- `gradle.properties` — Group (`eu.servista`) and version (`0.2.0`). ⛔ **Immutable from 0.2.0:
+  published once, never `DELETE`d, never re-uploaded. Forgejo refuses a re-upload `409` — measured
+  2026-09-03 with a control.**
 
 ## Configuration
 - `FORGEJO_USER` / `FORGEJO_TOKEN` — Maven registry authentication
@@ -43,13 +45,13 @@ A pure Gradle version catalog providing centralized dependency version alignment
 ## Dependency Management
 - `catalog/libs.versions.toml` is the **single source of truth** for all dependency versions
 - When bumping versions, only this file needs updating
-- Consuming projects pull versions via: `versionCatalogs { create("libs") { from("eu.servista:servista-catalog:0.1.0") } }`
+- Consuming projects pull versions via: `versionCatalogs { create("libs") { from("eu.servista:servista-catalog:0.2.0") } }`
 - After modifying, must republish since Forgejo doesn't support overwriting Maven artifacts
 
 ## Architecture
 
 ## What the catalog pins
-- Servista internal: commons (0.1.0), service-runtime (0.1.0), service-runtime-events (0.1.0)
+- Servista internal: commons (0.2.0), service-runtime core + 10 slices (0.2.0), avro-schemas (0.2.0)
 - Kotlin 2.3.10, Ktor 3.4.3, Koin 4.2.0
 - Database: jOOQ 3.20.11, Flyway 12.0.3, HikariCP 7.0.2, PostgreSQL JDBC 42.7.11, Oracle JDBC 23.7
 - Messaging: Kafka 4.2.0, Avro 1.12.1

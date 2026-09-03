@@ -35,7 +35,7 @@ plugins {
 
 dependencies {
     implementation(libs.servista.commons.core)
-    implementation(libs.servista.service.runtime)
+    implementation(libs.servista.service.runtime.core)
     implementation(libs.ktor.server.core)
     implementation(libs.koin.core)
 }
@@ -47,9 +47,9 @@ dependencies {
 
 | Version key | Modules | Version |
 |-------------|---------|---------|
-| `servista-kotlin-commons` | All `commons-*` and `commons-wiring-*` modules | 0.1.0 |
+| `servista-kotlin-commons` | All `commons-*` and `commons-wiring-*` modules | 0.2.0 |
 | `servista-service-runtime` | `servista-service-runtime`, `servista-service-runtime-events` | 0.2.0 |
-| `servista-avro-schemas` | `servista-avro-schemas` | 0.1.0 |
+| `servista-avro-schemas` | `servista-avro-schemas` | 0.2.0 |
 
 ### Third-party dependencies
 
