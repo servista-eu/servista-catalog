@@ -1,3 +1,9 @@
+// distribution: distributable
+//   the version catalog every consumer of the distributable set resolves. ⛔ It therefore names
+//   ONLY distributable coordinates: the 25 `commons-infra-*` aliases left it at 0.3.0
+//   (`F419 #595`) because a catalog a contractor holds is an inventory a contractor reads.
+// See DISTRIBUTION.md. Asserted by `node tools/check-distribution-boundary.mjs` in servista-planning.
+
 plugins {
     `maven-publish`
     `version-catalog`
