@@ -362,7 +362,12 @@ typesafe-config = "1.4.9"
 
 servista-kotlin-commons = "0.3.0"
 servista-service-runtime = "0.2.0"
-servista-avro-schemas = "0.2.0"
+# ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
+# `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
+# THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
+# other repositories that declare this coordinate are allowed not to move, and only the two
+# producers this row edits take the new catalog.
+servista-avro-schemas = "0.3.0"
 
 [libraries]
 # Ktor Server
