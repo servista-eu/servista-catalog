@@ -360,7 +360,7 @@ aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
 
-servista-kotlin-commons = "0.2.0"
+servista-kotlin-commons = "0.3.0"
 servista-service-runtime = "0.2.0"
 servista-avro-schemas = "0.2.0"
 
@@ -490,36 +490,22 @@ servista-commons-wiring-koin-rt-authz-foss-openfga = { module = "eu.servista:com
 servista-commons-wiring-koin-rt-http-foss-ktor = { module = "eu.servista:commons-wiring-koin-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
 servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons-wiring-koin-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 
-# servista Commons — Infra ports
-servista-commons-infra-core = { module = "eu.servista:commons-infra-core", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-db = { module = "eu.servista:commons-infra-db", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-cache = { module = "eu.servista:commons-infra-cache", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-objectstorage = { module = "eu.servista:commons-infra-objectstorage", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-secrets = { module = "eu.servista:commons-infra-secrets", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-dns = { module = "eu.servista:commons-infra-dns", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-events = { module = "eu.servista:commons-infra-events", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-gateway = { module = "eu.servista:commons-infra-gateway", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-authz = { module = "eu.servista:commons-infra-authz", version.ref = "servista-kotlin-commons" }
-
-# servista Commons — Infra adapters
-servista-commons-infra-db-foss-postgres = { module = "eu.servista:commons-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-cache-foss-valkey = { module = "eu.servista:commons-infra-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-objectstorage-foss-garage = { module = "eu.servista:commons-infra-objectstorage-foss-garage", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-secrets-foss-openbao = { module = "eu.servista:commons-infra-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-dns-cloudflare = { module = "eu.servista:commons-infra-dns-cloudflare", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-events-foss-kafka = { module = "eu.servista:commons-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-gateway-foss-apisix = { module = "eu.servista:commons-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
-servista-commons-infra-authz-foss-openfga = { module = "eu.servista:commons-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
-
-# servista Commons — Infra wiring (koin)
-servista-commons-wiring-koin-infra-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-infra-db-foss-postgres", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-cache-foss-valkey = { module = "eu.servista:commons-wiring-koin-infra-cache-foss-valkey", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-objectstorage-foss-garage = { module = "eu.servista:commons-wiring-koin-infra-objectstorage-foss-garage", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-secrets-foss-openbao = { module = "eu.servista:commons-wiring-koin-infra-secrets-foss-openbao", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-dns-cloudflare = { module = "eu.servista:commons-wiring-koin-infra-dns-cloudflare", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-events-foss-kafka = { module = "eu.servista:commons-wiring-koin-infra-events-foss-kafka", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-gateway-foss-apisix = { module = "eu.servista:commons-wiring-koin-infra-gateway-foss-apisix", version.ref = "servista-kotlin-commons" }
-servista-commons-wiring-koin-infra-authz-foss-openfga = { module = "eu.servista:commons-wiring-koin-infra-authz-foss-openfga", version.ref = "servista-kotlin-commons" }
+# servista Commons — Infra: MOVED OUT OF THIS CATALOG AT 0.3.0
+#
+# ⛔⛔ THE 25 `commons-infra-*` AND `commons-wiring-koin-infra-*` ALIASES ARE GONE FROM HERE, AND
+# THAT IS THE POINT OF `F419 #595`. They named the tenant-provisioning control plane — the part of
+# this platform a third party must never receive — and THIS catalog is resolved by every consumer
+# of the distributable set, a contractor included. Anything holding it could read the whole
+# inventory by typing `libs.servista.commons.infra.` into an editor, and would resolve coordinates
+# its credential is not meant to reach.
+#
+# ✅ They live in `eu.servista.infra:servista-catalog-infra`, published to the **`servista-internal`**
+# package owner from `libs/servista-kotlin-commons-infra`. The eight `backend/infra` services
+# declare BOTH catalogs; nothing else declares the second one.
+#
+# ⚠️ `eu.servista:commons-infra-*:0.1.0` and `:0.2.0` still RESOLVE and always will — versions are
+# immutable and nothing is deleted. They are frozen, not removed, and that residue is stated in
+# `work/shared-libraries/07-STAGE-3-DISTRIBUTION-BOUNDARY.md` §5 rather than left to be discovered.
 
 # servista Service Runtime
 #

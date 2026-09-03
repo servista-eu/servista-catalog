@@ -47,9 +47,20 @@ dependencies {
 
 | Version key | Modules | Version |
 |-------------|---------|---------|
-| `servista-kotlin-commons` | All `commons-*` and `commons-wiring-*` modules | 0.2.0 |
-| `servista-service-runtime` | `servista-service-runtime`, `servista-service-runtime-events` | 0.2.0 |
+| `servista-kotlin-commons` | the 32 `commons-*` and `commons-wiring-koin-rt-*` modules | 0.3.0 |
+| `servista-service-runtime` | `servista-service-runtime-core` and its ten named slices | 0.2.0 |
 | `servista-avro-schemas` | `servista-avro-schemas` | 0.2.0 |
+
+⛔ **This catalog names only what is DISTRIBUTABLE.** The 25 `commons-infra-*` and
+`commons-wiring-koin-infra-*` aliases left it at `0.3.0` (`F419 #595`, 2026-09-03): they name the
+tenant-provisioning control plane, and this catalog is resolved by every consumer of the
+distributable set. They are now `eu.servista.infra:servista-catalog-infra`, published to the
+**`servista-internal`** package owner, and declared as a second catalog by the eight `backend/infra`
+services alone. See
+[`DISTRIBUTION.md`](https://git.hestia-ng.eu/servista/servista-kotlin-commons-infra/src/branch/main/DISTRIBUTION.md).
+
+⚠️ **`servista-service-runtime` has no aggregate alias** — it is `-core` plus ten slices since
+`F418 #594`. `eu.servista:servista-service-runtime:0.1.0` still resolves; it simply has no 0.2.0.
 
 ### Third-party dependencies
 
