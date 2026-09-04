@@ -361,7 +361,7 @@ aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT on
 typesafe-config = "1.4.9"
 
 servista-kotlin-commons = "0.3.0"
-servista-service-runtime = "0.2.0"
+servista-service-runtime = "0.3.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
@@ -521,9 +521,11 @@ servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons
 # code no service loads (`work/shared-libraries/01-ANALYSIS.md` §3).
 #
 # ⚠️ The coordinate `eu.servista:servista-service-runtime:0.1.0` still RESOLVES and always will —
-# nothing is deleted under the immutable scheme. It simply has no 0.2.0. A repository that has not
-# moved keeps building against 0.1.0; one that moves takes `-core` plus the slices it uses, and the
-# compiler is the census.
+# nothing is deleted under the immutable scheme. It has simply had NO VERSION SINCE — not 0.2.0,
+# not 0.3.0, and not whatever this ref reads today. ⛔ Phrased as "it has no 0.2.0" until 2026-09-04,
+# which was a sentence that needed editing on every bump and therefore would not get one; read the
+# ref above rather than this paragraph. A repository that has not moved keeps building against
+# 0.1.0; one that moves takes `-core` plus the slices it uses, and the compiler is the census.
 servista-service-runtime-core = { module = "eu.servista:servista-service-runtime-core", version.ref = "servista-service-runtime" }
 servista-service-runtime-database = { module = "eu.servista:servista-service-runtime-database", version.ref = "servista-service-runtime" }
 # ⛔ THE KAFKA DISPATCHER SLICE IS `-messaging`, NOT `-events`. `servista-service-runtime-events` is
