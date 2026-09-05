@@ -368,7 +368,7 @@ typesafe-config = "1.4.9"
 # `checkKotlinAbi` is green over an unchanged dump, because both constants were `private` — so no
 # consumer is obliged to rebuild; `node tools/rebuild-set.mjs` is what decides that.
 servista-kotlin-commons = "0.6.0"
-servista-service-runtime = "0.7.0"
+servista-service-runtime = "0.8.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
