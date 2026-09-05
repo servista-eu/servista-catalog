@@ -367,7 +367,7 @@ typesafe-config = "1.4.9"
 # default"*, so the number comes from the cluster that owns it. ⭐ The public ABI did NOT move —
 # `checkKotlinAbi` is green over an unchanged dump, because both constants were `private` — so no
 # consumer is obliged to rebuild; `node tools/rebuild-set.mjs` is what decides that.
-servista-kotlin-commons = "0.9.0"
+servista-kotlin-commons = "0.10.0"
 servista-service-runtime = "0.8.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
@@ -488,6 +488,7 @@ servista-commons-rt-authz-foss-openfga = { module = "eu.servista:commons-rt-auth
 servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-foss-ktor", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-o11y-foss-otel = { module = "eu.servista:commons-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-validation-foss-konform = { module = "eu.servista:commons-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-lakehouse-foss-trino = { module = "eu.servista:commons-rt-lakehouse-foss-trino", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Runtime wiring (koin)
 servista-commons-wiring-koin-rt-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }

@@ -20,7 +20,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
     versionCatalogs {
-        create("libs") { from("eu.servista:servista-catalog:0.2.0") }
+        create("libs") { from("eu.servista:servista-catalog:<version>") }  // see gradle.properties
     }
 }
 ```
@@ -43,13 +43,28 @@ dependencies {
 
 ## What the catalog pins
 
-### Servista internal libraries
+⛔ **This section used to list every version, and every one of them was wrong.** Measured
+2026-09-05 while releasing `0.15.0`: it claimed `servista-kotlin-commons` at `0.3.0` (it was
+`0.9.0`), `servista-service-runtime` at `0.2.0` (`0.8.0`) with *"ten named slices"* (there are
+eleven), `servista-avro-schemas` at `0.2.0` (`0.3.0`), and Kafka at 4.2.0 against a `4.3.1` ref.
+⭐ **A quantity that varies is a COMMAND, not a sentence** — the same remedy `A436 #611` applied to
+`CLAUDE.md` in this repository on the same day, one file over, which is why this one was still
+wrong.
 
-| Version key | Modules | Version |
-|-------------|---------|---------|
-| `servista-kotlin-commons` | the 32 `commons-*` and `commons-wiring-koin-rt-*` modules | 0.3.0 |
-| `servista-service-runtime` | `servista-service-runtime-core` and its ten named slices | 0.2.0 |
-| `servista-avro-schemas` | `servista-avro-schemas` | 0.2.0 |
+```bash
+# every version this catalog states, from the file that states it
+sed -n '/^\[versions\]/,/^\[libraries\]/p' catalog/libs.versions.toml
+# and the version this catalog itself publishes
+grep '^version=' gradle.properties
+```
+
+Categories, which do not go stale: the servista libraries (`servista-kotlin-commons`,
+`servista-service-runtime`'s core plus its slices, `servista-avro-schemas`); Kotlin, Ktor and Koin;
+database (jOOQ, Flyway, HikariCP, PostgreSQL and Oracle JDBC); messaging (Kafka, Avro); the
+lakehouse client (Trino JDBC); cache; observability (OpenTelemetry, Micrometer); security (Nimbus
+JOSE+JWT, Tink, BouncyCastle, OpenFGA); cloud (AWS SDK); validation; testing (JUnit, Kotest,
+Testcontainers, MockK); analysis (Detekt, Dokka, ktfmt); and the Gradle plugin artifacts
+`build-logic` consumes.
 
 ⛔ **This catalog names only what is DISTRIBUTABLE.** The 25 `commons-infra-*` and
 `commons-wiring-koin-infra-*` aliases left it at `0.3.0` (`F419 #595`, 2026-09-03): they name the
@@ -59,46 +74,8 @@ distributable set. They are now `eu.servista.infra:servista-catalog-infra`, publ
 services alone. See
 [`DISTRIBUTION.md`](https://git.hestia-ng.eu/servista/servista-kotlin-commons-infra/src/branch/main/DISTRIBUTION.md).
 
-⚠️ **`servista-service-runtime` has no aggregate alias** — it is `-core` plus ten slices since
+⚠️ **`servista-service-runtime` has no aggregate alias** — it is `-core` plus its named slices since
 `F418 #594`. `eu.servista:servista-service-runtime:0.1.0` still resolves; it simply has no 0.2.0.
-
-### Third-party dependencies
-
-| Category | Key libraries |
-|----------|--------------|
-| Kotlin | Kotlin 2.3.10, kotlinx-serialization 1.10.0, kotlinx-coroutines 1.10.2, kotlinx-datetime 0.7.1 |
-| HTTP | Ktor 3.4.3 (server + client), Netty 4.2.5.Final |
-| DI | Koin 4.2.0 |
-| Database | jOOQ 3.20.11, Flyway 12.0.3, HikariCP 7.0.2, PostgreSQL JDBC 42.7.11, Oracle JDBC 23.7.0.25.01 |
-| Messaging | Kafka 4.2.0, Avro 1.12.1, Apicurio Serdes 3.0.0.M4 |
-| Cache | Lettuce 7.5.0.RELEASE |
-| Observability | OpenTelemetry 1.54.0, OTel Java Agent 2.20.0, Micrometer 1.16.3, Pyroscope 1.0.4 |
-| Logging | kotlin-logging 7.0.3, Logback 1.5.32, Logstash Encoder 8.1, SLF4J 2.0.17, Janino 3.1.12 |
-| Security | Nimbus JOSE+JWT 10.8, Tink 1.13.0, BouncyCastle 1.80, Vault Java Driver 6.2.1 |
-| Authorization | OpenFGA SDK 0.9.7 |
-| Cloud | AWS SDK 2.44.1 |
-| Validation | Konform 0.11.0 |
-| Testing | JUnit 5.14.2, Kotest 6.1.4, Testcontainers 2.0.3, MockK 1.14.7 |
-| Analysis | Detekt 2.0.0-alpha.2, Dokka 2.2.0, ktfmt 0.25.0, BCV 0.18.1 |
-| Build | Shadow 9.0.0-beta12 |
-
-### Plugins
-
-| Alias | Plugin ID |
-|-------|-----------|
-| `kotlin-jvm` | `org.jetbrains.kotlin.jvm` |
-| `kotlin-serialization` | `org.jetbrains.kotlin.plugin.serialization` |
-| `ktor` | `io.ktor.plugin` |
-| `jooq-codegen` | `org.jooq.jooq-codegen-gradle` |
-| `flyway` | `org.flywaydb.flyway` |
-| `detekt` | `dev.detekt` |
-| `dokka` | `org.jetbrains.dokka` |
-| `ktfmt` | `com.ncorti.ktfmt.gradle` |
-| `shadow` | `com.gradleup.shadow` |
-
-The `[libraries]` section also includes `gradle-*` prefixed entries (e.g. `gradle-kotlin`, `gradle-detekt`) exposing plugin artifacts for use in `build-logic` convention plugins via `implementation(libs.gradle.kotlin)`.
-
-See [`catalog/libs.versions.toml`](catalog/libs.versions.toml) for the complete list.
 
 ## Publishing
 
