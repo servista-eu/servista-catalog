@@ -360,7 +360,14 @@ aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
 
-servista-kotlin-commons = "0.5.0"
+# ⚠️ 0.5.0 -> 0.6.0 on 2026-09-05 by `A436 #611`: `commons-rt-events-foss-kafka`'s
+# `KafkaChannelManagerAdapter` stopped compiling `DEFAULT_PARTITIONS = 1` and
+# `DEFAULT_REPLICATION_FACTOR: Short = 1`. An omitted `partitions` / `replicationFactor` property
+# now becomes an empty `Optional`, which is Kafka's own way of saying *"apply your configured
+# default"*, so the number comes from the cluster that owns it. ⭐ The public ABI did NOT move —
+# `checkKotlinAbi` is green over an unchanged dump, because both constants were `private` — so no
+# consumer is obliged to rebuild; `node tools/rebuild-set.mjs` is what decides that.
+servista-kotlin-commons = "0.6.0"
 servista-service-runtime = "0.7.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
