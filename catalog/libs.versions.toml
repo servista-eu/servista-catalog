@@ -367,7 +367,14 @@ typesafe-config = "1.4.9"
 # default"*, so the number comes from the cluster that owns it. ⭐ The public ABI did NOT move —
 # `checkKotlinAbi` is green over an unchanged dump, because both constants were `private` — so no
 # consumer is obliged to rebuild; `node tools/rebuild-set.mjs` is what decides that.
-servista-kotlin-commons = "0.10.0"
+# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-05 by `A383 #561`: `commons-rt-events-foss-kafka` gains
+# `ReloadingPemSslEngineFactory`, and `KafkaSslConfig` now emits PATHS plus
+# `ssl.engine.factory.class` instead of the certificate and key CONTENTS. ⛔ The ABI DID move —
+# `KafkaSslConfig.certificateChain`/`privateKey` became `certificatePath`/`privateKeyPath` — and
+# `checkKotlinAbi` is what said so; no consumer constructs it directly, they all go through
+# `fromConfig`/`fromEnvironment`, so the source change is nil. ⭐ A rebuild is what makes the fix
+# LIVE, and `node tools/rebuild-set.mjs` names which images that is.
+servista-kotlin-commons = "0.11.0"
 servista-service-runtime = "0.8.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
