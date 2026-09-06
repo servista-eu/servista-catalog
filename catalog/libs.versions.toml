@@ -374,8 +374,19 @@ typesafe-config = "1.4.9"
 # `checkKotlinAbi` is what said so; no consumer constructs it directly, they all go through
 # `fromConfig`/`fromEnvironment`, so the source change is nil. ⭐ A rebuild is what makes the fix
 # LIVE, and `node tools/rebuild-set.mjs` names which images that is.
-servista-kotlin-commons = "0.12.0"
-servista-service-runtime = "0.9.0"
+# ⚠️ 0.12.0 -> 0.13.0 on 2026-09-06 by `A392 #451` (owner decision `D-25` `Q5` -- grant ABAC, do
+# not delete it): a conditioned tuple can be written and evaluated at last. `RelationshipTuple` takes
+# an optional `condition`; `AuthorizationPort.checkAccess`/`batchCheck` and
+# `RelationshipPort.listObjects`/`listRelations` take a request `context`; the OpenFGA adapters inject
+# `current_time` from a `kotlin.time.Clock`. ⛔ The ABI DID move and it moved in `checkAccess`, which
+# `PermissionGuard` and `TenantContextSetup` call on every authorization decision in the estate --
+# every parameter is defaulted so no source edit is needed anywhere, but a stale jar throws
+# `NoSuchMethodError`, so this one is a real rebuild rather than a re-pin. `checkKotlinAbi` refused
+# the first run and named the signature.
+servista-kotlin-commons = "0.13.0"
+# ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
+# zero lines of that repository's source changed.
+servista-service-runtime = "0.10.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
