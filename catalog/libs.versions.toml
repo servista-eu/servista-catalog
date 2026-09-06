@@ -375,7 +375,7 @@ typesafe-config = "1.4.9"
 # `fromConfig`/`fromEnvironment`, so the source change is nil. ⭐ A rebuild is what makes the fix
 # LIVE, and `node tools/rebuild-set.mjs` names which images that is.
 servista-kotlin-commons = "0.12.0"
-servista-service-runtime = "0.8.0"
+servista-service-runtime = "0.9.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
