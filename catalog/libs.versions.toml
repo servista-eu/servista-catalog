@@ -427,7 +427,15 @@ servista-kotlin-commons = "0.14.0"
 # ⭐ It is `A19 #118`'s reasoning one principal kind over, and it is STRICTLY STRONGER than what it
 # replaced: before `D4` an S2S principal skipped BOTH checks; it now passes the scope check and
 # skips only the membership one. A human on the same route is unchanged, asserted with a control.
-servista-service-runtime = "0.13.0"
+# ⚠️ 0.13.0 -> 0.14.0 on 2026-09-07 by `A297 #461`: `ServiceHost`'s PKCS#8 guard FOUND the private
+# key block instead of assuming it is the first one. ⛔ IT REFUSED EVERY REAL BUNDLE ON ITS FIRST
+# ROLLOUT — a vault-agent bundle is `{{ .Cert }}` then `{{ .Key }}`, so the first PEM block is a
+# CERTIFICATE and the guard reported "not PKCS#8" about a file whose key was correctly PKCS#8 on
+# line 20. ⭐ The refusal was the right SHAPE and cost nothing: it named the file, the block it saw
+# and the parameter, so one `grep -n -- "-----BEGIN"` in the pod settled it, and the rollout waited
+# with the old pods serving. ⚠️ The tests could not have caught it — all three passed a BARE key
+# file, which is not a shape any pod holds. A control on the wrong shape cannot fail on the real one.
+servista-service-runtime = "0.14.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
