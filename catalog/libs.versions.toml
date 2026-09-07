@@ -411,7 +411,15 @@ servista-kotlin-commons = "0.14.0"
 # template render, so two annotations give a mismatched cert/key pair), and `ServiceHost` refuses
 # at BOOT when the server key is SEC1 -- OpenBao's default for `key_type=ec` -- because Netty
 # reads only PKCS#8 and would otherwise fail the FIRST HANDSHAKE on a pod that is Ready.
-servista-service-runtime = "0.11.0"
+# ⚠️ 0.11.0 -> 0.12.0 on 2026-09-07 by `A297 #461` `D5` — the CLIENT half of per-identity mTLS, and
+# it is one function rather than twenty-five. `bootstrap()` registers ONE `HttpClient` that every
+# outbound adapter in a service resolves, so `mtlsHttpClient` gives every edge of that service its
+# certificate with NO adapter changing. ⛔ Both halves of the TLS config are ADDITIVE: the identity
+# is PRESENTED rather than demanded (client auth is server-initiated, so calls to Hydra, OpenFGA and
+# the billing engine are untouched), and the S2S anchor is MERGED with the platform default rather
+# than replacing it — assigning `trustManager` alone would leave the client unable to verify any
+# public TLS certificate, which is a service's whole outbound world broken to fix one hop.
+servista-service-runtime = "0.12.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
@@ -444,6 +452,14 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 # Ktor Client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+# ⛔ The CIO engine's TLS configuration lives in its own module, and `addCertificateChain` —
+# what turns a chain+key into a CLIENT certificate — is an extension on `TLSConfigBuilder`
+# declared there. `ktor-client-cio` brings it TRANSITIVELY at runtime, which is not the same
+# as having the symbol on a compile classpath: an `implementation` dependency does not
+# export its own. Named here because `servista-service-runtime` compiles against it
+# (`A297 #461` `D5`), and verified against the jar with `javap` rather than the docs — this
+# version has `addCertificateChain` and `addKeyStoreNullablePassword`, and NO `addKeyStore`.
+ktor-network-tls = { module = "io.ktor:ktor-network-tls", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
