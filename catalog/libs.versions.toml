@@ -435,7 +435,15 @@ servista-kotlin-commons = "0.14.0"
 # and the parameter, so one `grep -n -- "-----BEGIN"` in the pod settled it, and the rollout waited
 # with the old pods serving. ⚠️ The tests could not have caught it — all three passed a BARE key
 # file, which is not a shape any pod holds. A control on the wrong shape cannot fail on the real one.
-servista-service-runtime = "0.14.0"
+# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-07 by `F289 #453`: `AuthorizationModel` publishes the authorization
+# model's vocabulary — ten object types, fifteen relation names, one condition name, and the
+# object-id and userset builders — so that a consumer can NAME them. ⛔ ADDITIVE ONLY: one new
+# public object, and `PlatformAuthorization`'s three properties delegate to it instead of holding
+# their own literals. ⭐ THE RELEASE IS THE POINT, not a side effect: 23 consumer files in five
+# repositories retype these strings as bare literals and CANNOT reference the symbol until it is
+# published. A private constant does not prevent duplication — it compels it, and then hides the
+# copies from every tool that could have found them.
+servista-service-runtime = "0.15.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
