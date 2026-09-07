@@ -396,7 +396,22 @@ typesafe-config = "1.4.9"
 servista-kotlin-commons = "0.14.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
-servista-service-runtime = "0.10.0"
+# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
+# gains a SECOND member, `confersBlanketAuthority`, and `PermissionGuard` and
+# `TenantContextSetup.resolvePlatformBypass` -- the estate's only two authorization
+# short-circuits -- now ask that instead of `isServiceToService`. ⛔ THE BEHAVIOUR CHANGE IS THE
+# POINT AND IT IS NARROW: an `AuthSource.MTLS` principal stops receiving blanket authority and
+# resolves its scopes in OpenFGA on `user:<its client certificate CN>`. `INTERNAL` is untouched,
+# which is what lets `D5` convert one edge at a time behind a callee accepting both.
+# ⭐ ABI: ADDITIVE (a new getter on an enum), so a consumer built against 0.10.0 still LINKS --
+# `checkKotlinAbi` refused the first run unprompted and named it. `node tools/rebuild-set.mjs`
+# decides which images must move; the ABI verdict does not.
+# ⚠️ It also carries two things measured against the running estate rather than the docs:
+# `MtlsConfig` gains `server-bundle` (vault-agent's `pkiCert` issues a FRESH certificate per
+# template render, so two annotations give a mismatched cert/key pair), and `ServiceHost` refuses
+# at BOOT when the server key is SEC1 -- OpenBao's default for `key_type=ec` -- because Netty
+# reads only PKCS#8 and would otherwise fail the FIRST HANDSHAKE on a pod that is Ready.
+servista-service-runtime = "0.11.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
