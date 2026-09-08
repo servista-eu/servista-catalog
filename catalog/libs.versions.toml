@@ -393,7 +393,17 @@ typesafe-config = "1.4.9"
 # every parameter is defaulted so no source edit is needed anywhere, but a stale jar throws
 # `NoSuchMethodError`, so this one is a real rebuild rather than a re-pin. `checkKotlinAbi` refused
 # the first run and named the signature.
-servista-kotlin-commons = "0.14.0"
+# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-08 by `F477 #653`: `commons-rt-http-foss-ktor` stops declaring
+# `ktor-client-cio`. It never constructed a client -- `KtorHttpClientAdapter` wraps an injected one
+# -- so the engine bought the adapter nothing and put a SECOND engine on the production runtime
+# classpath of every service in the estate, measured off the published POM. ⛔ NO ABI MOVES and no
+# source behaviour changes: this release removes a DEPENDENCY, so `checkKotlinAbi` says nothing
+# about it and `node tools/rebuild-set.mjs` names the images.
+# ⛔⛔ AND THIS IS THE REF THE 0.27.0 DEFECT WAS ABOUT, READ FROM THE OTHER SIDE. 0.27.0 added an
+# ALIAS and left the library ref forty lines away untouched; this release moves the ref and adds no
+# alias. `check-catalog-pins.mjs`'s FOURTH assertion is what makes either half checkable, and it was
+# run against this file before the publish.
+servista-kotlin-commons = "0.15.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -486,9 +496,33 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 
 # Ktor Client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+# ⛔⛔ KEEP THIS ALIAS. `F477 #653` `D3` was a decision NOT TO DELETE IT, and it has TWO reasons —
+# the second of which nothing in the estate had written down until 2026-09-08:
+#   1. `servista-service-runtime`'s `MtlsOutboundClientTest` builds a client the OLD way and asserts
+#      it CANNOT present the estate's EC identity. That case is what makes `A472 #648`'s fix
+#      attributable to the ENGINE rather than to a certificate, a policy or a callee, and it is what
+#      goes red the day somebody puts CIO back. Deleting the alias deletes the regression guard.
+#   2. ⛔ `servista-tenant-control-plane` USES CIO IN PRODUCTION, deliberately and explicitly:
+#      `PrivateProfileModule` registers `single { HttpClient(CIO) }` for the one connection pool its
+#      nine `tcp-*-http` adapters share, and those nine modules each declare
+#      `implementation(libs.ktor.client.cio)`. ⚠️ It is safe TODAY only because that client presents
+#      NO client certificate — it authenticates with `X-Internal-Api-Key` over ClusterIP — so
+#      `A472`'s EC defect cannot bite it. ⛔ THE DAY ANY TCP -> INFRA-SERVICE EDGE IS CONVERTED TO
+#      mTLS UNDER ADR-034, IT HITS `A472 #648` VERBATIM. That is what
+#      `node tools/check-http-engines.mjs` in servista-planning exists to say out loud.
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-# ⛔⛔ THE ENGINE PRODUCTION USES IS `ktor-client-java`, AND `ktor-client-cio` IS NOW A TEST-SCOPE
-# REGRESSION GUARD — `A472 #648` `D2`, decided by the platform owner 2026-09-08. CIO ships its
+# ⛔⛔ THE ENGINE THE BACKEND SERVICES USE IS `ktor-client-java` — `A472 #648` `D2`, decided by the
+# platform owner 2026-09-08.
+# ⛔ THIS BLOCK OPENED "AND `ktor-client-cio` IS NOW A TEST-SCOPE REGRESSION GUARD" AND THAT WAS
+# FALSE IN TEN DECLARATION SITES WHEN IT WAS WRITTEN — corrected 2026-09-08 by `F477 #653`, which
+# made the first half of it true and MEASURED the second. `commons-rt-http-foss-ktor` held it at
+# `implementation` scope while never constructing a client, putting it on the production runtime
+# classpath of EVERY service (removed in commons 0.15.0); and the nine `tcp-*-http` modules of
+# `servista-tenant-control-plane` hold it at `implementation` scope for a client that repository
+# builds on purpose (kept — see the alias above). ⭐ THE GENERALISABLE HALF: a claim about SCOPE is
+# a claim about every declaration site in the estate, and this one was written from the one site its
+# author had just edited.
+# ⛔ WHY `ktor-client-java` AND NOT CIO, WHICH IS THE PART THAT DOES NOT AGE. CIO ships its
 # OWN TLS implementation, whose client-certificate selection compares the chain's public-key
 # algorithm to the literals "RSA" then "DSS" and leaves a literal `false` — read out of
 # `TLSClientHandshake.class` with `javap -c -p`, not out of documentation — and its
@@ -505,11 +539,17 @@ ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 # ⛔ THE REASON THIS ALIAS EXISTS CHANGED ON 2026-09-08 AND THE OLD ONE READ AS A LICENCE. It
 # said "named here because `servista-service-runtime` compiles against it (`A297 #461` `D5`)",
 # which was a statement about PRODUCTION code. `A472 #648` moved production onto
-# `ktor-client-java`; both this and `ktor-client-cio` are now declared at TEST scope only, by
+# `ktor-client-java`, and THIS alias is declared at TEST scope only — one site,
+# `servista-service-runtime-core`'s `testImplementation(libs.ktor.network.tls)`, for
 # `MtlsOutboundClientTest`, which builds a client the OLD way and asserts it CANNOT present the
 # estate's EC identity. ⭐ That case is what makes the fix attributable to the ENGINE, and it is
-# what goes red the day somebody puts CIO back — so these two aliases are a REGRESSION GUARD,
-# not a production dependency, and a reader must not take them as licence to build one.
+# what goes red the day somebody puts CIO back — so this alias is a REGRESSION GUARD, not a
+# production dependency, and a reader must not take it as licence to build one.
+# ⛔ IT USED TO SAY "both this and `ktor-client-cio`", AND THAT HALF WAS WRONG — `F477 #653`,
+# 2026-09-08. `ktor-network-tls` really is test-only, at one site, verified by a sweep of every
+# `*.gradle.kts` in the estate; `ktor-client-cio` was at TEN sites, one of which was production in
+# a shared library and nine of which are production in `servista-tenant-control-plane`. The two
+# aliases are kept for different reasons and must not be described together again.
 # ⚠️ Verified against the jar with `javap` rather than the docs: this version has
 # `addCertificateChain` and `addKeyStoreNullablePassword`, and NO `addKeyStore`.
 ktor-network-tls = { module = "io.ktor:ktor-network-tls", version.ref = "ktor" }
