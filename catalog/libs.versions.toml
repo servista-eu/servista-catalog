@@ -443,7 +443,18 @@ servista-kotlin-commons = "0.14.0"
 # repositories retype these strings as bare literals and CANNOT reference the symbol until it is
 # published. A private constant does not prevent duplication — it compels it, and then hides the
 # copies from every tool that could have found them.
-servista-service-runtime = "0.15.0"
+# ⚠️ 0.15.0 -> 0.16.0 on 2026-09-08 by `A472 #648` `D2`: the outbound HTTP client moves off the
+# CIO engine onto `ktor-client-java`, because CIO ships its own TLS implementation that cannot
+# present an EC client certificate at all.
+# ⛔⛔ AND THIS LINE IS WHY THE CATALOG IS AT 0.28.0 AND NOT 0.27.0. 0.27.0 added the
+# `ktor-client-java` ALIAS and left this ref at 0.15.0, so it published a catalog that named the
+# engine and not the release that uses it — and every consumer re-pinned to it resolved the OLD
+# runtime. It was caught by pulling a built image's jar and finding 46 CIO engine classes, 0 Java
+# engine classes and no `OutboundRequestProbe`. ⚠️ The pre-publish check MISSED it and said so as
+# a pass: it diffed the catalog's entry SET and reported "1 added, 0 removed, 0 CHANGED" — and
+# `0 CHANGED` was the finding, for a release whose whole purpose was to change a version.
+# ⭐ A check that can only confirm what you set out to do cannot see what you forgot.
+servista-service-runtime = "0.16.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
