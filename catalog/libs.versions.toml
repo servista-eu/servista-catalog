@@ -476,13 +476,31 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 # Ktor Client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+# ⛔⛔ THE ENGINE PRODUCTION USES IS `ktor-client-java`, AND `ktor-client-cio` IS NOW A TEST-SCOPE
+# REGRESSION GUARD — `A472 #648` `D2`, decided by the platform owner 2026-09-08. CIO ships its
+# OWN TLS implementation, whose client-certificate selection compares the chain's public-key
+# algorithm to the literals "RSA" then "DSS" and leaves a literal `false` — read out of
+# `TLSClientHandshake.class` with `javap -c -p`, not out of documentation — and its
+# `CertificateType` vocabulary has no `ecdsa_sign(64)` at all. Every `pki-s2s` leaf in this estate
+# is EC P-256, so CIO filtered the chain out, sent an EMPTY certificate list, and every mTLS hop
+# died `HandshakeFailure` while curl, the dependency preflight and a JSSE unit test all passed.
+# ⚠️ 3.5.2 is the LATEST release and upstream `main` is byte-identical there, so no bump fixes it.
+ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 # ⛔ The CIO engine's TLS configuration lives in its own module, and `addCertificateChain` —
 # what turns a chain+key into a CLIENT certificate — is an extension on `TLSConfigBuilder`
 # declared there. `ktor-client-cio` brings it TRANSITIVELY at runtime, which is not the same
 # as having the symbol on a compile classpath: an `implementation` dependency does not
-# export its own. Named here because `servista-service-runtime` compiles against it
-# (`A297 #461` `D5`), and verified against the jar with `javap` rather than the docs — this
-# version has `addCertificateChain` and `addKeyStoreNullablePassword`, and NO `addKeyStore`.
+# export its own.
+# ⛔ THE REASON THIS ALIAS EXISTS CHANGED ON 2026-09-08 AND THE OLD ONE READ AS A LICENCE. It
+# said "named here because `servista-service-runtime` compiles against it (`A297 #461` `D5`)",
+# which was a statement about PRODUCTION code. `A472 #648` moved production onto
+# `ktor-client-java`; both this and `ktor-client-cio` are now declared at TEST scope only, by
+# `MtlsOutboundClientTest`, which builds a client the OLD way and asserts it CANNOT present the
+# estate's EC identity. ⭐ That case is what makes the fix attributable to the ENGINE, and it is
+# what goes red the day somebody puts CIO back — so these two aliases are a REGRESSION GUARD,
+# not a production dependency, and a reader must not take them as licence to build one.
+# ⚠️ Verified against the jar with `javap` rather than the docs: this version has
+# `addCertificateChain` and `addKeyStoreNullablePassword`, and NO `addKeyStore`.
 ktor-network-tls = { module = "io.ktor:ktor-network-tls", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
