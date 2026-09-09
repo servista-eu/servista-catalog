@@ -464,7 +464,19 @@ servista-kotlin-commons = "0.15.0"
 # a pass: it diffed the catalog's entry SET and reported "1 added, 0 removed, 0 CHANGED" — and
 # `0 CHANGED` was the finding, for a release whose whole purpose was to change a version.
 # ⭐ A check that can only confirm what you set out to do cannot see what you forgot.
-servista-service-runtime = "0.16.0"
+# ⛔⛔ 0.16.0 -> 0.17.0 on 2026-09-09 by `A297 #461`'s `D8`, AND THE INTERESTING PART IS WHY IT WAS
+# NEEDED: `A470 #646`'s `D5` widened `requireHumanSelf` — which had refused `isMachine` ONLY, so a
+# service CERTIFICATE fell straight past it into `requireAccountId` and got an accidental
+# `400 not a valid numeric ID` — and that commit (`5f9fe56`) landed AFTER `0.16.0` was published.
+# Under immutable semver (`F418 #594`) a version is published once, so the fix was in NO artifact
+# and running on NO pod for a day, while the row that made it read as done.
+# ⚠️ NOTHING REPORTS AN UNRELEASED `src/main` COMMIT. `check-catalog-pins` asserts that every ref
+# names the version its library PUBLISHES, and it was green throughout — the library published
+# 0.16.0 and this file said 0.16.0. The two agreed about a version that did not contain the fix.
+# ⭐ It was found by asking what `A297`'s next edge NEEDED rather than by any gate:
+# `api-accounts`' human family holds five `requireHumanSelf` routes and five of its seventeen
+# service-to-service landings are in that family, so `D5` could not open it until this shipped.
+servista-service-runtime = "0.17.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
