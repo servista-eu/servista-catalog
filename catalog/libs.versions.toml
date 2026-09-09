@@ -476,7 +476,15 @@ servista-kotlin-commons = "0.15.0"
 # ⭐ It was found by asking what `A297`'s next edge NEEDED rather than by any gate:
 # `api-accounts`' human family holds five `requireHumanSelf` routes and five of its seventeen
 # service-to-service landings are in that family, so `D5` could not open it until this shipped.
-servista-service-runtime = "0.17.0"
+# ⚠️ 0.17.0 -> 0.18.0 on 2026-09-09 by `A297 #461`, on the platform owner's instruction that every
+# service follow one architectural pattern: the published TEST FIXTURES gain
+# `assertCertificatePlaneBoundary`, so the estate-wide rule about which routes a service
+# certificate may reach is written ONCE instead of copied into every converting service. It was
+# byte-identical in four repositories within a single sitting before this.
+# ⛔ The MAIN artifacts are unchanged — `checkKotlinAbi` stayed green throughout, and
+# `checkTestFixturesAbi` went RED until the fixtures dump was regenerated, which is `F476 #652`
+# guard proven able to fire by exactly this change rather than argued about.
+servista-service-runtime = "0.20.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
