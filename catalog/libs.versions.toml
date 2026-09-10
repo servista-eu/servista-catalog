@@ -546,10 +546,26 @@ ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 # made the first half of it true and MEASURED the second. `commons-rt-http-foss-ktor` held it at
 # `implementation` scope while never constructing a client, putting it on the production runtime
 # classpath of EVERY service (removed in commons 0.15.0); and the nine `tcp-*-http` modules of
-# `servista-tenant-control-plane` hold it at `implementation` scope for a client that repository
-# builds on purpose (kept — see the alias above). ⭐ THE GENERALISABLE HALF: a claim about SCOPE is
-# a claim about every declaration site in the estate, and this one was written from the one site its
-# author had just edited.
+# `servista-tenant-control-plane` held it at `implementation` scope for a client that repository
+# built on purpose. ⭐ THE GENERALISABLE HALF: a claim about SCOPE is a claim about every declaration
+# site in the estate, and this one was written from the one site its author had just edited.
+#
+# ⛔⛔ AND THOSE NINE ARE GONE — 2026-09-10, `A297 #461` `D5`, which converted the seven
+# `servista-tcp -> infra` edges to per-identity mTLS. Those declarations existed for
+# `PrivateProfileModule`'s `single { HttpClient(CIO) }`, and their own comments said so and said
+# when to remove them: *"THE DAY ANY TCP -> INFRA-SERVICE EDGE IS CONVERTED TO mTLS UNDER ADR-034,
+# THIS ENGINE MUST MOVE FIRST"*. That client is deleted; `bootstrap()` registers the one outbound
+# `HttpClient` from `ServiceConfig.httpClient = true`, on `ktor-client-java`.
+# ✅ SO THE SENTENCE `F477` HAD TO STRIKE OUT IS NOW TRUE, AND IT IS A MEASUREMENT RATHER THAN A
+# RESTORED CLAIM: `ktor-client-cio` is declared at **5 sites, ALL of them test scope** —
+# `testImplementation` in `servista-api-gateway`, `servista-service-runtime-core` and
+# `commons-infra-gateway-foss-apisix`, `integrationTestImplementation` in `api-authentication`
+# and `servista-auth-bridge` — and at **0 production sites** anywhere in the estate. Derive it,
+# do not quote it: `grep -rn 'libs.ktor.client.cio' --include='*.gradle.kts'` from the estate root.
+# ⚠️ AND NOTHING BRINGS IT TRANSITIVELY EITHER, which is the half `F477` bought: `check-http-engines`
+# resolves 70 published POMs and reaches `java` via `servista-service-runtime-core` and no second
+# engine at all. ⛔ A THIRD-PARTY POM remains out of that check's reach by its own admission, so a
+# green run is not a proof that no classpath anywhere carries two.
 # ⛔ WHY `ktor-client-java` AND NOT CIO, WHICH IS THE PART THAT DOES NOT AGE. CIO ships its
 # OWN TLS implementation, whose client-certificate selection compares the chain's public-key
 # algorithm to the literals "RSA" then "DSS" and leaves a literal `false` — read out of
