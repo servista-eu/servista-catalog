@@ -484,7 +484,15 @@ servista-kotlin-commons = "0.15.0"
 # ⛔ The MAIN artifacts are unchanged — `checkKotlinAbi` stayed green throughout, and
 # `checkTestFixturesAbi` went RED until the fixtures dump was regenerated, which is `F476 #652`
 # guard proven able to fire by exactly this change rather than argued about.
-servista-service-runtime = "0.21.0"
+# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-10 by `F487 #663`: `mountRouteTree`'s DEVELOPMENT lane gives each
+# route family its own child `Route`, so a route-scoped plugin installed in a `family { }` block is
+# installed once per family instead of twice on one pipeline. Before this a two-family service
+# refused to start with `DuplicatePluginException` — in the development lane only, every deployed
+# posture green. ⭐ It also moves the route-declaration render-and-assert case into the published
+# TEST FIXTURES (`assertMountedRouteDeclaration`), where it stood as seventeen copies in two shapes.
+# ⛔ MAIN ABI unchanged (the selector is private); the published fixtures dump grew, which is
+# `F476 #652`'s guard firing on exactly the change that should move it.
+servista-service-runtime = "0.22.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
