@@ -29,6 +29,12 @@ A pure Gradle version catalog providing centralized dependency version alignment
   source of truth for it. ⛔ **Immutable from 0.2.0: published once, never `DELETE`d, never
   re-uploaded. Forgejo refuses a re-upload `409` — measured 2026-09-03 with a control.** A release
   is a version bump, and a catalog with a wrong alias costs a patch release rather than an edit.
+  - ⛔⛔ **THE `409` IS PER FILE, NOT PER VERSION** — `F424 #600`, re-measured 2026-09-11 with a
+    throwaway coordinate and a control that fired. A `PUT` of a **new** file into an
+    already-published version answers `201` and is served `200`; only an **existing** file is
+    refused, and a single file cannot be withdrawn at all (`405`). **A released version can never be
+    amended and can always be ADDED to** — the two are not the same sentence, and this file said the
+    first while meaning the second. `node tools/check-published-file-sets.mjs` is what watches it.
 
 ## Configuration
 - `FORGEJO_USER` / `FORGEJO_TOKEN` — Maven registry authentication
