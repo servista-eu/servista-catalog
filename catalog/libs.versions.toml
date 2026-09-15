@@ -434,7 +434,19 @@ typesafe-config = "1.4.9"
 # ALIAS and left the library ref forty lines away untouched; this release moves the ref and adds no
 # alias. `check-catalog-pins.mjs`'s FOURTH assertion is what makes either half checkable, and it was
 # run against this file before the publish.
-servista-kotlin-commons = "0.19.0"
+# ⚠️ 0.19.0 -> 0.20.0 on 2026-09-15 by `A520 #696`: `withContextualDsl` routes cases 2 and 3 through
+# `withTransaction` instead of `withSession`/`withTenantScope`, so the RLS GUC and the query that
+# depends on it share ONE transaction and the adapter stops depending on every pooler in front of it
+# being `pool_mode = session`. ⛔ A BEHAVIOUR CHANGE WITH NO ABI MOVE, which is the hard case: no
+# signature changed, `checkKotlinAbi` is silent by construction, and `node tools/rebuild-set.mjs` is
+# the only thing that names the images. ⭐ The instrument is
+# `ContextualDslTransactionIntegrationTest` and it was shown able to FAIL against the routing this
+# replaces -- two statements in one block reported transaction ids 763 and 764, and a mid-block
+# failure left both writes committed.
+# ⚠️ It also makes 9 of 329 call sites ATOMIC where they were not. In four of them that is a repair
+# rather than a cost: `api-iam`'s role and group replacements delete a set and insert its
+# replacement, and under autocommit a failed insert left the group holding NO roles.
+servista-kotlin-commons = "0.20.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
