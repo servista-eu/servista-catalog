@@ -530,7 +530,11 @@ servista-kotlin-commons = "0.19.0"
 # ⛔ ADDITIVE ONLY and NOT a behaviour change anywhere: the eight sites were correct and proven in
 # production, so nothing existing moves and `checkKotlinAbi`'s dump only grew. A consumer that does
 # not call it is unaffected and, under `F418 #594`, is allowed not to move.
-servista-service-runtime = "0.29.0"
+# ⚠️ 0.29.0 -> 0.30.0 the same day, same row: `-events` gains `eventErrorType`, the event lane's
+# error-classification vocabulary, which stood as EIGHT byte-identical copies in the same eight
+# repositories with zero tests anywhere. ⛔ Additive in both modules; a consumer that calls neither
+# new function is unaffected and is allowed not to move.
+servista-service-runtime = "0.30.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
