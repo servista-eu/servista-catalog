@@ -446,7 +446,20 @@ typesafe-config = "1.4.9"
 # ⚠️ It also makes 9 of 329 call sites ATOMIC where they were not. In four of them that is a repair
 # rather than a cost: `api-iam`'s role and group replacements delete a set and insert its
 # replacement, and under autocommit a failed insert left the group holding NO roles.
-servista-kotlin-commons = "0.20.0"
+# ⛔⛔ 0.20.0 -> 0.20.1 on 2026-09-15 by `A520 #696`: **DO NOT PIN 0.20.0. IT CARRIES A CROSS-TENANT
+# READ.** Routing `withContextualDsl` through `withTransaction` replaced an EXPLICIT GUC reset with
+# `is_local = true`, and those are not equivalent -- `SET LOCAL` reverts to the value the connection
+# ALREADY HELD, not to "unset". A pooled connection carrying a stranded
+# `app.rls_platform_bypass = on` made a read with no tenant and no bypass inherit it and see every
+# tenant's rows, at 200, with no error. Measured on one connection (pid 70), same class, same order:
+# 0.19.0 read `bypassGuc=''` and 0 rows; 0.20.0 read `bypassGuc='on'` and 2 rows.
+# ⭐ 0.20.1 does not restore the reset -- `withTransaction` now states BOTH GUCs unconditionally and
+# transaction-locally, so a transaction says what it IS rather than inheriting what it found. That
+# is strictly stronger than 0.19.0 was: it cannot be skipped by a path that fails before its
+# `finally`, and it does not depend on every other borrower having cleaned up after itself.
+# ⚠️ 0.20.0 was published and can never be withdrawn; no repository ever pinned it beyond the 12
+# that carried catalog 0.46.0 for under an hour, and all 12 move to 0.47.0 in the same sitting.
+servista-kotlin-commons = "0.20.1"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
