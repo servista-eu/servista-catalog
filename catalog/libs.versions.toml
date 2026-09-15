@@ -5,7 +5,7 @@
 # currency:declined — the Kotlin toolchain is its own unit (W2f), not a patch: it moves every
 #   compiler, every plugin and every `.api` dump in 26 repositories at once, and
 #   `check-dependency-currency` already classifies it `own unit — not a batch member`. (owner:
-#   F422 #598, 2026-09-14, reopen when a session is scheduled that can gate all 26 repositories
+#   F510 #686, 2026-09-14, reopen when a session is scheduled that can gate all 26 repositories
 #   in one sitting)
 kotlin = "2.4.10"
 ktor = "3.5.2"
@@ -14,7 +14,7 @@ koin = "4.2.2"
 #   the 17 jOOQ repositories, and jOOQ OSS supports exactly ONE PostgreSQL major per minor
 #   (3.20→17, 3.21→18). `check-server-floor.mjs` is what says whether the pin still matches the
 #   running server, and the running server is postgres-patroni 18.6, which 3.21 is correct for.
-#   (owner: F422 #598, 2026-09-14, reopen when the jOOQ unit is scheduled, after every other
+#   (owner: F510 #686, 2026-09-14, reopen when the jOOQ unit is scheduled, after every other
 #   Class II unit)
 jooq = "3.21.7"
 # ⛔ CLASS II, AND ITS SERVER IS A HARD BOUND RATHER THAN A LOOSE ONE. jOOQ's Open Source Edition
@@ -33,7 +33,7 @@ jooq = "3.21.7"
 # currency:declined — Class II, its own unit, ordered after jOOQ by `D-91`. 141 versioned
 #   migrations in 21 modules across 18 repositories and 16 production databases carry a
 #   `flyway_schema_history`; a bump is a migration-engine change against live schema history,
-#   not a version bump. (owner: F422 #598, 2026-09-14, reopen when the jOOQ unit has landed and
+#   not a version bump. (owner: F510 #686, 2026-09-14, reopen when the jOOQ unit has landed and
 #   `check-flyway-history.mjs` reads 0)
 flyway = "13.4.0"
 hikari = "7.1.0"
@@ -112,7 +112,7 @@ apicurio-avro-serde = "3.3.2"
 # a transitive BOM can sit above a catalog ref and nothing in the build says so.
 # currency:declined — Class II and THE SERVER MOVES FIRST: client 2.1.x needs server >= 2.1.0
 #   for `trace_id`, and the deployed server is OpenFGA v1.15.0. Moving the client first breaks
-#   the authorization plane. (owner: F422 #598, 2026-09-14, reopen when the deployed OpenFGA
+#   the authorization plane. (owner: F510 #686, 2026-09-14, reopen when the deployed OpenFGA
 #   server is upgraded)
 openfga = "0.9.11"
 lettuce = "7.7.0.RELEASE"
@@ -136,7 +136,7 @@ nimbus-jose-jwt = "10.9.1"
 # `BatchLogRecordProcessor`'s worker thread being killed by non-runtime exceptions — a log pipeline
 # that stops exporting with the pod still Ready, which is this estate's "never silently degrade".
 # currency:declined — Class II, pairs with the observability unit: the collector deployed here
-#   is otelcol-servista 0.159.0 and the SDK moves with it, never ahead of it. (owner: F422 #598,
+#   is otelcol-servista 0.159.0 and the SDK moves with it, never ahead of it. (owner: F510 #686,
 #   2026-09-14, reopen when the collector image is upgraded)
 otel = "1.65.0"
 # ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, decision `D-79`) — deleted because
@@ -195,7 +195,7 @@ otel-instrumentation = "2.31.1-alpha"
 # behind the 2.x server". `grafana/otel-profiling-java` and `grafana/pyroscope` are different
 # projects with independent version lines and the matching numbers are a coincidence.
 # currency:declined — Class II and the server is BEHIND the client already: client 2.1.x needs
-#   server >= 2.1.0 and the deployed Pyroscope is 2.0.6. (owner: F422 #598, 2026-09-14, reopen
+#   server >= 2.1.0 and the deployed Pyroscope is 2.0.6. (owner: F510 #686, 2026-09-14, reopen
 #   when the deployed Pyroscope server reaches 2.1.0)
 pyroscope = "2.1.2"
 # ⛔ NEW REF, 2026-08-25 (`D-86`). It is not a new dependency: it is the un-shaded half of what
@@ -322,7 +322,7 @@ bouncycastle-pkix = "1.86"     # bcpkix-jdk18on (test-only here)
 # currency:declined — Class II, pairs with the Garage unit (S3 API, Garage v2.3.0). `F418 #594`
 #   removed the AWS SDK from 17 of 20 service images, so it now reaches only api-audit-query,
 #   servista-object-storage and servista-audit-writer — a smaller consumer set than any table
-#   written before F418 records. (owner: F422 #598, 2026-09-14, reopen when the Garage unit is
+#   written before F418 records. (owner: F510 #686, 2026-09-14, reopen when the Garage unit is
 #   scheduled)
 aws-sdk = "2.54.9"
 
@@ -434,7 +434,7 @@ typesafe-config = "1.4.9"
 # ALIAS and left the library ref forty lines away untouched; this release moves the ref and adds no
 # alias. `check-catalog-pins.mjs`'s FOURTH assertion is what makes either half checkable, and it was
 # run against this file before the publish.
-servista-kotlin-commons = "0.16.0"
+servista-kotlin-commons = "0.17.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -523,7 +523,7 @@ servista-kotlin-commons = "0.16.0"
 # TEST FIXTURES (`assertMountedRouteDeclaration`), where it stood as seventeen copies in two shapes.
 # ⛔ MAIN ABI unchanged (the selector is private); the published fixtures dump grew, which is
 # `F476 #652`'s guard firing on exactly the change that should move it.
-servista-service-runtime = "0.26.0"
+servista-service-runtime = "0.27.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
