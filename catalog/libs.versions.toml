@@ -610,7 +610,17 @@ servista-kotlin-commons = "0.22.0"
 # `health: HealthConfig`, and any added constructor parameter on a data class moves the `$default`
 # signature. ⚠️ SOURCE-compatible — the parameter is defaulted, so no service's `Application.kt`
 # changes and the re-pin is a one-line commit per repository.
-servista-service-runtime = "0.38.0"
+# ⚠️ 0.38.0 -> 0.39.0 on 2026-09-17 by `A505 #681` `D4` (track `0CO`), decision `D-221`.
+# `TenantContextPlugin`'s third branch installs commons 0.22.0's `UnscopedRequestContext`, so
+# `withContextualDsl` REFUSES an unscoped read on the HTTP REQUEST LANE instead of warning.
+# ⛔ AND THE INSTALL IS BEHIND A PER-SERVICE FLAG THAT DEFAULTS OFF --
+# `service.rls.refuse-unscoped-request-read`, overridden by `RLS_REFUSE_UNSCOPED_REQUEST_READ`.
+# Re-pinning here arms nothing and neither does rebuilding: no service declares the block, so the
+# reader answers false and the marker is never installed. Arming is a per-service configuration
+# act, asserted by `check-unscoped-refusal-armed.mjs` rather than trusted.
+# ⛔ The EVENT LANE is untouched by construction -- consumers, outbox pollers, boot passes and
+# reconcilers run no `TenantContextPlugin`, carry no marker, and keep the warning.
+servista-service-runtime = "0.39.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
