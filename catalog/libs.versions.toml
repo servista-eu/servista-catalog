@@ -8,7 +8,28 @@
 #   F510 #686, 2026-09-14, reopen when a session is scheduled that can gate all 26 repositories
 #   in one sitting)
 kotlin = "2.4.10"
-ktor = "3.5.2"
+# ⛔⛔ `ktor` GOVERNS TWO INDEPENDENTLY-VERSIONED THINGS AND THEY ARE NO LONGER IN STEP —
+#   `F532 #708`, moved 2026-09-17 by `A505 #681`'s release (track `0CO`, decision `D-222`).
+#   The LIBRARIES are at 3.6.0 on Maven Central; the GRADLE PLUGIN `io.ktor.plugin` stops at
+#   **3.5.2** and there is no 3.6.0 of it at all.
+# ⭐ MEASURED off the portal's own metadata rather than inferred from a 404, because a 404 alone
+#   cannot tell "not published" from "wrong path":
+#     plugins.gradle.org/m2/io/ktor/plugin/io.ktor.plugin.gradle.plugin/maven-metadata.xml
+#     → <release>3.5.2</release>, and the version list ends at 3.5.2.
+#     Controls: the marker at 3.5.2 answers 200; a planted 9.9.9-planted answers 404.
+#   Maven Central publishes no copy of the marker at all.
+# ⛔ SO A SINGLE REF CANNOT MOVE. `backend/auth/servista-edge-auth` applies
+#   `alias(libs.plugins.ktor)` and is LIVE (`retired/servista-gateway` also applies it and is
+#   retired), so moving one ref to 3.6.0 fails that repository's plugin resolution outright.
+# ✅ The split costs no repository a single character: `libs.plugins.ktor` is spelled the same
+#   and only the `version.ref` behind it changes. See `[plugins] ktor` below.
+# ⚠️ `check-dependency-currency` resolves a ref with no library through the plugin MARKER, so
+#   `ktor-plugin` reads CURRENT at 3.5.2 rather than becoming a second permanent red.
+ktor = "3.6.0"
+# ⛔ HELD, NOT STALE — 3.5.2 is the LATEST `io.ktor.plugin` that exists. Move it the day the
+#   plugin catches up with the libraries; until then this is the pin-the-latest-stable rule
+#   applied honestly to a coordinate whose latest stable happens to be behind its own libraries.
+ktor-plugin = "3.5.2"
 koin = "4.2.2"
 # currency:declined — Class II and ordered LAST by `D-91`: a bump regenerates DB code in 15 of
 #   the 17 jOOQ repositories, and jOOQ OSS supports exactly ONE PostgreSQL major per minor
@@ -469,7 +490,17 @@ typesafe-config = "1.4.9"
 # ⛔ ADDITIVE AND BINARY-COMPATIBLE: the one-argument `HealthRegistry(BuildInfo)` is kept as an
 # explicit secondary constructor, so a repository re-pinned but not yet rebuilt keeps working -- on
 # the fallback budget rather than the injected one.
-servista-kotlin-commons = "0.21.0"
+# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-17 by `A505 #681` `D4` (track `0CO`), decision `D-221`.
+# `commons-core` gains `UnscopedRequestContext`, a coroutine-context MARKER meaning *an HTTP
+# request arrived carrying neither a tenant nor the platform bypass*, and
+# `commons-rt-db-foss-postgres`'s `withContextualDsl` REFUSES such a read instead of warning.
+# ⛔ IT IS INERT UNLESS SOMETHING INSTALLS THE MARKER, and the only thing that can is
+# `servista-service-runtime`'s `TenantContextPlugin` — where it is behind a per-service flag that
+# DEFAULTS OFF (`service.rls.refuse-unscoped-request-read`). So re-pinning to this version arms
+# nothing; a repository that merely moves here behaves exactly as it did.
+# ⭐ ADDITIVE: both `.api` dumps grow and neither loses a declaration, so a repository re-pinned
+# and not yet rebuilt keeps working.
+servista-kotlin-commons = "0.22.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -914,7 +945,7 @@ jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor-plugin" }
 jooq-codegen = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
 # ⚠️ ZERO LIVE CONSUMERS since W1-FY (D-93, 2026-08-25). Six repositories applied this plugin and
 # configured none of them — 0 `flyway { }` blocks, 0 task references, 0 invocations anywhere in
