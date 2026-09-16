@@ -569,7 +569,17 @@ servista-kotlin-commons = "0.21.0"
 # error-classification vocabulary, which stood as EIGHT byte-identical copies in the same eight
 # repositories with zero tests anywhere. ⛔ Additive in both modules; a consumer that calls neither
 # new function is unaffected and is allowed not to move.
-servista-service-runtime = "0.30.0"
+# ⚠️ 0.30.0 -> 0.31.0 on 2026-09-16 by `A521 #697` (track `0CS`), decision `D-218`, riding
+# `servista-kotlin-commons` 0.21.0 in catalog 0.48.0. `MeteredHealthCheck` is GONE and
+# `MicrometerHealthObserver` replaces it: a DECORATOR around each check can only see the outcomes the
+# CHECK produces, and `HealthRegistry` manufactures the `DOWN` for a check that never answers OUTSIDE
+# any decorator. New series `health_check_unfinished_total{name}`, plus a WARN naming the check and
+# the deadline it missed.
+# ⛔ BINARY-INCOMPATIBLE and every image MUST be rebuilt: `ServiceConfig` gains
+# `health: HealthConfig`, and any added constructor parameter on a data class moves the `$default`
+# signature. ⚠️ SOURCE-compatible — the parameter is defaulted, so no service's `Application.kt`
+# changes and the re-pin is a one-line commit per repository.
+servista-service-runtime = "0.31.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
