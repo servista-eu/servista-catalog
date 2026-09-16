@@ -579,7 +579,7 @@ servista-kotlin-commons = "0.21.0"
 # `health: HealthConfig`, and any added constructor parameter on a data class moves the `$default`
 # signature. ⚠️ SOURCE-compatible — the parameter is defaulted, so no service's `Application.kt`
 # changes and the re-pin is a one-line commit per repository.
-servista-service-runtime = "0.35.0"
+servista-service-runtime = "0.36.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
