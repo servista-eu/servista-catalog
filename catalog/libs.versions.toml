@@ -25,11 +25,42 @@ kotlin = "2.4.10"
 #   and only the `version.ref` behind it changes. See `[plugins] ktor` below.
 # ⚠️ `check-dependency-currency` resolves a ref with no library through the plugin MARKER, so
 #   `ktor-plugin` reads CURRENT at 3.5.2 rather than becoming a second permanent red.
-ktor = "3.6.0"
+# ⛔⛔ currency:declined — 3.6.0 PUTS 11.87 MiB OF NATIVE QUIC IN EVERY SERVICE'S FAT JAR AND
+#   BREAKS EVERY IMAGE BUILD IN THE ESTATE. Moved to 3.6.0 on 2026-09-17 inside `A505 #681`'s
+#   release (`D-222`) and moved BACK the same sitting, on two independent measurements.
+#   (owner: `F532 #708`, 2026-09-17, reopen when either the QUIC dependency is excluded estate-wide
+#   as its own decided unit, or ktor stops putting it on the server engine's runtime classpath)
+#
+# (1) ⛔ `shadowJar` REFUSES, and the guard is right. `netty-codec-native-quic` publishes FIVE
+#     platform-classified jars, each with its own `META-INF/io.netty.versions.properties`, so
+#     `PropertiesFileTransformer(MergeStrategy.Fail)` — `W2g`/`D-13`, whose own comment reads
+#     *"one key with two values means two versions of one netty module in the jar"* — fails with
+#     six keys duplicated 5 times. ⭐ NOT a false positive: there really are five.
+#     Measured on `api-iam`: `runtimeClasspath` 181 artifacts, of which SIX are QUIC —
+#     linux-x86_64 2,865,743 B · linux-aarch_64 2,716,924 B · osx-x86_64 2,552,486 B ·
+#     osx-aarch_64 2,401,383 B · windows-x86_64 1,642,581 B · codec-classes-quic 267,074 B.
+#     ⚠️ FOUR OF THE FIVE NATIVES CAN NEVER RUN HERE — every node is linux-amd64.
+#
+# (2) ⛔ AND IT CONSUMES THE WHOLE REMAINING LAYER MARGIN. `api-iam:v0.9.77`'s largest layer is
+#     **82.49 MiB** against the Cloudflare tunnel's **95.37 MiB** per-layer cap — a margin of
+#     12.88 MiB, and this adds 11.87 MiB of already-compiled binaries that barely compress.
+#     `servista/CLAUDE.md` §3: *"a margin this thin is not a budget anybody is managing, and
+#     nothing reports it."*
+#
+# ⭐ AND THE GENERALISABLE HALF, WHICH IS WHY THIS COMMENT IS LONG: NO PER-REPOSITORY GATE COULD
+#   HAVE SEEN IT. `check` builds `test`, never `shadowJar` — the fat jar is assembled only inside
+#   the image build. All 26 repositories were green, `check-catalog-pins`, `check-published-poms`
+#   and `check-dependency-currency` were all green, and the first thing that knew was the first
+#   `podman build`. A third-party bump is not proven by a green estate.
+ktor = "3.5.2"
 # ⛔ HELD, NOT STALE — 3.5.2 is the LATEST `io.ktor.plugin` that exists. Move it the day the
 #   plugin catches up with the libraries; until then this is the pin-the-latest-stable rule
 #   applied honestly to a coordinate whose latest stable happens to be behind its own libraries.
 ktor-plugin = "3.5.2"
+# ⚠️ THE SPLIT SURVIVES THE ROLLBACK, DELIBERATELY. Both refs read 3.5.2 today, so it is inert
+#   — and it is the durable half of what 2026-09-17 measured: `io.ktor.plugin` had no 3.6.0 at
+#   all, so whoever moves `ktor` next cannot move the plugin with it by accident. Collapsing it
+#   back would delete a finding to tidy a line.
 koin = "4.2.2"
 # currency:declined — Class II and ordered LAST by `D-91`: a bump regenerates DB code in 15 of
 #   the 17 jOOQ repositories, and jOOQ OSS supports exactly ONE PostgreSQL major per minor
@@ -500,7 +531,7 @@ typesafe-config = "1.4.9"
 # nothing; a repository that merely moves here behaves exactly as it did.
 # ⭐ ADDITIVE: both `.api` dumps grow and neither loses a declaration, so a repository re-pinned
 # and not yet rebuilt keeps working.
-servista-kotlin-commons = "0.22.0"
+servista-kotlin-commons = "0.23.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -620,7 +651,7 @@ servista-kotlin-commons = "0.22.0"
 # act, asserted by `check-unscoped-refusal-armed.mjs` rather than trusted.
 # ⛔ The EVENT LANE is untouched by construction -- consumers, outbox pollers, boot passes and
 # reconcilers run no `TenantContextPlugin`, carry no marker, and keep the warning.
-servista-service-runtime = "0.39.0"
+servista-service-runtime = "0.40.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
