@@ -459,7 +459,17 @@ typesafe-config = "1.4.9"
 # `finally`, and it does not depend on every other borrower having cleaned up after itself.
 # ⚠️ 0.20.0 was published and can never be withdrawn; no repository ever pinned it beyond the 12
 # that carried catalog 0.46.0 for under an hour, and all 12 move to 0.47.0 in the same sitting.
-servista-kotlin-commons = "0.20.1"
+# ⚠️ 0.20.1 -> 0.21.0 on 2026-09-16 by `A521 #697` (track `0CS`), decision `D-218`. `HealthRegistry`
+# BOUNDS the readiness response instead of asking each check to cancel and then waiting for it, and
+# reports every outcome -- including the ones it synthesises -- through the new `HealthCheckObserver`.
+# ⛔ MEASURED, not reasoned: 139 `/health/ready` responses exceeded 10 s in fourteen days on
+# `servista-object-storage`, one of them 22.632 s, against a 5 s per-check budget and a 3 s
+# `readinessProbe.timeoutSeconds`; and the `garage-storage` check recorded 235,421 invocations over
+# the same window, 100 % tagged `UP` and not one `DOWN`, against 6,654 `503`s on that service.
+# ⛔ ADDITIVE AND BINARY-COMPATIBLE: the one-argument `HealthRegistry(BuildInfo)` is kept as an
+# explicit secondary constructor, so a repository re-pinned but not yet rebuilt keeps working -- on
+# the fallback budget rather than the injected one.
+servista-kotlin-commons = "0.21.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
