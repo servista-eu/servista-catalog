@@ -48,12 +48,18 @@ kotlin = "2.4.10"
 #    were green, `check-catalog-pins`, `check-published-poms` (as a BEFORE/AFTER pair) and
 #    `check-dependency-currency` were all green, and the first thing that knew was `podman`.
 #
-# currency:declined — 3.6.0 puts 11.87 MiB of five-platform native QUIC on every service's
-#   runtimeClasspath, which shadowJar's MergeStrategy.Fail guard correctly refuses, and which
-#   would consume the whole remaining per-layer margin under the Cloudflare cap. Measured and
-#   reverted the same sitting; the narrative is immediately above. (owner: F532 #708, 2026-09-17,
-#   reopen when either the QUIC dependency is excluded estate-wide as its own decided unit, or
-#   ktor stops putting it on the server engine's runtime classpath)
+# ⛔⛔ NO `currency:declined` MARKER HERE, AND THAT IS THE TOOL'S RULING RATHER THAN AN
+#    OVERSIGHT. One was written on 2026-09-17 and `check-dependency-currency` refused it:
+#    *"a Class I BATCH MEMBER may not be declined — nothing is deployed on the other end, so
+#    holding it is scheduling, which belongs to a row rather than to a marker."* ⭐ It is right:
+#    `kotlin` four lines up MAY be declined because the tool classifies it `own unit`; `ktor` is
+#    an ordinary batch member, so holding it is a SCHEDULE and a schedule needs an owner who can
+#    be asked when.
+# ✅ THE OWNER IS `F532 #708`, WHICH IS OPEN, and the finding below is deliberately LEFT RED.
+#    `check-dependency-currency` exits 1 on `ktor 3.5.2 -> 3.6.0`, exactly as it did before
+#    2026-09-17, and that row's own comment already says the red *"is nobody's to
+#    --update-baseline in either direction"*. The comment above is the evidence it needs; the
+#    decision about when to pay it is that row's.
 ktor = "3.5.2"
 # ⛔ HELD, NOT STALE — 3.5.2 is the LATEST `io.ktor.plugin` that exists. Move it the day the
 #   plugin catches up with the libraries; until then this is the pin-the-latest-stable rule
