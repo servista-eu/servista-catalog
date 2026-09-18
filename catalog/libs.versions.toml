@@ -674,7 +674,16 @@ servista-kotlin-commons = "0.24.0"
 # act, asserted by `check-unscoped-refusal-armed.mjs` rather than trusted.
 # ⛔ The EVENT LANE is untouched by construction -- consumers, outbox pollers, boot passes and
 # reconcilers run no `TenantContextPlugin`, carry no marker, and keep the warning.
-servista-service-runtime = "0.40.0"
+# ⛔ 0.40.0 -> 0.41.0 on 2026-09-18 by `F526 #702` (track `6FI`), decision `D-236`.
+# IT CHANGES NO VALUE AND NO SIGNATURE -- `checkKotlinAbi` reports ZERO lines moved. What it removes
+# is a SECOND COPY of the inequality `timeout < budget` and a SECOND READER of
+# `HEALTH_RESPONSE_BUDGET_MS`: both now live once, in `commons-core`'s `ProbeBudget`, because the
+# fifteen shared-library health checks derive their deadlines from them and `commons` cannot see
+# `servista-service-runtime`. `servista/CLAUDE.md` §4 and §5.
+# ✅ `bootstrap` also WARNS when a service overrides the budget in code -- the registry would take
+# the in-code value while every check kept the environment's. 0 of 20 services do, so it fires
+# nowhere today; it is a WARN and not a refusal because the outcome is a reporting defect.
+servista-service-runtime = "0.41.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
