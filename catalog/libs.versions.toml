@@ -539,7 +539,22 @@ typesafe-config = "1.4.9"
 # nothing; a repository that merely moves here behaves exactly as it did.
 # ⭐ ADDITIVE: both `.api` dumps grow and neither loses a declaration, so a repository re-pinned
 # and not yet rebuilt keeps working.
-servista-kotlin-commons = "0.23.0"
+# ⛔⛔ 0.23.0 -> 0.24.0 on 2026-09-18 by `F526 #702` (track `6FI`), decision `D-236`.
+# EVERY HEALTH CHECK DERIVES ITS PROBE DEADLINE FROM THE DEPLOYMENT'S RESPONSE BUDGET, by one
+# shared rule in `commons-core`: `ProbeBudget.probeTimeoutWithin(budget)`, whose post-condition is
+# an INEQUALITY (strictly smaller than the budget, for every positive budget) rather than a value.
+# ⛔ IT RETIRES A SENTENCE 0.21.0 SHIPPED WITH -- *"the sixteen PROBE_TIMEOUT_SECONDS = 10 constants
+# are INERT under the outer deadline"*. They were not. A check that cannot answer inside the budget
+# is REPLACED by the `DOWN` the registry synthesises, so an unfireable 10 s deadline turned a slow
+# dependency into a 503 and a removed replica. `servista-object-storage`'s pods were 4/4 Ready and
+# restarting every ~11.5 h on SIGTERM from the liveness probe.
+# ⭐ ADDITIVE AND BINARY-COMPATIBLE: the `probeTimeout` arrives as a SEPARATE constructor, never a
+# defaulted parameter (a default REMOVES the old `<init>`). The `.api` dumps GREW by 16 lines across
+# 8 modules and lost none, so a repository re-pinned and not yet rebuilt keeps working -- on the
+# compiled 10 s it already had, which is the direction a fallback should fail in.
+# ⚠️ RE-PINNING ARMS NOTHING BY ITSELF: the derivation is compiled into the jar, so a service takes
+# it at its next REBUILD. `node tools/rebuild-set.mjs` names the ceiling; only one image ships here.
+servista-kotlin-commons = "0.24.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
