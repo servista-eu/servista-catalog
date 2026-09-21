@@ -554,7 +554,14 @@ typesafe-config = "1.4.9"
 # compiled 10 s it already had, which is the direction a fallback should fail in.
 # ⚠️ RE-PINNING ARMS NOTHING BY ITSELF: the derivation is compiled into the jar, so a service takes
 # it at its next REBUILD. `node tools/rebuild-set.mjs` names the ceiling; only one image ships here.
-servista-kotlin-commons = "0.25.0"
+# ⚠️ 0.25.0 -> 0.26.0 on 2026-09-21 by `A542 #718` `D3`: `SharedValkeyCluster` gains three
+# replicas. ⛔ A TEST-FIXTURE change that still moves all 57 modules, because this repository
+# publishes one `projectVersion` -- `node tools/rebuild-set.mjs` is what says which images that
+# obliges, and a fixture is on no runtime classpath, so the answer should be none.
+# ⚠️ `ports`/`nodeUris` keep their signatures and change MEANING (every node, not the three
+# masters). ⛔ NO ABI CHECK CAN SEE THAT, which is why it is written here: a consumer that reads
+# them as "the masters" now reads six ports and will not fail to compile.
+servista-kotlin-commons = "0.26.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
