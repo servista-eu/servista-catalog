@@ -683,7 +683,19 @@ servista-kotlin-commons = "0.25.0"
 # ✅ `bootstrap` also WARNS when a service overrides the budget in code -- the registry would take
 # the in-code value while every check kept the environment's. 0 of 20 services do, so it fires
 # nowhere today; it is a WARN and not a refusal because the outcome is a reporting defect.
-servista-service-runtime = "0.42.0"
+# ⚠️ 0.42.0 -> 0.43.0 on 2026-09-21 by `F317 #484`: one new gauge,
+# `servista_reconciler_interval_seconds{reconciler}`, registered by `ReconcilerRunner` at
+# CONSTRUCTION for every registered reconciler. PURELY ADDITIVE -- `checkKotlinAbi`'s dump is
+# UNMOVED, so a consumer re-pinning this catalog needs no source edit, and `node
+# tools/rebuild-set.mjs` names the images rather than the dumps.
+# ⛔ It exists because an ALERT RULE cannot enumerate: `ReconcilerNotRunning` asked "has this
+# stopped?" against a literal range window, one window cannot be right for a 30 s relay and a 6 h
+# sweep at once, and the next reconciler with an interval over the window was covered by neither
+# of the two rules that split it by NAME. ⚠️ PromQL will not take a range window from a metric
+# value, so the enumeration could only leave the GAUGE form, never the counter form.
+# ⭐ Only the six services that construct a `ReconcilerRunner` publish the series at all, so under
+# immutability the other consumers of `-saga` are allowed not to move.
+servista-service-runtime = "0.43.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
