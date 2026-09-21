@@ -60,11 +60,11 @@ kotlin = "2.4.10"
 #    2026-09-17, and that row's own comment already says the red *"is nobody's to
 #    --update-baseline in either direction"*. The comment above is the evidence it needs; the
 #    decision about when to pay it is that row's.
-ktor = "3.5.2"
+ktor = "3.6.0"
 # ⛔ HELD, NOT STALE — 3.5.2 is the LATEST `io.ktor.plugin` that exists. Move it the day the
 #   plugin catches up with the libraries; until then this is the pin-the-latest-stable rule
 #   applied honestly to a coordinate whose latest stable happens to be behind its own libraries.
-ktor-plugin = "3.5.2"
+ktor-plugin = "3.6.0"
 # ⚠️ THE SPLIT SURVIVES THE ROLLBACK, DELIBERATELY. Both refs read 3.5.2 today, so it is inert
 #   — and it is the durable half of what 2026-09-17 measured: `io.ktor.plugin` had no 3.6.0 at
 #   all, so whoever moves `ktor` next cannot move the plugin with it by accident. Collapsing it
@@ -177,7 +177,7 @@ apicurio-avro-serde = "3.3.2"
 openfga = "0.9.11"
 lettuce = "7.7.0.RELEASE"
 netty = "4.2.18.Final"
-nimbus-jose-jwt = "10.9.1"
+nimbus-jose-jwt = "10.10"
 # W3-O11Y act 2 (F310 #476), decision `D-86`, 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
 # ⛔ The interval carries TEN `**BREAKING**` entries and every one of them was grepped against the
 # tree and reaches ZERO files (controls: a fabricated symbol 0, `libs.otel.sdk` 23). The one worth
@@ -554,7 +554,7 @@ typesafe-config = "1.4.9"
 # compiled 10 s it already had, which is the direction a fallback should fail in.
 # ⚠️ RE-PINNING ARMS NOTHING BY ITSELF: the derivation is compiled into the jar, so a service takes
 # it at its next REBUILD. `node tools/rebuild-set.mjs` names the ceiling; only one image ships here.
-servista-kotlin-commons = "0.24.0"
+servista-kotlin-commons = "0.25.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -683,7 +683,7 @@ servista-kotlin-commons = "0.24.0"
 # ✅ `bootstrap` also WARNS when a service overrides the budget in code -- the registry would take
 # the in-code value while every check kept the environment's. 0 of 20 services do, so it fires
 # nowhere today; it is a WARN and not a refusal because the outcome is a reporting defect.
-servista-service-runtime = "0.41.0"
+servista-service-runtime = "0.42.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
