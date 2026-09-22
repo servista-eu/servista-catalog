@@ -561,7 +561,7 @@ typesafe-config = "1.4.9"
 # ⚠️ `ports`/`nodeUris` keep their signatures and change MEANING (every node, not the three
 # masters). ⛔ NO ABI CHECK CAN SEE THAT, which is why it is written here: a consumer that reads
 # them as "the masters" now reads six ports and will not fail to compile.
-servista-kotlin-commons = "0.27.0"
+servista-kotlin-commons = "0.28.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
