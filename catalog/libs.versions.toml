@@ -337,6 +337,14 @@ logstash-logback-encoder = "9.0"
 # advisory-clean. ⚠️ A version catalog cannot force anything on its own; the force is
 # `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
 # declared. Same shape as A274 #431 D2's netty-bom.
+# currency:batched — `3.2.3` shipped upstream 2026-09-22 03:12Z with nothing in this estate
+#   changed. A Class I patch bump never buys its own catalog version (`D-256`): it rides the next
+#   servista-catalog release, which already re-pins all 26 live builds, instead of spending an
+#   immutable version and a second 26-build sweep on one ref. The ref governs ONE alias
+#   (`tools.jackson:jackson-bom`) and 1 of 72 published POMs, and carries 0 advisories either
+#   side. ⛔ THE NEXT TRACK TO MOVE THIS CATALOG CARRIES `jackson = "3.2.3"` AND DELETES THESE
+#   LINES, in the same change — a version that ships without it REFUSES this marker and reddens
+#   the gate naming that release. (owner: F590 #766, 2026-09-22, catalog 0.66.0)
 jackson = "3.2.2"
 # ⛔ `jackson2` WAS HERE AND IS GONE, 2026-08-21 (W3-OF, F269 #426) — deleted because UPSTREAM FIXED
 # THE DEFECT IT EXISTED FOR, which is the only reason a workaround ref may be removed rather than
