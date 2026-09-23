@@ -465,6 +465,15 @@ aws-sdk = "2.54.9"
 #
 # Consumer: ONE — api-organizations, LibraryCountryCatalog.kt, `getCountryCodeForRegion(alpha2)`.
 nv-i18n = "1.29"
+# currency:batched — `9.0.40` shipped upstream 2026-09-23 13:24Z with nothing in this estate
+#   changed. A Class I patch bump never buys its own catalog version (`D-256`): it rides the next
+#   servista-catalog release, which already re-pins all 26 live builds, instead of spending an
+#   immutable version and a second 26-build sweep on one ref. The ref governs ONE alias
+#   (`com.googlecode.libphonenumber:libphonenumber`), declared by 1 build (api-organizations) and
+#   0 published modules, and carries 0 OSV advisories either side. ⛔ THE NEXT TRACK TO MOVE THIS
+#   CATALOG CARRIES `libphonenumber = "9.0.40"` AND DELETES THESE LINES, in the same change — a
+#   version that ships without it REFUSES this marker and reddens the gate naming that release.
+#   (owner: A597 #773, 2026-09-23, catalog 0.67.0)
 libphonenumber = "9.0.39"
 aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
