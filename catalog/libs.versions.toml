@@ -175,6 +175,11 @@ apicurio-avro-serde = "3.3.2"
 #   the authorization plane. (owner: F510 #686, 2026-09-14, reopen when the deployed OpenFGA
 #   server is upgraded)
 openfga = "0.9.11"
+# currency:declined — Class II and it pairs with the Valkey unit; and `F543 #719` (`D-237`) moves
+#   every JVM Valkey client from lettuce to Valkey GLIDE inside the library train (`D-273`), so
+#   moving this ref now is churn on a ref that is being removed. (owner: F543 #719, 2026-09-24,
+#   reopen when F543 lands and lettuce leaves the catalog, or the Valkey unit is scheduled,
+#   whichever is first)
 lettuce = "7.7.0.RELEASE"
 netty = "4.2.18.Final"
 nimbus-jose-jwt = "10.10"
