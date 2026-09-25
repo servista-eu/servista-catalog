@@ -332,6 +332,12 @@ kotlinx-datetime = "0.8.0"
 # `main` — and `8.0.03` is the release that added the external switch, so the target is load-bearing.
 # W2c (F269 #426): governance/servista-planning/work/upgrades/components/W2c-kotlin-logging.md
 kotlin-logging = "8.0.4"
+# currency:declined — a source bump only moves the red: `servista-service-runtime-core` is
+#   published naming `logback-classic 1.6.3`, so `logback = "1.6.4"` here turns
+#   `check-published-poms` red until that module is republished, and inside the library train
+#   (`D-273`) only the release car republishes. The release car moves this ref and republishes in
+#   one act (`D-279`, F626 #803). (owner: F622 #799, 2026-09-25, reopen when the release car
+#   runs)
 logback = "1.6.3"
 logstash-logback-encoder = "9.0"
 # ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
