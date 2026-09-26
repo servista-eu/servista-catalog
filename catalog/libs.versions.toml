@@ -232,8 +232,11 @@ otel = "1.65.0"
 # ⛔ THIS REF AND `otel` ABOVE ARE ONE DECISION, and the vendor writes the binding down rather than
 # leaving it to be inferred (hazard 15): every release states the SDK it targets, and `2.31.1`
 # targets `1.65.0` exactly. Moving one without the other is the mistake this line exists to prevent.
-# ⚠️ We consume exactly ONE artifact from this train — `opentelemetry-logback-appender-1.0` — so the
-# interval's large breaking surface is javaagent and library instrumentations we do not have.
+# ⚠️ We consume exactly TWO artifacts from this train — `opentelemetry-logback-appender-1.0` and, since
+# F323 #490 (2026-09-26, track `0AU`), `opentelemetry-jdbc` — so the interval's large breaking surface
+# is the javaagent and library instrumentations we do not have. ⛔ `opentelemetry-jdbc` was added ON
+# this ref and did not move it: it is published at `2.31.1-alpha` (control: a nonsense sibling
+# artifact answers 404), so the new alias is not a train bump and must not be read as licence for one.
 # `2.28.0` REMOVED the appender's `captureEventName` builder setting: 0 hits in our tree.
 # ⛔ What DOES reach us is a DEPRECATION, not a removal: `2.31.0` deprecates the boolean capture
 # settings in favour of `.included`/`.excluded` selectors, and `servista-service-runtime`'s
@@ -994,6 +997,14 @@ otel-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extensio
 otel-extension-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "otel" }
 otel-sdk-logs = { module = "io.opentelemetry:opentelemetry-sdk-logs", version.ref = "otel" }
 otel-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "otel-instrumentation" }
+# F323 #490 (`D-79`'s mechanism, named): DB query spans from a LIBRARY wrap around the pool
+# `commons-rt-db-foss-postgres`'s `migrateDatabase()` returns, never the javaagent (see the deleted
+# `otel-agent` ref below). ⛔ Until the release car `F622 #799` publishes this catalog, the two builds
+# that use it (`servista-kotlin-commons`, `servista-tenant-control-plane`) declare the same alias in
+# their `settings.gradle.kts` catalog block; the re-pin deletes those lines. ⚠️ A forgotten one fails
+# the build rather than lingering: measured on Gradle 9.8.0, a settings `library("otel-jdbc", …)`
+# over a catalog that already carries `otel-jdbc` fails configuration (`Undefined version reference`).
+otel-jdbc = { module = "io.opentelemetry.instrumentation:opentelemetry-jdbc", version.ref = "otel-instrumentation" }
 # ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, `D-79`). Nothing resolved it — 0
 # build files, 0 repositories, 0 of 304 containers, every count with a firing control. See the
 # deleted `otel-agent` version comment above for the measurement, for why `CLAUDE.md` §1's
