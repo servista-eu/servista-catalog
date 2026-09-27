@@ -175,12 +175,12 @@ apicurio-avro-serde = "3.3.2"
 #   the authorization plane. (owner: F510 #686, 2026-09-14, reopen when the deployed OpenFGA
 #   server is upgraded)
 openfga = "0.9.11"
-# currency:declined — Class II and it pairs with the Valkey unit; and `F543 #719` (`D-237`) moves
-#   every JVM Valkey client from lettuce to Valkey GLIDE inside the library train (`D-273`), so
-#   moving this ref now is churn on a ref that is being removed. (owner: F543 #719, 2026-09-24,
-#   reopen when F543 lands and lettuce leaves the catalog, or the Valkey unit is scheduled,
-#   whichever is first)
-lettuce = "7.7.0.RELEASE"
+# Valkey GLIDE — the estate's one JVM Valkey client (`F543 #719`, the platform owner's `D-237`,
+#   ADR-042; lettuce left this catalog in the same change). ⛔ A per-platform NATIVE core: this alias
+#   is the classifier-less jar (every native, 41 MB), which only libraries' test classpaths use;
+#   a service declares its runtime image's classifier on the alias itself, e.g.
+#   `runtimeOnly(libs.valkey.glide) { artifact { classifier = "linux_musl-x86_64" } }`.
+valkey-glide = "2.5.3"
 netty = "4.2.18.Final"
 nimbus-jose-jwt = "10.10"
 # W3-O11Y act 2 (F310 #476), decision `D-86`, 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
@@ -878,7 +878,7 @@ apicurio-avro-serde-kafka = { module = "io.apicurio:apicurio-registry-avro-serde
 
 # Infrastructure Clients
 openfga-sdk = { module = "dev.openfga:openfga-sdk", version.ref = "openfga" }
-lettuce = { module = "io.lettuce:lettuce-core", version.ref = "lettuce" }
+valkey-glide = { module = "io.valkey:valkey-glide", version.ref = "valkey-glide" }
 netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
 nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
 konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
