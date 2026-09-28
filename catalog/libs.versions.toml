@@ -596,7 +596,14 @@ typesafe-config = "1.4.9"
 # at `applyTo`, once per client created (the refusals that can be eager stay eager). (3) `GaugeBinding`,
 # a new public type in commons-core: a module's gauge, registered by the process's MetricsPort. The ABI
 # is ADDITIVE only. 0.31.0 is published and skipped: nothing re-pinned to it.
-servista-kotlin-commons = "0.32.0"
+# ⛔ 0.32.0 -> 0.33.0 on 2026-09-28 by `F622 #799` (track `0DI`), `D-311` (the platform owner:
+# "Hoist now: commons 0.33.0"): TWO changes in `commons-rt-cache-foss-valkey`. (1) `NodeProbe`, the
+# direct-node Valkey test client, becomes a PUBLISHED test fixture (a new `-test-fixtures` artifact with
+# its own ABI dump), so servista-kotlin-commons-infra consumes it instead of holding a copy. (2)
+# `ValkeyConnection.onEachNode` gains an OVERLOAD whose block also receives the `ValkeyNode` it runs on,
+# so commons-infra's createSnapshot can save on every master and name one that did not. ABI additive
+# only (one line). 0.32.0 is published and skipped: nothing re-pinned to it.
+servista-kotlin-commons = "0.33.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
