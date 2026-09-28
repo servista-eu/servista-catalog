@@ -2,12 +2,15 @@
 # Consumers import via: from("eu.servista:servista-catalog:<version>")
 
 [versions]
-# currency:declined — the Kotlin toolchain is its own unit (W2f), not a patch: it moves every
-#   compiler, every plugin and every `.api` dump in 26 repositories at once, and
-#   `check-dependency-currency` already classifies it `own unit — not a batch member`. (owner:
-#   F510 #686, 2026-09-14, reopen when a session is scheduled that can gate all 26 repositories
-#   in one sitting)
-kotlin = "2.4.10"
+# ⚠️ 2.4.10 -> 2.4.20 on 2026-09-28 by `F622 #799` (track `0DI`), the library train's RELEASE car.
+#   F510 #686's decline read "reopen when a session is scheduled that can gate all 26 repositories
+#   in one sitting"; the release car's one re-pin sweep, every suite re-run, IS that session
+#   (`D-277`), so the marker is deleted with the move. The toolchain is still its own unit (W2f).
+# ⚠️ What 2.4.20 changes HERE (`F622` D1, read against the estate): `when` compiles to
+#   `invokedynamic` by default on JVM 21+ (KT-78079) and every build is `jvmToolchain(21)`, so
+#   method BODIES change while signatures do not; the Gradle plugin is fully supported to Gradle
+#   9.7.0 and the estate runs 9.8.0, which upstream allows with possible deprecation warnings.
+kotlin = "2.4.20"
 # ⛔⛔ `ktor` GOVERNS TWO INDEPENDENTLY-VERSIONED THINGS AND THEY ARE NO LONGER IN STEP —
 #   `F532 #708`, moved 2026-09-17 by `A505 #681`'s release (track `0CO`, decision `D-222`).
 #   The LIBRARIES are at 3.6.0 on Maven Central; the GRADLE PLUGIN `io.ktor.plugin` stops at
@@ -338,13 +341,11 @@ kotlinx-datetime = "0.8.0"
 # `main` — and `8.0.03` is the release that added the external switch, so the target is load-bearing.
 # W2c (F269 #426): governance/servista-planning/work/upgrades/components/W2c-kotlin-logging.md
 kotlin-logging = "8.0.4"
-# currency:declined — a source bump only moves the red: `servista-service-runtime-core` is
-#   published naming `logback-classic 1.6.3`, so `logback = "1.6.4"` here turns
-#   `check-published-poms` red until that module is republished, and inside the library train
-#   (`D-273`) only the release car republishes. The release car moves this ref and republishes in
-#   one act (`D-279`, F626 #803). (owner: F622 #799, 2026-09-25, reopen when the release car
-#   runs)
-logback = "1.6.3"
+# ⚠️ 1.6.3 -> 1.6.4 on 2026-09-28 by `F622 #799` (track `0DI`), and F626 #803's decline is deleted
+#   with it (`D-279`): `servista-service-runtime-core`'s POM names `logback-classic`, so this move
+#   and that module's republish are ONE act, which only the release car performs. `logstash-logback-
+#   encoder` stays at 9.0; it is current and 1.6.4 is a patch.
+logback = "1.6.4"
 logstash-logback-encoder = "9.0"
 # ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
 # Jackson 3 migration (`com.fasterxml.jackson.core` -> `tools.jackson.core`, a groupId change) and it
@@ -582,7 +583,13 @@ typesafe-config = "1.4.9"
 # `PlanOffer` and the engine catalog gains `offers()` / `offer(ref)`, which report a plan's for-sale
 # status and ONLY its published terms -- so a zero is free and an absent term is not sold. ADDITIVE:
 # `plan()` / `plans()` are deprecated, not removed. `api-billing` is the one consumer that moves.
-servista-kotlin-commons = "0.30.0"
+# ⛔ 0.30.0 -> 0.31.0 on 2026-09-28 by `F622 #799` (track `0DI`): the library train's ONE release
+# (`D-273`/`D-275`), carrying every car landed on commons `main` since 0.30.0 -- among them BREAKING
+# ABI (`F276`'s `withTransaction(DataAccessScope)` and deleted `withContextualDsl`; `F465`'s four
+# classes out of `commons-core` into three new modules, aliased below), the one GLIDE connection
+# core (`F543`), `KafkaClusterIdentity` (`E642`) and the client-side Kafka telemetry (`E388`).
+# Named here ahead of its publish (`DP-1`, the 0.62.0 precedent); compiled by Kotlin 2.4.20.
+servista-kotlin-commons = "0.31.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -728,7 +735,11 @@ servista-kotlin-commons = "0.30.0"
 # `servista-avro-schemas`, and `servista-service-runtime-core` one naming `tools.jackson:jackson-bom`,
 # so moving either ref left a published POM naming a version the catalog no longer does
 # (`check-published-poms`). ⛔ `rebuild-set` answers who owes an image; this line does not.
-servista-service-runtime = "0.45.0"
+# ⛔ 0.45.0 -> 0.46.0 on 2026-09-28 by `F622 #799` (track `0DI`), the train's ONE release: BREAKING
+# ABI (`A641`'s `ServiceConfig` constructor and `copy`, `A645`'s `IdempotencyStore`), the new
+# `-outbox` slice (`F647`, aliased below), and the bindings `F622` owes inside its sequence
+# (`A641`'s Valkey worker lease `D-301`, `E642` `D2` `D-305`, `F543`'s `-cache` port `D-298`).
+servista-service-runtime = "0.46.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
@@ -740,7 +751,9 @@ servista-service-runtime = "0.45.0"
 # service keeps a second copy of the retention window. Compatible in BOTH directions against
 # 0.3.0 (asserted by the library's own test). ⛔ The all-args constructor of the generated class
 # CHANGED ARITY -- binary-incompatible for a caller of it, and the estate has 0 (2 `newBuilder` sites).
-servista-avro-schemas = "0.4.0"
+# ⚠️ 0.4.0 -> 0.5.0 on 2026-09-28 by `F622 #799` (track `0DI`): `A643`'s `DeadLetterRedrivePayload`
+# (`D-296`) with its `D-303` override-audit fields, the one schema the train admitted.
+servista-avro-schemas = "0.5.0"
 
 [libraries]
 # Ktor Server
@@ -927,6 +940,14 @@ servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-fos
 servista-commons-rt-o11y-foss-otel = { module = "eu.servista:commons-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-validation-foss-konform = { module = "eu.servista:commons-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-lakehouse-foss-trino = { module = "eu.servista:commons-rt-lakehouse-foss-trino", version.ref = "servista-kotlin-commons" }
+# ⚠️ Added 2026-09-28 by `F622 #799` (#799 c15848): three modules `F465`'s car created by moving
+# concrete implementations out of `commons-core` (`D-278`). `SnowflakeGenerator` now lives in the
+# first, in package `eu.servista.commons.rt.id.snowflake`; a consumer that imported it from
+# `commons-core` needs this DEPENDENCY as well as the new import (#799 c16042). All three carry
+# `// distribution: distributable`.
+servista-commons-rt-id-snowflake = { module = "eu.servista:commons-rt-id-snowflake", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-o11y-foss-slf4j = { module = "eu.servista:commons-rt-o11y-foss-slf4j", version.ref = "servista-kotlin-commons" }
+servista-commons-rt-secrets-token = { module = "eu.servista:commons-rt-secrets-token", version.ref = "servista-kotlin-commons" }
 
 # servista Commons — Runtime wiring (koin)
 servista-commons-wiring-koin-rt-db-foss-postgres = { module = "eu.servista:commons-wiring-koin-rt-db-foss-postgres", version.ref = "servista-kotlin-commons" }
@@ -986,6 +1007,10 @@ servista-service-runtime-saga = { module = "eu.servista:servista-service-runtime
 servista-service-runtime-idempotency = { module = "eu.servista:servista-service-runtime-idempotency", version.ref = "servista-service-runtime" }
 servista-service-runtime-webhook = { module = "eu.servista:servista-service-runtime-webhook", version.ref = "servista-service-runtime" }
 servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version.ref = "servista-service-runtime" }
+# ⚠️ Added 2026-09-28 by `F622 #799` (#799 c15991): the transactional outbox slice (`F647`,
+# `D-304`), hoisted from six hand-written `OutboxRelay` copies. It depends on `-saga`, the
+# library's one deliberate slice-to-slice edge. `// distribution: distributable`.
+servista-service-runtime-outbox = { module = "eu.servista:servista-service-runtime-outbox", version.ref = "servista-service-runtime" }
 
 # servista Avro Schemas
 servista-avro-schemas = { module = "eu.servista:servista-avro-schemas", version.ref = "servista-avro-schemas" }
