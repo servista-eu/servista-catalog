@@ -589,7 +589,14 @@ typesafe-config = "1.4.9"
 # classes out of `commons-core` into three new modules, aliased below), the one GLIDE connection
 # core (`F543`), `KafkaClusterIdentity` (`E642`) and the client-side Kafka telemetry (`E388`).
 # Named here ahead of its publish (`DP-1`, the 0.62.0 precedent); compiled by Kotlin 2.4.20.
-servista-kotlin-commons = "0.31.0"
+# ⛔ 0.31.0 -> 0.32.0 on 2026-09-28 by `F622 #799` (track `0DI`), `D-310` (the platform owner):
+# D-310's three cases. (1) `kafkaTransportModule` / `kafkaDeadLetterModule` gain a `clientTelemetry`
+# overload, so a producer bound through Koin can reach E388's client-side metrics path. (2) BEHAVIOUR
+# CHANGE: `KafkaClientTelemetry.fromConfig` no longer calls its OpenTelemetry supplier; it resolves it
+# at `applyTo`, once per client created (the refusals that can be eager stay eager). (3) `GaugeBinding`,
+# a new public type in commons-core: a module's gauge, registered by the process's MetricsPort. The ABI
+# is ADDITIVE only. 0.31.0 is published and skipped: nothing re-pinned to it.
+servista-kotlin-commons = "0.32.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
