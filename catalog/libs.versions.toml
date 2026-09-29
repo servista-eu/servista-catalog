@@ -183,6 +183,16 @@ openfga = "0.9.11"
 #   is the classifier-less jar (every native, 41 MB), which only libraries' test classpaths use;
 #   a service declares its runtime image's classifier on the alias itself, e.g.
 #   `runtimeOnly(libs.valkey.glide) { artifact { classifier = "linux_musl-x86_64" } }`.
+#   ⛔ AND ITS shadowJar MUST DROP GLIDE'S BUNDLED `google/protobuf/*.proto`, scoped to that ONE
+#   artifact: glide 2.5.3 ships 6 of them (api, descriptor, java_features, timestamp, type, wrappers)
+#   with content that differs from protobuf-java's, which every service already carries (runtime-core
+#   → commons-edge-auth-core → tink), so the estate's DeduplicatingResourceTransformer refuses the
+#   fat jar: "Found 6 path duplicate(s) with different content". protobuf-java's copies are canonical.
+#   Copy servista-cache `b842fe69` (app/build.gradle.kts): `dependencies { exclude(dependency(
+#   "io.valkey:valkey-glide")) }` plus an artifactView of glide re-added with
+#   `from(...) { exclude("google/protobuf/*.proto") }`, the pyroscope exclude-and-re-add shape.
+#   ⛔ Never a path-wide exclude: that drops protobuf-java's copies too. The first consumer found it
+#   at build time (F458 #634 c16420; F848 #848 D3, the owner's D-322).
 valkey-glide = "2.5.3"
 netty = "4.2.18.Final"
 nimbus-jose-jwt = "10.10"
