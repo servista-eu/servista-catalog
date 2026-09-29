@@ -109,6 +109,21 @@ oracle-jdbc = "23.26.3.0.0"
 # a driver ahead of the server is the normal upgrade order for Trino, and 483 is what the ADR
 # measured — 10.44 MB against 480's 13.10 MB, well inside the image's margin under the edge cap.
 trino-jdbc = "483"
+# Apache Iceberg, read OFF-ENGINE -- A849 #849 D3 (the owner's V3a, #849 c16592; the car D-323).
+# The audit chain's scheduled verifier re-walks `iceberg.audit.records` straight from its metadata
+# and Parquet, so a full-table read puts 0 load on Trino (E328 #499). `iceberg-core` +
+# `iceberg-parquet` + `iceberg-data` (the generic Parquet reader) + `iceberg-aws` (`S3FileIO`, handed
+# the estate's own `aws-s3` + `aws-apache5-client` client, so no second S3 HTTP client is pinned).
+# ⚠️ Iceberg brings Parquet 1.17.1 transitively; Parquet is NOT pinned here, because 1.17.1 is
+# what this Iceberg release was built and tested against. Measured weight: 39.9 MiB of jars.
+iceberg = "1.11.0"
+# ⛔ Hadoop, the SHADED client pair and nothing narrower -- measured 2026-09-29 by a Parquet write
+# and read through Iceberg 1.11.0 (A849 D-323): with no Hadoop it fails on
+# `org.apache.hadoop.conf.Configuration`; `hadoop-client-api` alone fails on its shaded woodstox;
+# `hadoop-common` (96 jars) fails on mapreduce `FileInputFormat`; `-client-api` + `-client-runtime`
+# reads. Iceberg and Parquet both declare Hadoop `provided`, so the consumer must choose it. Measured
+# weight: 49.7 MiB -- it goes in the verifier's OWN image, never the writer's.
+hadoop-client = "3.5.0"
 kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.3.0"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
 # ⛔ THE `-2.x` SUFFIX IS A RELEASE LABEL, NOT A COMPILE TARGET. This line read
@@ -899,6 +914,12 @@ postgresql-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgre
 oracle-jdbc = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "oracle-jdbc" }
 oracle-ucp = { module = "com.oracle.database.jdbc:ucp11", version.ref = "oracle-jdbc" }
 trino-jdbc = { module = "io.trino:trino-jdbc", version.ref = "trino-jdbc" }
+iceberg-core = { module = "org.apache.iceberg:iceberg-core", version.ref = "iceberg" }
+iceberg-parquet = { module = "org.apache.iceberg:iceberg-parquet", version.ref = "iceberg" }
+iceberg-data = { module = "org.apache.iceberg:iceberg-data", version.ref = "iceberg" }
+iceberg-aws = { module = "org.apache.iceberg:iceberg-aws", version.ref = "iceberg" }
+hadoop-client-api = { module = "org.apache.hadoop:hadoop-client-api", version.ref = "hadoop-client" }
+hadoop-client-runtime = { module = "org.apache.hadoop:hadoop-client-runtime", version.ref = "hadoop-client" }
 
 # Kafka clients (produce/consume)
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
