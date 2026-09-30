@@ -73,13 +73,11 @@ ktor-plugin = "3.6.0"
 #   all, so whoever moves `ktor` next cannot move the plugin with it by accident. Collapsing it
 #   back would delete a finding to tidy a line.
 koin = "4.2.2"
-# currency:declined — Class II and ordered LAST by `D-91`: a bump regenerates DB code in 15 of
-#   the 17 jOOQ repositories, and jOOQ OSS supports exactly ONE PostgreSQL major per minor
-#   (3.20→17, 3.21→18). `check-server-floor.mjs` is what says whether the pin still matches the
-#   running server, and the running server is postgres-patroni 18.6, which 3.21 is correct for.
-#   (owner: F510 #686, 2026-09-14, reopen when the jOOQ unit is scheduled, after every other
-#   Class II unit)
-jooq = "3.21.7"
+# ⛔ 3.21.7 -> 3.21.9 on 2026-09-30 by `F845 #845` (track `0DY`), `D-330` (the platform owner: "Fold
+#   into F845"): a PATCH inside 3.21, so the PostgreSQL 18 bound below is unchanged. Its
+#   `currency:declined` marker (F510 #686) is DELETED in the same change: the ref is current, and
+#   it regenerates DB code in the jOOQ repositories at the one re-pin sweep this release obliges.
+jooq = "3.21.9"
 # ⛔ CLASS II, AND ITS SERVER IS A HARD BOUND RATHER THAN A LOOSE ONE. jOOQ's Open Source Edition
 # supports exactly ONE PostgreSQL major per minor — the vendor's own legend is "The jOOQ Open
 # Source Edition always supports the latest dialect version", which makes the support matrix's
@@ -93,12 +91,11 @@ jooq = "3.21.7"
 # Moved by W1-JQ (D-94, 2026-08-25). ⚠️ Nine aliases share this ref and five have no consumer;
 # they are KEPT because the intersection rule verifies all nine at every bump and re-adding one
 # later is a line, while an unverified coordinate is a silent hole.
-# currency:declined — Class II, its own unit, ordered after jOOQ by `D-91`. 141 versioned
-#   migrations in 21 modules across 18 repositories and 16 production databases carry a
-#   `flyway_schema_history`; a bump is a migration-engine change against live schema history,
-#   not a version bump. (owner: F510 #686, 2026-09-14, reopen when the jOOQ unit has landed and
-#   `check-flyway-history.mjs` reads 0)
-flyway = "13.4.0"
+# ⛔ 13.4.0 -> 13.8.1 on 2026-09-30 by `F845 #845` (track `0DY`), `D-330`: a migration-engine change
+#   against live schema history, so commons' `RuntimeRoleLedgerTest` (A842's claim, proven on 13.4.0)
+#   is re-run on 13.8.1 inside this release, and the roll's post-roll gate reads every service's
+#   Flyway at boot. Its `currency:declined` marker (F510 #686) is DELETED in the same change.
+flyway = "13.8.1"
 hikari = "7.1.0"
 postgresql-jdbc = "42.7.13"
 oracle-jdbc = "23.26.3.0.0"
@@ -370,7 +367,11 @@ kotlin-logging = "8.0.4"
 #   with it (`D-279`): `servista-service-runtime-core`'s POM names `logback-classic`, so this move
 #   and that module's republish are ONE act, which only the release car performs. `logstash-logback-
 #   encoder` stays at 9.0; it is current and 1.6.4 is a patch.
-logback = "1.6.4"
+# ⚠️ 1.6.4 -> 1.6.5 on 2026-09-30 by `F845 #845` (track `0DY`), on `D-338` (the `D-279`
+#   precedent): the same act, because `servista-service-runtime-core` republishes in this release.
+#   The encoder declares logback-classic 1.5.20 optional and logback-core provided, so a floor and
+#   not a range; 1.6.5 is a patch on the line it already runs on.
+logback = "1.6.5"
 logstash-logback-encoder = "9.0"
 # ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
 # Jackson 3 migration (`com.fasterxml.jackson.core` -> `tools.jackson.core`, a groupId change) and it
@@ -628,7 +629,12 @@ typesafe-config = "1.4.9"
 # `ValkeyConnection.onEachNode` gains an OVERLOAD whose block also receives the `ValkeyNode` it runs on,
 # so commons-infra's createSnapshot can save on every master and name one that did not. ABI additive
 # only (one line). 0.32.0 is published and skipped: nothing re-pinned to it.
-servista-kotlin-commons = "0.33.0"
+# ⛔ 0.33.0 -> 0.34.0 on 2026-09-30 by `F845 #845` (track `0DY`), library train 2's ONE release
+# (`D-316`), named ahead of its publish: a pre-1.0 MINOR because it is BREAKING -- `0DX` retired
+# `openfgaClientModule(lookup)` (`D-324`). It carries every train-2 commons car (E838, F841, F829,
+# F833, F843, F381, A842, F638, F840, A853, E846, F831 D5) plus `C43` car (2) and car (4) (`D-335`) and
+# `C32` S1 (`D-337`: `PlanKind.CLIENT`, a subscription `beneficiary`, billing-postgres `V002`).
+servista-kotlin-commons = "0.34.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -778,7 +784,9 @@ servista-kotlin-commons = "0.33.0"
 # ABI (`A641`'s `ServiceConfig` constructor and `copy`, `A645`'s `IdempotencyStore`), the new
 # `-outbox` slice (`F647`, aliased below), and the bindings `F622` owes inside its sequence
 # (`A641`'s Valkey worker lease `D-301`, `E642` `D2` `D-305`, `F543`'s `-cache` port `D-298`).
-servista-service-runtime = "0.46.0"
+# ⛔ 0.46.0 -> 0.47.0 on 2026-09-30 by `F845 #845` (track `0DY`), named ahead of its publish: the
+# runtime halves of train 2 (F834, F831 D5, E838 D2 bound inside the release) against commons 0.34.0.
+servista-service-runtime = "0.47.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
