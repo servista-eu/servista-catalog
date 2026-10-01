@@ -95,7 +95,11 @@ jooq = "3.21.9"
 #   against live schema history, so commons' `RuntimeRoleLedgerTest` (A842's claim, proven on 13.4.0)
 #   is re-run on 13.8.1 inside this release, and the roll's post-roll gate reads every service's
 #   Flyway at boot. Its `currency:declined` marker (F510 #686) is DELETED in the same change.
-flyway = "13.8.1"
+# ⛔ 13.8.1 -> 13.9.0 on 2026-10-01 by `F898 #898` (track `0EA`), `D-349`: the same migration-engine
+#   change against live schema history as above, so `RuntimeRoleLedgerTest` re-runs on 13.9.0 inside
+#   this release and the roll reads every service's Flyway at boot. The one published POM it stales is
+#   `commons-rt-db-foss-postgres` (runtime scope), which is why commons republishes in train 3.
+flyway = "13.9.0"
 hikari = "7.1.0"
 postgresql-jdbc = "42.7.13"
 oracle-jdbc = "23.26.3.0.0"
@@ -120,7 +124,9 @@ trino-jdbc = "483"
 # Parquet `MessageType`, which would need the pin above. `InternalData` names neither.
 # The D-323 measurement wrote and read Parquet but did not exercise `S3FileIO` or a generic read
 # path, which is how this and the two AWS models below (`aws-kms`, `aws-sts`) were missed.
-iceberg = "1.11.0"
+# ⛔ 1.11.0 -> 1.12.0 on 2026-10-01 by `F898 #898` (track `0EA`), `D-349` (`check-dependency-currency`,
+# Class I). The only consumer is the A849 verifier; 0 published `eu.servista` POMs name iceberg.
+iceberg = "1.12.0"
 # ⛔ Hadoop, the SHADED client pair and nothing narrower -- measured 2026-09-29 by a Parquet write
 # and read through Iceberg 1.11.0 (A849 D-323): with no Hadoop it fails on
 # `org.apache.hadoop.conf.Configuration`; `hadoop-client-api` alone fails on its shaded woodstox;
@@ -641,7 +647,11 @@ typesafe-config = "1.4.9"
 # `openfgaClientModule(lookup)` (`D-324`). It carries every train-2 commons car (E838, F841, F829,
 # F833, F843, F381, A842, F638, F840, A853, E846, F831 D5) plus `C43` car (2) and car (4) (`D-335`) and
 # `C32` S1 (`D-337`: `PlanKind.CLIENT`, a subscription `beneficiary`, billing-postgres `V002`).
-servista-kotlin-commons = "0.34.0"
+# ⛔ 0.34.0 -> 0.35.0 on 2026-10-01 by `F898 #898` (track `0EA`), library train 3 (`D-349`), named ahead
+# of its publish: NO SOURCE CHANGE. A republish forced by `flyway` 13.9.0 above, because
+# `commons-rt-db-foss-postgres` publishes a POM naming flyway at runtime scope (`check-published-poms`
+# against this catalog: 2 stale pairs, that one module). A minor, as runtime 0.45.0 was.
+servista-kotlin-commons = "0.35.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -793,7 +803,9 @@ servista-kotlin-commons = "0.34.0"
 # (`A641`'s Valkey worker lease `D-301`, `E642` `D2` `D-305`, `F543`'s `-cache` port `D-298`).
 # ⛔ 0.46.0 -> 0.47.0 on 2026-09-30 by `F845 #845` (track `0DY`), named ahead of its publish: the
 # runtime halves of train 2 (F834, F831 D5, E838 D2 bound inside the release) against commons 0.34.0.
-servista-service-runtime = "0.47.0"
+# ⛔ 0.47.0 -> 0.48.0 on 2026-10-01 by `F898 #898` (track `0EA`), named ahead of its publish: `F886`'s
+# runtime-core car (`Types.INTEGRATION`, `Relations.EXECUTOR`; ABI additive, +2/-0) against commons 0.35.0.
+servista-service-runtime = "0.48.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
