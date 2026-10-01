@@ -109,10 +109,17 @@ trino-jdbc = "483"
 # Apache Iceberg, read OFF-ENGINE -- A849 #849 D3 (the owner's V3a, #849 c16592; the car D-323).
 # The audit chain's scheduled verifier re-walks `iceberg.audit.records` straight from its metadata
 # and Parquet, so a full-table read puts 0 load on Trino (E328 #499). `iceberg-core` +
-# `iceberg-parquet` + `iceberg-data` (the generic Parquet reader) + `iceberg-aws` (`S3FileIO`, handed
-# the estate's own `aws-s3` + `aws-apache5-client` client, so no second S3 HTTP client is pinned).
-# ⚠️ Iceberg brings Parquet 1.17.1 transitively; Parquet is NOT pinned here, because 1.17.1 is
-# what this Iceberg release was built and tested against. Measured weight: 39.9 MiB of jars.
+# `iceberg-parquet` + `iceberg-data` + `iceberg-aws` (`S3FileIO`, handed the estate's own `aws-s3`
+# + `aws-apache5-client` client, so no second S3 HTTP client is pinned). Measured weight: 39.9 MiB.
+# ⚠️ Iceberg brings Parquet 1.17.1 transitively (1.11.0 AND 1.12.0 both resolve it, while upstream
+# Parquet is at 1.18.1), and Parquet is NOT pinned here: a pin would have to trail upstream for ever.
+# ⛔ READ WITH `InternalData.read(FileFormat.PARQUET, …)` (D-348, measured by the verifier's
+# integration suite). `IcebergGenerics.read(…)` is NOT usable with this set: in 1.11 it goes through
+# `FormatModelRegistry`, which loads ORC eagerly and fails without `iceberg-orc`
+# (`NoClassDefFoundError: org/apache/iceberg/orc/OrcRowWriter`); and `GenericParquetReaders` takes a
+# Parquet `MessageType`, which would need the pin above. `InternalData` names neither.
+# The D-323 measurement wrote and read Parquet but did not exercise `S3FileIO` or a generic read
+# path, which is how this and the two AWS models below (`aws-kms`, `aws-sts`) were missed.
 iceberg = "1.11.0"
 # ⛔ Hadoop, the SHADED client pair and nothing narrower -- measured 2026-09-29 by a Parquet write
 # and read through Iceberg 1.11.0 (A849 D-323): with no Hadoop it fails on
@@ -967,6 +974,12 @@ aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
 # check-dependency-currency.mjs. Naming it here does not change behaviour: it IS the SDK's
 # current default. It makes the next such swap arrive as a reviewable diff instead.
 aws-apache5-client = { module = "software.amazon.awssdk:apache5-client", version.ref = "aws-sdk" }
+# ⛔ `iceberg-aws` declares the AWS SDK `compileOnly`, and its properties classes reference KMS and
+# STS model classes at CLASS INIT — so any consumer of `S3FileIO` must supply both, though it calls
+# neither. Measured (A849 D3, D-348), in this order: `NoClassDefFoundError:
+# software/amazon/awssdk/services/kms/model/EncryptionAlgorithmSpec`, then `…/sts/model/Tag`.
+aws-kms = { module = "software.amazon.awssdk:kms", version.ref = "aws-sdk" }
+aws-sts = { module = "software.amazon.awssdk:sts", version.ref = "aws-sdk" }
 
 # servista Commons — Core
 servista-commons-bom = { module = "eu.servista:commons-bom", version.ref = "servista-kotlin-commons" }
