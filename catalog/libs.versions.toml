@@ -651,7 +651,13 @@ typesafe-config = "1.4.9"
 # of its publish: NO SOURCE CHANGE. A republish forced by `flyway` 13.9.0 above, because
 # `commons-rt-db-foss-postgres` publishes a POM naming flyway at runtime scope (`check-published-poms`
 # against this catalog: 2 stale pairs, that one module). A minor, as runtime 0.45.0 was.
-servista-kotlin-commons = "0.35.0"
+# ⛔ 0.35.0 -> 0.36.0 on 2026-10-03 by `F915 #915` (track `0EE`), library train 4 (`D-352`), named ahead
+# of its publish: C32 S2b's commons car (`D-343`; the subscription lifecycle port, billing-postgres
+# `V003`), C908's commons-testing headers car, and C43 D4's car (`SecretSessionRefusalReason`, and
+# `LogCapture`'s `throwable` / `attach(level=)` for A885). `.api` +162/-5: `PostgresBillingStore`'s
+# constructor gains a `MetricsPort` (its one consumer outside commons is api-licensing, re-pinned by
+# `7A` with C908, `D-280`); the other removals are added supertypes.
+servista-kotlin-commons = "0.36.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -805,7 +811,11 @@ servista-kotlin-commons = "0.35.0"
 # runtime halves of train 2 (F834, F831 D5, E838 D2 bound inside the release) against commons 0.34.0.
 # ⛔ 0.47.0 -> 0.48.0 on 2026-10-01 by `F898 #898` (track `0EA`), named ahead of its publish: `F886`'s
 # runtime-core car (`Types.INTEGRATION`, `Relations.EXECUTOR`; ABI additive, +2/-0) against commons 0.35.0.
-servista-service-runtime = "0.48.0"
+# ⛔ 0.48.0 -> 0.49.0 on 2026-10-03 by `F915 #915` (track `0EE`), named ahead of its publish: the outbox
+# `created_at = clock_timestamp()` order fix (C32 decision 8), two test cars (a test-fixtures overload,
+# `.api` +2/-0), and `A885`'s request-body decode helper (lands inside the release, `D-352`), against
+# commons 0.36.0.
+servista-service-runtime = "0.49.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
