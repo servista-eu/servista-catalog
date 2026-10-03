@@ -657,7 +657,13 @@ typesafe-config = "1.4.9"
 # `LogCapture`'s `throwable` / `attach(level=)` for A885). `.api` +162/-5: `PostgresBillingStore`'s
 # constructor gains a `MetricsPort` (its one consumer outside commons is api-licensing, re-pinned by
 # `7A` with C908, `D-280`); the other removals are added supertypes.
-servista-kotlin-commons = "0.36.0"
+# ⛔ 0.36.0 -> 0.37.0 on 2026-10-03 by `F925 #925` (track `0EF`), library train 5, named ahead of its
+# publish: A917's car (`9a8e2234`: a subscription is anchored at millisecond precision and the keyset
+# cursor resumes exactly where a page ended; `SubscriptionRequest.anchor`) and C913's car
+# (`7e1db176`: un-cancelling reads the caller's instant and names its refusals). A pre-1.0 MINOR
+# because it is BREAKING: `SubscriptionLifecycleRules.uncancellation` becomes `uncancellation(Instant)`,
+# which has 0 callers outside commons. `.api`: commons-billing-core +3/-1, commons-testing +5/-1.
+servista-kotlin-commons = "0.37.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
