@@ -283,6 +283,9 @@ otel = "1.65.0"
 # settings in favour of `.included`/`.excluded` selectors, and `servista-service-runtime`'s
 # `logback-base.xml` sets `captureExperimentalAttributes` and `captureKeyValuePairAttributes`.
 # `2.31.1` still honours them; migrating is an `I5` item, not a blocker.
+# currency:declined — one decision with `otel` above: every `2.32.0-alpha` artifact consumed here
+#   requires opentelemetry-api 1.66.0 (read from their POMs), and `otel` stays on 1.65.0 until the
+#   collector moves. (owner: F510 #686, 2026-10-05, reopen when the collector image is upgraded)
 otel-instrumentation = "2.31.1-alpha"
 # `D-86`, 2026-08-25: `1.0.4` -> `2.1.2`, eleven releases read, crossing a major.
 # ⛔⛔ THE MAJOR IS AN ARTIFACT SPLIT AND IT IS WHY `pyroscope-agent` BELOW EXISTS. `2.0.0` made
@@ -667,7 +670,11 @@ typesafe-config = "1.4.9"
 # (`7e1db176`: un-cancelling reads the caller's instant and names its refusals). A pre-1.0 MINOR
 # because it is BREAKING: `SubscriptionLifecycleRules.uncancellation` becomes `uncancellation(Instant)`,
 # which has 0 callers outside commons. `.api`: commons-billing-core +3/-1, commons-testing +5/-1.
-servista-kotlin-commons = "0.37.0"
+# 0.37.0 -> 0.38.0 on 2026-10-05, named ahead of its publish: `HttpResponse.namedRefusal` (a refusal
+# is named by its problem document, never by its status alone), `hardenedJson` (a main-source `Json`
+# whose decode failures never quote their input), `EventTransportPort.sendTombstone` (a default method)
+# and commons-testing's `SharedKubeApiServer`. `.api` additive only, +31/-0 (test fixtures +2/-0).
+servista-kotlin-commons = "0.38.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -825,7 +832,11 @@ servista-kotlin-commons = "0.37.0"
 # `created_at = clock_timestamp()` order fix (C32 decision 8), two test cars (a test-fixtures overload,
 # `.api` +2/-0), and `A885`'s request-body decode helper (lands inside the release, `D-352`), against
 # commons 0.36.0.
-servista-service-runtime = "0.49.0"
+# 0.49.0 -> 0.50.0 on 2026-10-05, named ahead of its publish: the outbox relays a TOMBSTONE
+# (`OutboxEvent.payload` becomes nullable; source-breaking for a Kotlin reader of it as `ByteArray`,
+# the JVM signature unchanged) and the runtime's own `Json` instances move to `hardenedJson`,
+# against commons 0.38.0.
+servista-service-runtime = "0.50.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
@@ -839,7 +850,10 @@ servista-service-runtime = "0.49.0"
 # CHANGED ARITY -- binary-incompatible for a caller of it, and the estate has 0 (2 `newBuilder` sites).
 # ⚠️ 0.4.0 -> 0.5.0 on 2026-09-28 by `F622 #799` (track `0DI`): `A643`'s `DeadLetterRedrivePayload`
 # (`D-296`) with its `D-303` override-audit fields, the one schema the train admitted.
-servista-avro-schemas = "0.5.0"
+# 0.5.0 -> 0.6.0 on 2026-10-05: `servista.integrations.config`, the four registry values of the
+# integration registry (integration, connection reference, acquisition subscription, adapter
+# override), keyed by the vendor's source object.
+servista-avro-schemas = "0.6.0"
 
 [libraries]
 # Ktor Server
