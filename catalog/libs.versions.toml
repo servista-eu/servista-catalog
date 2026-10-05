@@ -425,6 +425,10 @@ dokka = "2.2.0"
 ktfmt = "0.27.0"
 shadow = "9.6.1"
 konform = "0.11.1"
+# JSONata, an adapter-override expression language. `com.dashjoin:jsonata` (jsonata-java):
+#   Apache-2.0, zero runtime dependencies, a documented evaluation timeout and recursion limit.
+#   0.9.10 is the latest release on Maven Central at the time it was pinned (2026-10-05).
+jsonata = "0.9.10"
 tink = "1.23.0"
 # ⛔ TWO refs on purpose — bcpkix is NOT behind.
 # BC patches per module: 1.85.2 was published for bcprov ONLY
@@ -986,6 +990,7 @@ valkey-glide = { module = "io.valkey:valkey-glide", version.ref = "valkey-glide"
 netty-bom = { module = "io.netty:netty-bom", version.ref = "netty" }
 nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
 konform-jvm = { module = "io.konform:konform-jvm", version.ref = "konform" }
+jsonata = { module = "com.dashjoin:jsonata", version.ref = "jsonata" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 bouncycastle-provider = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
 bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle-pkix" }
