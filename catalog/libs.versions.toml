@@ -674,7 +674,11 @@ typesafe-config = "1.4.9"
 # is named by its problem document, never by its status alone), `hardenedJson` (a main-source `Json`
 # whose decode failures never quote their input), `EventTransportPort.sendTombstone` (a default method)
 # and commons-testing's `SharedKubeApiServer`. `.api` additive only, +31/-0 (test fixtures +2/-0).
-servista-kotlin-commons = "0.38.0"
+# 0.38.0 -> 0.39.0 on 2026-10-06, named ahead of its publish: `CompactedChannelReaderPort` and its
+# Kafka adapter `KafkaCompactedChannelReader` (a compacted desired-state stream read from the
+# beginning on every start, `read_committed`, a `stop()` before `run()` honoured), and
+# commons-testing's `SharedNessie`. `.api` additive only.
+servista-kotlin-commons = "0.39.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
@@ -836,7 +840,11 @@ servista-kotlin-commons = "0.38.0"
 # (`OutboxEvent.payload` becomes nullable; source-breaking for a Kotlin reader of it as `ByteArray`,
 # the JVM signature unchanged) and the runtime's own `Json` instances move to `hardenedJson`,
 # against commons 0.38.0.
-servista-service-runtime = "0.50.0"
+# 0.50.0 -> 0.51.0 on 2026-10-06, named ahead of its publish: `AuthorizationModel.Types.PIPELINE`,
+# and a domain-event consumer graph (the contract and start-up in -core, `domainEventConsumerModule`
+# in -messaging): a consumer waits for cluster verification, reconnects with backoff, and reads
+# DOWN when terminated. `.api` additive only, against commons 0.39.0.
+servista-service-runtime = "0.51.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
@@ -853,7 +861,11 @@ servista-service-runtime = "0.50.0"
 # 0.5.0 -> 0.6.0 on 2026-10-05: `servista.integrations.config`, the four registry values of the
 # integration registry (integration, connection reference, acquisition subscription, adapter
 # override), keyed by the vendor's source object.
-servista-avro-schemas = "0.6.0"
+# 0.6.0 -> 0.7.0 on 2026-10-06, named ahead of its publish: the pipeline service's two control
+# streams, `servista.data-pipelines.config` and `.events`, and the key service's `servista.keys.events`
+# (carried, not yet registered), all FULL_TRANSITIVE; `servista.integrations.config` moves to
+# FULL_TRANSITIVE. `.api` additive only.
+servista-avro-schemas = "0.7.0"
 
 [libraries]
 # Ktor Server
