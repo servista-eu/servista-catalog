@@ -103,9 +103,19 @@ jooq = "3.21.9"
 #   change against live schema history as above, so `RuntimeRoleLedgerTest` re-runs on 13.9.0 inside
 #   this release and the roll reads every service's Flyway at boot. The one published POM it stales is
 #   `commons-rt-db-foss-postgres` (runtime scope), which is why commons republishes in train 3.
-flyway = "13.9.0"
+# ⛔ 13.9.0 -> 13.10.0 on 2026-10-08 by library train 8's release car (`D-330`). Release notes: the
+#   `checkDriftOnMigrate` and `publishReport` deprecations and per-environment TOML parameters; no
+#   migrate/validate/checksum change. `RuntimeRoleLedgerTest` re-runs on it inside this release, and the
+#   roll reads every service's Flyway at boot. It stales `commons-rt-db-foss-postgres`' POM, which
+#   republishes in this train.
+flyway = "13.10.0"
 hikari = "7.1.0"
-postgresql-jdbc = "42.7.13"
+# ⛔ 42.7.13 -> 42.7.14 on 2026-10-08 by library train 8's release car (`D-330`): a SECURITY release.
+#   CVE-2026-107315: the driver padded an over-declared value with bytes from EARLIER messages, up to
+#   8 KiB of another statement's SQL and parameters, worst on a pooled connection; 42.7.13 is affected.
+#   CVE-2026-107314: a `requireAuth` that excludes every method used to be ignored; now it fails 08004.
+#   The estate sets `requireAuth` in 0 files (control: `sslmode` in 21), so nothing here breaks.
+postgresql-jdbc = "42.7.14"
 oracle-jdbc = "23.26.3.0.0"
 # Trino JDBC — the client for the Iceberg lakehouse, on BOTH sides of the audit trail: the
 # audit writer (Phase 8 WP5) and the audit query API (WP6). ADR-028 settles it as the driver
@@ -223,7 +233,11 @@ openfga = "0.9.11"
 #   ⛔ Never a path-wide exclude: that drops protobuf-java's copies too. The first consumer found it
 #   at build time (F458 #634 c16420; F848 #848 D3, the owner's D-322).
 valkey-glide = "2.5.3"
-netty = "4.2.18.Final"
+# ⛔ 4.2.18 -> 4.2.19 on 2026-10-08 by library train 8's release car (`D-330`): a SECURITY release (16
+#   fixes: HTTP request smuggling via CRLF, unbounded consumption in the HTTP/2, HTTP, DNS and Base64
+#   codecs, an SNI routing bypass, io_uring use-after-free, and more). One behaviour change:
+#   `FileUpload.setContentType` now refuses an implausible MIME type.
+netty = "4.2.19.Final"
 nimbus-jose-jwt = "10.10"
 # W3-O11Y act 2 (F310 #476), decision `D-86`, 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
 # ⛔ The interval carries TEN `**BREAKING**` entries and every one of them was grepped against the
@@ -524,7 +538,8 @@ aws-sdk = "2.54.9"
 #
 # Consumer: ONE — api-organizations, LibraryCountryCatalog.kt, `getCountryCodeForRegion(alpha2)`.
 nv-i18n = "1.29"
-libphonenumber = "9.0.40"
+# 9.0.40 -> 9.0.41 on 2026-10-08 by library train 8's release car (`D-330`): metadata only.
+libphonenumber = "9.0.41"
 aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
