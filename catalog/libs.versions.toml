@@ -868,7 +868,9 @@ servista-kotlin-commons = "0.40.0"
 # and a domain-event consumer graph (the contract and start-up in -core, `domainEventConsumerModule`
 # in -messaging): a consumer waits for cluster verification, reconnects with backoff, and reads
 # DOWN when terminated. `.api` additive only, against commons 0.39.0.
-servista-service-runtime = "0.51.0"
+# 0.51.0 -> 0.52.0 on 2026-10-08 (library train 8): 8L's AuthorizationModel lake_table/reader, 7F X1's
+# DataAccessGrantEvents, F982 (two fixture signatures replaced: 6 consumer call sites adapt at re-pin).
+servista-service-runtime = "0.52.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
