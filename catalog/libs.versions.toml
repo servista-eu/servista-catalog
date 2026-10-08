@@ -10,7 +10,11 @@
 #   `invokedynamic` by default on JVM 21+ (KT-78079) and every build is `jvmToolchain(21)`, so
 #   method BODIES change while signatures do not; the Gradle plugin is fully supported to Gradle
 #   9.7.0 and the estate runs 9.8.0, which upstream allows with possible deprecation warnings.
-kotlin = "2.4.20"
+# ⚠️ 2.4.20 -> 2.4.21 on 2026-10-08 by library train 8's release car (`D-330`, its own commit).
+#   Read against the release notes: Wasm, JS, scripting, native and JVM-reflection fixes only; no
+#   JVM codegen, ABI or kotlinx-serialization-JVM change is listed. Every library's checkKotlinAbi
+#   and every re-pinned suite runs on it inside this release, which is what makes the move safe.
+kotlin = "2.4.21"
 # ⛔⛔ `ktor` GOVERNS TWO INDEPENDENTLY-VERSIONED THINGS AND THEY ARE NO LONGER IN STEP —
 #   `F532 #708`, moved 2026-09-17 by `A505 #681`'s release (track `0CO`, decision `D-222`).
 #   The LIBRARIES are at 3.6.0 on Maven Central; the GRADLE PLUGIN `io.ktor.plugin` stops at
