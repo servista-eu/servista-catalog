@@ -706,7 +706,10 @@ typesafe-config = "1.4.9"
 # from a rebuild, whose archive bytes differ, so 0.39.0 is ABANDONED in place: never pin it.
 # 0.39.1 -> 0.40.0 on 2026-10-08 (library train 8): A974's bounded pool waits (`DatabaseConfig`'s old JVM
 # <init>/copy are gone: every consumer compiles against 0.40.0), A970's OrganizationStatusVocabulary, F982.
-servista-kotlin-commons = "0.40.0"
+# 0.40.0 -> 0.41.0 on 2026-10-11 (library train 9, F1054 #1054): A1024's transaction-scoped lock port,
+# A1051's ownedRows hoist, C86's Instant.atStoreResolution, F1052's meter holders + their bytecode fixture.
+# The ABI is ADDITIVE (two classes gain MeterHolder).
+servista-kotlin-commons = "0.41.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
