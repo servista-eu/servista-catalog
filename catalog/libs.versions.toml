@@ -348,6 +348,10 @@ micrometer = "1.17.1"
 # structural (it matches on the JVM signature, where value classes are unboxed
 # and mangled) rather than a bug that 6.2.0 happened to fix. Do not re-add them.
 mockk = "1.14.11"
+# ASM reads compiled bytecode for ONE test fixture: commons-core's `assertMeterRegistrationsAreHeld`
+# (F1052 #1052), which proves every meter is registered by a `MeterHolder` at construction. It is a
+# `testFixturesImplementation` dependency only and must never reach a production artifact.
+asm = "9.11"
 testcontainers = "2.0.5"
 # ⛔ ONE ref for BOTH junit coordinates, and it is only possible because JUnit 6
 # renumbered the Platform from `1.x` to `6.x` to line up with Jupiter — so
@@ -1251,6 +1255,8 @@ typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-conf
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", version.ref = "testcontainers" }
