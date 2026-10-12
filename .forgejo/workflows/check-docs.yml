@@ -1,0 +1,80 @@
+# Per-repo machine gate (F1028 #1028 / TRAIN-CLOSE §5 F1). GENERATED from servista-planning tools/ci/check-docs-repo.yml
+# by tools/ci/render-repo-workflow.mjs; never hand-edit a copy. Derived from planning's check-docs.yml: same runner
+# (org-scoped, label `host`, toolchain image: node, git, jq, curl; no Gradle/JVM/kubectl), no `uses:`, the read-only
+# clone bot via CI_GIT_TOKEN_FILE and a credential helper, `env -u FORGEJO_TOKEN`, `--allow-skip` (a check that needs
+# the cluster/JVM is a NAMED warning, a failure stays red; green = "every check that could run here passed").
+# Planning is cloned at main (the gate's tools); the repo under test is checked out at the pushed sha.
+name: check-docs
+on:
+  push:
+    branches: [main, 'proof/**']
+concurrency:
+  group: check-docs-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  check-docs:
+    runs-on: host
+    timeout-minutes: 25
+    env:
+      ESTATE: ${{ github.workspace }}/servista
+      REPO_UNDER_TEST: servista-catalog
+    steps:
+      - name: Clone identity (read-only bot)
+        run: |
+          set -eu
+          unset FORGEJO_TOKEN GITHUB_TOKEN   # the injected job token never reaches a tool
+          : "${CI_GIT_TOKEN_FILE:?}" "${CI_GIT_USER:?}" "${FORGEJO_INTERNAL_URL:?}"
+          [ -s "${CI_GIT_TOKEN_FILE}" ] || { echo "⛔ ${CI_GIT_TOKEN_FILE} absent or empty. Refusing." >&2; exit 2; }
+          mkdir -p "$HOME/bin"
+          cat > "$HOME/bin/ci-git-credential" <<'HELPER'
+          #!/bin/sh
+          [ "$1" = "get" ] || exit 0
+          printf 'username=%s\n' "${CI_GIT_USER}"
+          printf 'password='; cat "${CI_GIT_TOKEN_FILE}"; printf '\n'
+          HELPER
+          chmod 0700 "$HOME/bin/ci-git-credential"
+          git config --global credential.helper "$HOME/bin/ci-git-credential"
+          git config --global --add safe.directory '*'
+          echo "clone identity: ${CI_GIT_USER}; token file present; never printed"
+      - name: Check the estate out (planning main + manifest siblings) and the repo under test at the pushed sha
+        run: |
+          set -eu
+          unset FORGEJO_TOKEN GITHUB_TOKEN
+          BASE="${FORGEJO_INTERNAL_URL%/}/servista"; API="${FORGEJO_INTERNAL_URL%/}/api/v1"
+          rm -rf "${ESTATE}"; mkdir -p "${ESTATE}/governance"
+          git clone -q --depth 1 --branch main "${BASE}/servista-planning.git" "${ESTATE}/governance/servista-planning"
+          git clone -q --depth 1 "${BASE}/servista-devbox.git" "${ESTATE}/governance/servista-devbox"
+          MANIFEST="${ESTATE}/governance/servista-devbox/home/.chezmoidata/repos.yaml"
+          TOOL="${ESTATE}/governance/servista-planning/tools/check-clone-manifest.mjs"
+          # the manifest must be the whole org (a gap either way is a refusal), read as the bot from its file
+          live=$(env -u FORGEJO_TOKEN FORGEJO_TOKEN_FILE="${CI_GIT_TOKEN_FILE}" FORGEJO_API="${API}" node "${TOOL}" "${MANIFEST}" --org 2>&1) && rc=0 || rc=$?
+          printf '%s\n' "${live}"
+          [ "${rc}" = "0" ] || { echo "⛔ devbox manifest is not the whole org (or could not be compared). Refusing." >&2; exit 2; }
+          printf '%s\n' "${live}" | grep -qF "(token from ${CI_GIT_TOKEN_FILE})" || { echo "⛔ the read did not take the bot's token file. Refusing." >&2; exit 2; }
+          n=0; failed=0; mine=""
+          while IFS=$'\t' read -r dir repo; do
+            case "${dir}" in governance/servista-planning|governance/servista-devbox) continue ;; esac
+            [ "${repo}" = "${REPO_UNDER_TEST}" ] && mine="${dir}"
+            if git clone -q --depth 1 "${BASE}/${repo}.git" "${ESTATE}/${dir}"; then n=$((n+1)); else echo "✗ clone failed: ${dir}" >&2; failed=$((failed+1)); fi
+          done < <(sed -nE 's/^ *- *\{ *dir: *"([^"]+)", *repo: *"([^"]+)" *\}.*/\1\t\2/p' "${MANIFEST}")
+          [ "${failed}" = "0" ] || { echo "⛔ a sibling could not be cloned. Refusing." >&2; exit 2; }
+          [ -n "${mine}" ] || { echo "⛔ ${REPO_UNDER_TEST} is not in the devbox manifest. Refusing." >&2; exit 2; }
+          git -C "${ESTATE}/${mine}" fetch -q --depth 1 origin "${GITHUB_SHA}"
+          git -C "${ESTATE}/${mine}" checkout -q "${GITHUB_SHA}"
+          echo "estate: planning main $(git -C "${ESTATE}/governance/servista-planning" rev-parse --short HEAD) + devbox + ${n} siblings; ${REPO_UNDER_TEST} (${mine}) at $(git -C "${ESTATE}/${mine}" rev-parse --short HEAD)"
+      - name: Wire the baked tools/node_modules, refusing on a moved lock
+        run: |
+          set -eu
+          unset FORGEJO_TOKEN GITHUB_TOKEN
+          TOOLS="${ESTATE}/governance/servista-planning/tools"
+          : "${SERVISTA_TOOLS_NODE_MODULES:?}" "${SERVISTA_TOOLS_LOCK_SHA256_FILE:?}"
+          BAKED="$(cut -c1-64 "${SERVISTA_TOOLS_LOCK_SHA256_FILE}")"; HERE="$(sha256sum "${TOOLS}/package-lock.json" | cut -c1-64)"
+          [ "${BAKED}" = "${HERE}" ] || { echo "⛔ planning main's tools lock (${HERE:0:12}) is not the baked one (${BAKED:0:12}): rebuild forgejo-runner-toolchain. Refusing." >&2; exit 2; }
+          ln -s "${SERVISTA_TOOLS_NODE_MODULES}" "${TOOLS}/node_modules"
+      - name: check-docs --changed servista-catalog
+        run: |
+          set -eu
+          unset FORGEJO_TOKEN GITHUB_TOKEN
+          cd "${ESTATE}/governance/servista-planning"
+          env -u FORGEJO_TOKEN FORGEJO_TOKEN_FILE="${CI_GIT_TOKEN_FILE}" FORGEJO_API="${FORGEJO_INTERNAL_URL%/}/api/v1" \
+            node tools/check-docs.mjs --changed "${REPO_UNDER_TEST}" --no-record --allow-skip
