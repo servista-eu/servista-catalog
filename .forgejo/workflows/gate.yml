@@ -1,18 +1,18 @@
-# Per-repo machine gate (F1028 #1028 / TRAIN-CLOSE §5 F1). GENERATED from servista-planning tools/ci/check-docs-repo.yml
-# by tools/ci/render-repo-workflow.mjs; never hand-edit a copy. Derived from planning's check-docs.yml: same runner
+# Per-repo machine gate (F1028 #1028 / TRAIN-CLOSE §5 F1). GENERATED from servista-planning tools/ci/gate-repo.yml
+# by tools/ci/render-repo-workflow.mjs; never hand-edit a copy. Derived from planning's gate.yml: same runner
 # (org-scoped, label `host`, toolchain image: node, git, jq, curl; no Gradle/JVM/kubectl), no `uses:`, the read-only
 # clone bot via CI_GIT_TOKEN_FILE and a credential helper, `env -u FORGEJO_TOKEN`, `--allow-skip` (a check that needs
 # the cluster/JVM is a NAMED warning, a failure stays red; green = "every check that could run here passed").
 # Planning is cloned at main (the gate's tools); the repo under test is checked out at the pushed sha.
-name: check-docs
+name: gate
 on:
   push:
     branches: [main, 'proof/**']
 concurrency:
-  group: check-docs-${{ github.ref }}
+  group: gate-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  check-docs:
+  gate:
     runs-on: host
     timeout-minutes: 25
     env:
@@ -71,10 +71,10 @@ jobs:
           BAKED="$(cut -c1-64 "${SERVISTA_TOOLS_LOCK_SHA256_FILE}")"; HERE="$(sha256sum "${TOOLS}/package-lock.json" | cut -c1-64)"
           [ "${BAKED}" = "${HERE}" ] || { echo "⛔ planning main's tools lock (${HERE:0:12}) is not the baked one (${BAKED:0:12}): rebuild forgejo-runner-toolchain. Refusing." >&2; exit 2; }
           ln -s "${SERVISTA_TOOLS_NODE_MODULES}" "${TOOLS}/node_modules"
-      - name: check-docs --changed servista-catalog
+      - name: gate --changed servista-catalog
         run: |
           set -eu
           unset FORGEJO_TOKEN GITHUB_TOKEN
           cd "${ESTATE}/governance/servista-planning"
           env -u FORGEJO_TOKEN FORGEJO_TOKEN_FILE="${CI_GIT_TOKEN_FILE}" FORGEJO_API="${FORGEJO_INTERNAL_URL%/}/api/v1" \
-            node tools/check-docs.mjs --changed "${REPO_UNDER_TEST}" --no-record --allow-skip
+            node tools/gate.mjs --changed "${REPO_UNDER_TEST}" --no-record --allow-skip
