@@ -148,6 +148,17 @@ iceberg = "1.12.0"
 # reads. Iceberg and Parquet both declare Hadoop `provided`, so the consumer must choose it. Measured
 # weight: 49.7 MiB -- it goes in the verifier's OWN image, never the writer's.
 hadoop-client = "3.5.0"
+# currency:declined — Class II QUALIFICATION HOLD, not an incompatibility: nothing measured says 4.4.0
+#   fails against the deployed broker (kafka-clients is cross-version compatible by design, so the
+#   client need not equal the broker). Measured 2026-10-13: broker 4.3.1 under Strimzi operator
+#   1.2.0 (supports brokers 4.2.0-4.3.1; a BROKER bound, not a client bound). `kafka-clients:4.4.0`
+#   reached Maven Central metadata the same day, but kafka.apache.org lists no 4.4 download, release
+#   notes or upgrade section (404 at that timestamp), so its client changes are unread and
+#   unqualified. We run producers, consumers (incl. `group.protocol`), AdminClient, PEM mTLS
+#   (`ssl.*`) and client telemetry push (`enable.metrics.push` to the broker's OTLP reporter).
+#   (owner: F510 #686, 2026-10-13, reopen when the official Kafka 4.4 release and upgrade notes are
+#   published and the 4.4.0 client passes producer, consumer, AdminClient, mTLS and telemetry-push
+#   checks against the 4.3.1 broker, or the coordinated broker/operator/client upgrade is authorized)
 kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.3.0"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
 # ⛔ THE `-2.x` SUFFIX IS A RELEASE LABEL, NOT A COMPILE TARGET. This line read
