@@ -2,8 +2,11 @@
 # by tools/ci/render-repo-workflow.mjs; never hand-edit a copy. Derived from planning's gate.yml: same runner
 # (org-scoped, label `host`, toolchain image: node, git, jq, curl; no Gradle/JVM/kubectl), no `uses:`, the read-only
 # clone bot via CI_GIT_TOKEN_FILE and a credential helper, `env -u FORGEJO_TOKEN`, `--allow-skip` (a check that needs
-# the cluster/JVM is a NAMED warning, a failure stays red; green = "every check that could run here passed").
-# Planning is cloned at main (the gate's tools); the repo under test is checked out at the pushed sha.
+# the cluster/JVM is a NAMED warning; green = "no check that could run here went red because of this push").
+# Planning is cloned at main (the gate's tools); the repo under test is checked out at the pushed sha, with the BASE
+# fetched beside it: what the branch held before the push (the push's before sha; for a new branch, the merge-base with
+# origin/main), never the head's first parent. `--introduced --base` (F1142 #1142, D-393) re-runs every failed check with
+# the repo at the base and fails the job only on a red the push INTRODUCED; an inherited red is named and does not fail it.
 name: gate
 on:
   push:
@@ -18,6 +21,7 @@ jobs:
     env:
       ESTATE: ${{ github.workspace }}/servista
       REPO_UNDER_TEST: servista-catalog
+      PUSH_BEFORE: ${{ github.event.before }}
     steps:
       - name: Clone identity (read-only bot)
         run: |
@@ -59,8 +63,33 @@ jobs:
           done < <(sed -nE 's/^ *- *\{ *dir: *"([^"]+)", *repo: *"([^"]+)" *\}.*/\1\t\2/p' "${MANIFEST}")
           [ "${failed}" = "0" ] || { echo "⛔ a sibling could not be cloned. Refusing." >&2; exit 2; }
           [ -n "${mine}" ] || { echo "⛔ ${REPO_UNDER_TEST} is not in the devbox manifest. Refusing." >&2; exit 2; }
-          git -C "${ESTATE}/${mine}" fetch -q --depth 1 origin "${GITHUB_SHA}"
-          git -C "${ESTATE}/${mine}" checkout -q "${GITHUB_SHA}"
+          R="${ESTATE}/${mine}"
+          git -C "${R}" fetch -q --depth 1 origin "${GITHUB_SHA}"
+          git -C "${R}" checkout -q "${GITHUB_SHA}"
+          # ⛔ THE BASE (F1142 #1142 round 3): what the branch held BEFORE the push. A non-zero before is fetched itself;
+          # a zero before (a new proof/** branch) is judged against origin/main (the depth-1 clone's). The history is
+          # deepened, bounded (8 x 32 commits), until the base is connected to the sha; past that the gate gives no verdict.
+          Z=0000000000000000000000000000000000000000
+          nobase=""
+          if [ -n "${PUSH_BEFORE:-}" ] && [ "${PUSH_BEFORE}" != "${Z}" ]; then
+            git -C "${R}" fetch -q --depth 1 origin "${PUSH_BEFORE}" || nobase="the before sha ${PUSH_BEFORE} could not be fetched"
+            joined() { git -C "${R}" merge-base --is-ancestor "${PUSH_BEFORE}" HEAD 2>/dev/null; }
+          else
+            joined() { git -C "${R}" merge-base HEAD refs/remotes/origin/main >/dev/null 2>&1; }
+          fi
+          # ⛔ an exhausted deepening or a failed fetch reaches the gate as NO BASE (an empty --base: no verdict, every
+          # red introduced), never as a base chosen some other way; an absent before in CI counts as a zero one.
+          i=0
+          [ -n "${nobase}" ] || until joined; do
+            [ "${i}" -lt 8 ] || { nobase="the base is not connected to ${GITHUB_SHA} within 8 x 32 commits"; break; }
+            git -C "${R}" fetch -q --deepen 32 origin "${GITHUB_SHA}" "+refs/heads/main:refs/remotes/origin/main" || { nobase="a deepening fetch failed"; break; }
+            i=$((i+1))
+          done
+          if [ -n "${nobase}" ]; then
+            echo "base: none — ${nobase}: the gate gives no verdict, every red is introduced"; : > "${HOME}/gate-base"
+          else
+            node "${ESTATE}/governance/servista-planning/tools/gate-introduced.mjs" choose-base "${R}" "${PUSH_BEFORE:-${Z}}" > "${HOME}/gate-base" || : > "${HOME}/gate-base"
+          fi
           echo "estate: planning main $(git -C "${ESTATE}/governance/servista-planning" rev-parse --short HEAD) + devbox + ${n} siblings; ${REPO_UNDER_TEST} (${mine}) at $(git -C "${ESTATE}/${mine}" rev-parse --short HEAD)"
       - name: Wire the baked tools/node_modules, refusing on a moved lock
         run: |
@@ -77,4 +106,4 @@ jobs:
           unset FORGEJO_TOKEN GITHUB_TOKEN
           cd "${ESTATE}/governance/servista-planning"
           env -u FORGEJO_TOKEN FORGEJO_TOKEN_FILE="${CI_GIT_TOKEN_FILE}" FORGEJO_API="${FORGEJO_INTERNAL_URL%/}/api/v1" \
-            node tools/gate.mjs --changed "${REPO_UNDER_TEST}" --no-record --allow-skip
+            node tools/gate.mjs --changed "${REPO_UNDER_TEST}" --introduced --base "$(cat "${HOME}/gate-base")" --no-record --allow-skip
