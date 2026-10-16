@@ -11,7 +11,27 @@ plugins {
 
 // The shared jvm-library CI pipeline invokes `test` and `detekt`. This project
 // is a pure version catalog with no sources, so register them as no-ops.
-tasks.register("test") { group = "verification" }
+// ⛔ F359 #534: a no-op `test` would also never compile or run a `@Test` someone adds here, the
+// non-void `@Test` trap's worst case: every case silently NOT RUN and the gate green. With no
+// JUnit Platform to set `junit.platform.discovery.issue.severity.critical` on, the guard is this:
+// any file under `src/` turns `test` red. Census 2026-10-16: 0 classes, 0 `@Test` methods, no
+// Kotlin or Java plugin applied, so nothing that could not be compiled.
+tasks.register("test") {
+    group = "verification"
+    val sources = fileTree("src")
+    val catalogRoot = layout.projectDirectory.asFile
+    inputs.files(sources)
+    doLast {
+        val found = sources.files
+        if (found.isNotEmpty()) {
+            throw GradleException(
+                "servista-catalog has no source set, so `test` runs nothing; these files would " +
+                    "never be compiled or run (F359 #534):\n" +
+                    found.joinToString("\n") { "  ${it.relativeTo(catalogRoot)}" }
+            )
+        }
+    }
+}
 
 tasks.register("detekt") { group = "verification" }
 
