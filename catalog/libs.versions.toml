@@ -2,21 +2,19 @@
 # Consumers import via: from("eu.servista:servista-catalog:<version>")
 
 [versions]
-# ⚠️ 2.4.10 -> 2.4.20 on 2026-09-28 by `F622 #799` (track `0DI`), the library train's RELEASE car.
-#   F510 #686's decline read "reopen when a session is scheduled that can gate all 26 repositories
-#   in one sitting"; the release car's one re-pin sweep, every suite re-run, IS that session
-#   (`D-277`), so the marker is deleted with the move. The toolchain is still its own unit (W2f).
-# ⚠️ What 2.4.20 changes HERE (`F622` D1, read against the estate): `when` compiles to
+# ⚠️ 2.4.10 -> 2.4.20 on 2026-09-28: qualified across all consumers with ABI checks and suites.
+# The JVM toolchain is qualified separately.
+# ⚠️ What 2.4.20 changes here: `when` compiles to
 #   `invokedynamic` by default on JVM 21+ (KT-78079) and every build is `jvmToolchain(21)`, so
 #   method BODIES change while signatures do not; the Gradle plugin is fully supported to Gradle
 #   9.7.0 and the estate runs 9.8.0, which upstream allows with possible deprecation warnings.
-# ⚠️ 2.4.20 -> 2.4.21 on 2026-10-08 by library train 8's release car (`D-330`, its own commit).
+# ⚠️ 2.4.20 -> 2.4.21 on 2026-10-08.
 #   Read against the release notes: Wasm, JS, scripting, native and JVM-reflection fixes only; no
 #   JVM codegen, ABI or kotlinx-serialization-JVM change is listed. Every library's checkKotlinAbi
 #   and every re-pinned suite runs on it inside this release, which is what makes the move safe.
 kotlin = "2.4.21"
 # ⛔⛔ `ktor` GOVERNS TWO INDEPENDENTLY-VERSIONED THINGS AND THEY ARE NO LONGER IN STEP —
-#   `F532 #708`, moved 2026-09-17 by `A505 #681`'s release (track `0CO`, decision `D-222`).
+# The library and plugin releases must be checked independently.
 #   The LIBRARIES are at 3.6.0 on Maven Central; the GRADLE PLUGIN `io.ktor.plugin` stops at
 #   **3.5.2** and there is no 3.6.0 of it at all.
 # ⭐ MEASURED off the portal's own metadata rather than inferred from a 404, because a 404 alone
@@ -32,14 +30,13 @@ kotlin = "2.4.21"
 #   and only the `version.ref` behind it changes. See `[plugins] ktor` below.
 # ⚠️ `check-dependency-currency` resolves a ref with no library through the plugin MARKER, so
 #   `ktor-plugin` reads CURRENT at 3.5.2 rather than becoming a second permanent red.
-# ⛔⛔ THE NARRATIVE FIRST, BECAUSE THE DECLINE BELOW IS THE MACHINE-READABLE HALF OF IT.
-#    ktor 3.6.0 was taken on 2026-09-17 inside `A505 #681`'s release (`D-222`) and given back the
-#    same sitting, on two independent measurements from the first `podman build` that ran.
+# ⛔ Ktor 3.6.0 was tested and rolled back on 2026-09-17 after two independent
+# image-build measurements; retain these checks when qualifying an upgrade.
 #
 # (1) ⛔ `shadowJar` REFUSES, and the guard is right. `netty-codec-native-quic` publishes FIVE
 #     platform-classified jars, each with its own `META-INF/io.netty.versions.properties`, so
-#     `PropertiesFileTransformer(MergeStrategy.Fail)` — `W2g`/`D-13`, whose own comment reads
-#     *"one key with two values means two versions of one netty module in the jar"* — fails over
+#     `PropertiesFileTransformer(MergeStrategy.Fail)` enforces the rule that
+#     one key with two values means two versions of one Netty module in the jar; it fails over
 #     six keys duplicated 5 times. ⭐ NOT a false positive: there really are five.
 #     Measured on `api-iam`: `runtimeClasspath` 181 artifacts, SIX of them QUIC —
 #     linux-x86_64 2,865,743 B · linux-aarch_64 2,716,924 B · osx-x86_64 2,552,486 B ·
@@ -54,19 +51,10 @@ kotlin = "2.4.21"
 #    never `shadowJar` — the fat jar is assembled only inside the image build. All 26 repositories
 #    were green, `check-catalog-pins`, `check-published-poms` (as a BEFORE/AFTER pair) and
 #    `check-dependency-currency` were all green, and the first thing that knew was `podman`.
-#
-# ⛔⛔ This upgrade requires coordinated qualification rather than an
-#    OVERSIGHT. One was written on 2026-09-17 and `check-dependency-currency` refused it:
-#    *"a Class I BATCH MEMBER may not be declined — nothing is deployed on the other end, so
-#    holding it is scheduling, which belongs to a row rather than to a marker."* ⭐ It is right:
-#    `kotlin` four lines up MAY be declined because the tool classifies it `own unit`; `ktor` is
-#    an ordinary batch member, so holding it is a SCHEDULE and a schedule needs an owner who can
-#    be asked when.
-# ✅ THE OWNER IS `F532 #708`, WHICH IS OPEN, and the finding below is deliberately LEFT RED.
-#    `check-dependency-currency` exits 1 on `ktor 3.5.2 -> 3.6.0`, exactly as it did before
-#    2026-09-17, and that row's own comment already says the red *"is nobody's to
-#    --update-baseline in either direction"*. The comment above is the evidence it needs; the
-#    decision about when to pay it is that row's.
+# ⛔ Upgrades require coordinated qualification, including `shadowJar` and image-layer size.
+# A green per-repository `check` does not establish that the image can be built or shipped.
+# ⚠️ `check-dependency-currency` must continue to report an unqualified upgrade;
+# do not hide it by updating the baseline.
 ktor = "3.6.0"
 # ⛔ HELD, NOT STALE — 3.5.2 is the LATEST `io.ktor.plugin` that exists. Move it the day the
 #   plugin catches up with the libraries; until then this is the pin-the-latest-stable rule
@@ -77,10 +65,8 @@ ktor-plugin = "3.6.0"
 #   all, so whoever moves `ktor` next cannot move the plugin with it by accident. Collapsing it
 #   back would delete a finding to tidy a line.
 koin = "4.2.2"
-# ⛔ 3.21.7 -> 3.21.9 on 2026-09-30 by `F845 #845` (track `0DY`), `D-330` (the platform owner: "Fold
-#   into F845"): a PATCH inside 3.21, so the PostgreSQL 18 bound below is unchanged. Its
-#   qualification hold ended in the same change: the ref is current, and
-#   it regenerates DB code in the jOOQ repositories at the one re-pin sweep this release obliges.
+# ⛔ 3.21.7 -> 3.21.9 on 2026-09-30: a PATCH inside 3.21, so the PostgreSQL 18 bound
+# below is unchanged. Qualify it by regenerating DB code in the jOOQ consumers.
 jooq = "3.21.9"
 # ⛔ CLASS II, AND ITS SERVER IS A HARD BOUND RATHER THAN A LOOSE ONE. jOOQ's Open Source Edition
 # supports exactly ONE PostgreSQL major per minor — the vendor's own legend is "The jOOQ Open
@@ -90,27 +76,25 @@ jooq = "3.21.9"
 # ⛔⛔ Production has run PostgreSQL 18 since 2026-04-27. This ref sat at 3.20.11 from the catalog's
 # first commit (2026-03-23) until 2026-08-25 — 120 days OUTSIDE the vendor's support window for the
 # server it dials, with no signal anywhere, because nothing on the CLIENT side moved.
-# ✅ `node tools/check-server-floor.mjs` in servista-planning is what now says so: it reads the
-# server major FROM THE CLUSTER and refuses on a jOOQ minor its table has never seen.
-# Moved by W1-JQ (D-94, 2026-08-25). ⚠️ Nine aliases share this ref and five have no consumer;
+# ✅ `node tools/check-server-floor.mjs` reads the server major from the cluster and
+# refuses a jOOQ minor its compatibility table has never seen.
+# ⚠️ Nine aliases share this ref and five have no consumer;
 # they are KEPT because the intersection rule verifies all nine at every bump and re-adding one
 # later is a line, while an unverified coordinate is a silent hole.
-# ⛔ 13.4.0 -> 13.8.1 on 2026-09-30 by `F845 #845` (track `0DY`), `D-330`: a migration-engine change
-#   against live schema history, so commons' `RuntimeRoleLedgerTest` (A842's claim, proven on 13.4.0)
-#   is re-run on 13.8.1 inside this release, and the roll's post-roll gate reads every service's
-#   Flyway at boot. Its qualification hold ended in the same change.
-# ⛔ 13.8.1 -> 13.9.0 on 2026-10-01 by `F898 #898` (track `0EA`), `D-349`: the same migration-engine
+# ⛔ 13.4.0 -> 13.8.1 on 2026-09-30: a migration-engine change against live schema
+# history, qualified by commons' `RuntimeRoleLedgerTest` and each service's Flyway at boot.
+# ⛔ 13.8.1 -> 13.9.0 on 2026-10-01: the same migration-engine
 #   change against live schema history as above, so `RuntimeRoleLedgerTest` re-runs on 13.9.0 inside
 #   this release and the roll reads every service's Flyway at boot. The one published POM it stales is
-#   `commons-rt-db-foss-postgres` (runtime scope), which is why commons republishes in train 3.
-# ⛔ 13.9.0 -> 13.10.0 on 2026-10-08 by library train 8's release car (`D-330`). Release notes: the
+#   `commons-rt-db-foss-postgres` (runtime scope), which requires commons to republish.
+# ⛔ 13.9.0 -> 13.10.0 on 2026-10-08. Release notes: the
 #   `checkDriftOnMigrate` and `publishReport` deprecations and per-environment TOML parameters; no
 #   migrate/validate/checksum change. `RuntimeRoleLedgerTest` re-runs on it inside this release, and the
 #   roll reads every service's Flyway at boot. It stales `commons-rt-db-foss-postgres`' POM, which
-#   republishes in this train.
+#   must republish with this change.
 flyway = "13.10.0"
 hikari = "7.1.0"
-# ⛔ 42.7.13 -> 42.7.14 on 2026-10-08 by library train 8's release car (`D-330`): a SECURITY release.
+# ⛔ 42.7.13 -> 42.7.14 on 2026-10-08: a SECURITY release.
 #   CVE-2026-107315: the driver padded an over-declared value with bytes from EARLIER messages, up to
 #   8 KiB of another statement's SQL and parameters, worst on a pooled connection; 42.7.13 is affected.
 #   CVE-2026-107314: a `requireAuth` that excludes every method used to be ignored; now it fails 08004.
@@ -124,25 +108,25 @@ oracle-jdbc = "23.26.3.0.0"
 # a driver ahead of the server is the normal upgrade order for Trino, and 483 is what the ADR
 # measured — 10.44 MB against 480's 13.10 MB, well inside the image's margin under the edge cap.
 trino-jdbc = "483"
-# Apache Iceberg, read OFF-ENGINE -- A849 #849 D3 (the owner's V3a, #849 c16592; the car D-323).
+# Apache Iceberg, read OFF-ENGINE.
 # The audit chain's scheduled verifier re-walks `iceberg.audit.records` straight from its metadata
-# and Parquet, so a full-table read puts 0 load on Trino (E328 #499). `iceberg-core` +
+# and Parquet, so a full-table read puts 0 load on Trino. `iceberg-core` +
 # `iceberg-parquet` + `iceberg-data` + `iceberg-aws` (`S3FileIO`, handed the estate's own `aws-s3`
 # + `aws-apache5-client` client, so no second S3 HTTP client is pinned). Measured weight: 39.9 MiB.
 # ⚠️ Iceberg brings Parquet 1.17.1 transitively (1.11.0 AND 1.12.0 both resolve it, while upstream
 # Parquet is at 1.18.1), and Parquet is NOT pinned here: a pin would have to trail upstream for ever.
-# ⛔ READ WITH `InternalData.read(FileFormat.PARQUET, …)` (D-348, measured by the verifier's
-# integration suite). `IcebergGenerics.read(…)` is NOT usable with this set: in 1.11 it goes through
+# ⛔ READ WITH `InternalData.read(FileFormat.PARQUET, …)`, measured by the verifier's
+# integration suite. `IcebergGenerics.read(…)` is NOT usable with this set: in 1.11 it goes through
 # `FormatModelRegistry`, which loads ORC eagerly and fails without `iceberg-orc`
 # (`NoClassDefFoundError: org/apache/iceberg/orc/OrcRowWriter`); and `GenericParquetReaders` takes a
 # Parquet `MessageType`, which would need the pin above. `InternalData` names neither.
-# The D-323 measurement wrote and read Parquet but did not exercise `S3FileIO` or a generic read
-# path, which is how this and the two AWS models below (`aws-kms`, `aws-sts`) were missed.
-# ⛔ 1.11.0 -> 1.12.0 on 2026-10-01 by `F898 #898` (track `0EA`), `D-349` (`check-dependency-currency`,
-# Class I). The only consumer is the A849 verifier; 0 published `eu.servista` POMs name iceberg.
+# ⚠️ Qualification must exercise `S3FileIO` and generic reads as well as Parquet writes
+# and reads; the former require the two AWS models below (`aws-kms`, `aws-sts`).
+# ⛔ 1.11.0 -> 1.12.0 on 2026-10-01. The only consumer is the scheduled audit verifier;
+# 0 published `eu.servista` POMs name Iceberg.
 iceberg = "1.12.0"
 # ⛔ Hadoop, the SHADED client pair and nothing narrower -- measured 2026-09-29 by a Parquet write
-# and read through Iceberg 1.11.0 (A849 D-323): with no Hadoop it fails on
+# and read through Iceberg 1.11.0: with no Hadoop it fails on
 # `org.apache.hadoop.conf.Configuration`; `hadoop-client-api` alone fails on its shaded woodstox;
 # `hadoop-common` (96 jars) fails on mapreduce `FileInputFormat`; `-client-api` + `-client-runtime`
 # reads. Iceberg and Parquet both declare Hadoop `provided`, so the consumer must choose it. Measured
@@ -151,10 +135,8 @@ hadoop-client = "3.5.0"
 # Hold until the Kafka client is qualified against the deployed broker.
 kafka = "4.3.1"                     # Kafka clients (produce/consume)
 flink = "2.3.0"                     # latest stable (verified 2026-05); Silver streaming engine (ADR-019)
-# ⛔ THE `-2.x` SUFFIX IS A RELEASE LABEL, NOT A COMPILE TARGET. This line read
-#    `4.0.1-2.0 # latest; built for Flink 2.0, API-compatible with 2.x — verify on 2.2` until
-#    2026-08-25, and every clause of that was false or unverifiable. Measured (`W1-CJ`'s successor
-#    `W1-FK`, `D-92`): `flink-connector-kafka-parent` declares `flink.version 2.1.0` at BOTH
+# ⛔ THE `-2.x` SUFFIX IS A RELEASE LABEL, NOT A COMPILE TARGET. Measured from the POMs:
+# `flink-connector-kafka-parent` declares `flink.version 2.1.0` at BOTH
 #    `5.0.0-2.1` and `5.0.0-2.2`; the two parent POMs differ by one line, the `<version>` element;
 #    and the two jars have identical entry lists with **0 of 211 class files differing** (only
 #    `MANIFEST.MF`). ⭐ They are the SAME ARTIFACT. Control: `4.0.1-2.0 → 5.0.0-2.2` moves 125 of 185.
@@ -169,7 +151,6 @@ flink = "2.3.0"                     # latest stable (verified 2026-05); Silver s
 #    tested with. No gate anywhere says so, because there is no consumer yet.
 flink-connector-kafka = "5.0.0-2.2"
 avro = "1.12.2"
-# W3-AP (F269 #426): governance/servista-planning/work/upgrades/components/W3-AP-apicurio-strimzi-kafka.md
 # ⛔ THE COORDINATE MOVED AND THE OLD ONE IS DEAD. `io.apicurio:apicurio-registry-serdes-avro-serde`
 # was renamed to `io.apicurio:apicurio-registry-avro-serde-kafka` at 3.0.0.M5 — the release
 # immediately after the 3.0.0.M4 this ref used to pin, so M4 is not "an old milestone", it is the
@@ -177,46 +158,41 @@ avro = "1.12.2"
 # ⚠️ That is why check-dependency-currency.mjs reported this ref as `current-preview` against a
 # "latest" of 2.6.13.Final: the tool reads the metadata of the coordinate it is given, and that
 # coordinate's own metadata says its latest is M4. The tool was right; the coordinate was dead.
-# ⛔ A CURRENCY CHECK KEYED ON A COORDINATE CANNOT SEE A RENAME — F269 #426 D5 owns that gap.
+# ⛔ A CURRENCY CHECK KEYED ON A COORDINATE CANNOT SEE A RENAME.
 # ✅ The new line tracks the SERVER's version exactly (registry 3.3.2 ⇒ serde 3.3.2), which is a
 # strictly better place to be than a milestone that can never move again.
 # ⛔⛔ THIS REF'S INPUT IS A CONTAINER IMAGE TAG IN ANOTHER REPOSITORY, AND MOVING THAT TAG IS
 # WHAT MOVES THIS LINE. `mspcloud` `apps/registry/apicurio/overlays/dev/` sets
 # `apicurio/apicurio-registry:<tag>`; `check-dependency-currency.mjs` reads that tag off the
 # RUNNING CLUSTER and requires this value to equal it, so an image bump obliges a catalog
-# release and a re-pin of every live Gradle build — in `servista`, by somebody who was
-# editing `mspcloud`. Measured 2026-09-06: `A448 #624` moved 3.3.1 → 3.3.2 and priced the
-# bump as carrying "no catalog re-pin"; the conclusion did not follow from its true premise
-# (nothing consumes the ref), because the obligation is created by the GATE rather than by a
-# consumer. `F454 #630` is that release, and `check-tracked-server-images.mjs` is what now
-# says so at the manifest, where the act happens.
+# release and a re-pin of every live Gradle build, even when nothing consumes this ref.
+# `check-tracked-server-images.mjs` checks that obligation at the manifest.
 # ⚠️ NOTHING CONSUMES THIS REF — measured 2026-08-22 with a passing control, zero declaration sites.
 # Servista speaks the registry's v3 REST API through its own SchemaRegistryClient in
 # commons-rt-events-foss-kafka-avro, which exists for a reason the vendor serde does not give for
-# free: it resolves the global id by the RECORD'S OWN schema rather than by the artifact's `latest`,
-# which is what A37 #153 cost 29 unreadable records. ⛔ Repointed rather than DELETED (owner
-# decision D-38, 2026-08-22): deleting it would assert a decision never taken — that this estate
-# will not use a vendor serde — and "nothing calls it" is not an argument about design.
-# ⛔ THE REF IS RENAMED TOO, and that is not cosmetic: the old artifact was `…-serdes-avro-serde`
-# (plural) and the new one is `…-avro-serde-kafka` (singular), so a ref still called
+# free: it resolves the global id by the RECORD'S OWN schema. Using the artifact's `latest`
+# previously caused 29 unreadable records.
+# ⛔ Keep the vendor-serde coordinate available: a lack of current callers does not establish
+# that a vendor serde will never be needed.
+# ⛔ The old coordinate was `…-serdes-avro-serde` (plural); the new one is
+# `…-avro-serde-kafka` (singular), so a ref still called
 # `apicurio-serdes` names the DEAD coordinate's vocabulary — and the ref name is the key both
 # `check-dependency-currency.mjs` and `check-doc-version-tables.mjs` are wired on, which is part of
-# why the rename stayed invisible for a year. Same disposition as W2e's `junit5` → `junit`.
+# why a rename can stay invisible. Ref names must follow coordinate changes.
 apicurio-avro-serde = "3.3.2"
-# W3-OF (F269 #426): governance/servista-planning/work/upgrades/components/W3-OF-openfga.md
 # ⛔ 0.9.8 is a PRERELEASE and 0.9.10 never reached the registry (upstream says so), so the interval
-# is 0.9.7 -> 0.9.11 and there is nothing in between to read. ⭐ The bump is also A277 #434's fix:
+# is 0.9.7 -> 0.9.11 and there is nothing in between to read. ⭐ The bump also fixes dependencies:
 # 0.9.11 imports jackson-bom 2.22.1 (0 advisories) where 0.9.7 imported 2.21.1 (10), and it promotes
 # jackson-core/-annotations/-databind, jsr305 and opentelemetry-api from `runtime` to `compile` in
 # its published POM — measured by diffing the two POMs, not read from a release note. That promotion
 # is what retired the `jackson2` ref this file used to carry; see the deletion note below.
 # ⚠️ It also moves opentelemetry-bom 1.59.0 -> 1.64.0. ✅ That INVERSION IS RESOLVED as of
-# 2026-08-25: `D-86` took `otel` to `1.65.0`, which is above it. Kept because the shape recurs —
+# 2026-08-25: `otel` moved to `1.65.0`, which is above it. Kept because the shape recurs —
 # a transitive BOM can sit above a catalog ref and nothing in the build says so.
 # The authorization client must move with the deployed OpenFGA server.
 openfga = "0.9.11"
-# Valkey GLIDE — the estate's one JVM Valkey client (`F543 #719`, the platform owner's `D-237`,
-#   ADR-042; lettuce left this catalog in the same change). ⛔ A per-platform NATIVE core: this alias
+# Valkey GLIDE — the estate's one JVM Valkey client (ADR-042; replaces Lettuce).
+# ⛔ A per-platform NATIVE core: this alias
 #   is the classifier-less jar (every native, 41 MB), which only libraries' test classpaths use;
 #   a service declares its runtime image's classifier on the alias itself, e.g.
 #   `runtimeOnly(libs.valkey.glide) { artifact { classifier = "linux_musl-x86_64" } }`.
@@ -225,23 +201,22 @@ openfga = "0.9.11"
 #   with content that differs from protobuf-java's, which every service already carries (runtime-core
 #   → commons-edge-auth-core → tink), so the estate's DeduplicatingResourceTransformer refuses the
 #   fat jar: "Found 6 path duplicate(s) with different content". protobuf-java's copies are canonical.
-#   Copy servista-cache `b842fe69` (app/build.gradle.kts): `dependencies { exclude(dependency(
+#   Use this shadowJar pattern: `dependencies { exclude(dependency(
 #   "io.valkey:valkey-glide")) }` plus an artifactView of glide re-added with
 #   `from(...) { exclude("google/protobuf/*.proto") }`, the pyroscope exclude-and-re-add shape.
-#   ⛔ Never a path-wide exclude: that drops protobuf-java's copies too. The first consumer found it
-#   at build time (F458 #634 c16420; F848 #848 D3, the owner's D-322).
+#   ⛔ Never a path-wide exclude: that drops protobuf-java's copies too.
 valkey-glide = "2.5.3"
-# ⛔ 4.2.18 -> 4.2.19 on 2026-10-08 by library train 8's release car (`D-330`): a SECURITY release (16
+# ⛔ 4.2.18 -> 4.2.19 on 2026-10-08: a SECURITY release (16
 #   fixes: HTTP request smuggling via CRLF, unbounded consumption in the HTTP/2, HTTP, DNS and Base64
 #   codecs, an SNI routing bypass, io_uring use-after-free, and more). One behaviour change:
 #   `FileUpload.setContentType` now refuses an implausible MIME type.
 netty = "4.2.19.Final"
 nimbus-jose-jwt = "10.10"
-# W3-O11Y act 2 (F310 #476), decision `D-86`, 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
+# 2026-08-25: `1.61.0` -> `1.65.0`, four releases read.
 # ⛔ The interval carries TEN `**BREAKING**` entries and every one of them was grepped against the
 # tree and reaches ZERO files (controls: a fabricated symbol 0, `libs.otel.sdk` 23). The one worth
-# knowing about is `1.62.0`'s Prometheus exporter default host moving `0.0.0.0` -> `localhost`: that
-# is `F310`'s own defect class — a healthy pod the store cannot reach — and it misses us only
+# knowing about is `1.62.0`'s Prometheus exporter default host moving `0.0.0.0` -> `localhost`:
+# this can leave a healthy pod the store cannot reach. It misses us only
 # because we do not use `opentelemetry-exporter-prometheus` at all.
 # ⚠️ `CVE-2026-45292` / `GHSA-rcgg-9c38-7xpx` (CVSS 5.3, unbounded allocation parsing W3C baggage)
 # names `io.opentelemetry:opentelemetry-api <= 1.61.0` — this ref's previous value exactly — and is
@@ -251,23 +226,21 @@ nimbus-jose-jwt = "10.10"
 # `.extract(` — the vulnerability is in the parser and we only ever inject. A scanner keyed to the
 # coordinate will still flag the old pin, correctly.
 # ⭐ Free with the bump and worth knowing: `1.65.0` fixes `OkHttpHttpSender` mTLS against the
-# platform default trust store (ADR-034 / A297 #461's path), and `1.64.0` stops
+# platform default trust store (ADR-034), and `1.64.0` stops
 # `BatchLogRecordProcessor`'s worker thread being killed by non-runtime exceptions — a log pipeline
 # that stops exporting with the pod still Ready, which is this estate's "never silently degrade".
 # The telemetry SDK moves with the deployed collector.
 otel = "1.65.0"
-# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, decision `D-79`) — deleted because
+# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 — deleted because
 # IT RESOLVED TO NOTHING, which is a different reason from `jackson2`'s and `janino`'s below and is
 # worth keeping separate. Measured four ways with a firing control on each: 0 build files and 0
 # repositories declared `libs.otel.agent` (controls: `libs.otel.sdk` 23 files / 22 repos,
 # `libs.otel.logback.appender` 21 / 21); 0 `-javaagent` hits in either GitOps repository (control:
 # 121 files contain `image:`); 0 of 304 running containers declared one (control: 11 declare an
 # `OTEL_*` env var); and 0 anywhere for the non-agent JDBC route either.
-# ⚠️ `CLAUDE.md` §1's "never delete working plumbing" governs a feature that EXISTS and is DISABLED.
-# There was no plumbing here — no jar, no `JAVA_TOOL_OPTIONS`, no wired path, no flag — so this ref
-# was an assumption that got written down, not a capability somebody switched off.
-# ⛔ The CAPABILITY it stood in for — DB query spans — is kept, and is filed as F323 #490 with its
-# MECHANISM named in the first DoD clause: `io.opentelemetry.instrumentation:opentelemetry-jdbc`,
+# ⚠️ Removing an unused ref does not remove a disabled capability: there was no jar,
+# `JAVA_TOOL_OPTIONS`, wired path or flag behind this one.
+# ⛔ DB query spans use `io.opentelemetry.instrumentation:opentelemetry-jdbc`,
 # on the `otel-instrumentation` train below, wrapped around the DataSource that
 # `commons-rt-db-foss-postgres`'s `migrateDatabase()` already creates for every service.
 # ⛔ Do not restore this ref to "get JDBC spans back". The agent route is 22 images and 22
@@ -276,18 +249,16 @@ otel = "1.65.0"
 # plane beside an explicit one) for workload identity; and the agent's single live advisory is
 # `CVE-2026-54704`, "JDBC Auto-Instrumentation Logging Clear-Text Passwords" — this estate's most
 # repeated defect offered back as a feature.
-# ⚠️ For the record, because the number was quoted forward wrongly in three documents: that advisory
-# is first patched at `2.28.0-alpha`, NOT at `2.31.1`. `2.31.1` was the CURRENCY TARGET read as
+# ⚠️ The advisory is first patched at `2.28.0-alpha`, NOT at `2.31.1`. `2.31.1` was the CURRENCY TARGET read as
 # though it were the fix. The advisory names ONLY `io.opentelemetry.javaagent:opentelemetry-javaagent`;
 # `opentelemetry-logback-appender-1.0` has zero advisories, so it never reached the train below.
-# `D-86`, 2026-08-25: `2.27.0-alpha` -> `2.31.1-alpha`, six releases read.
+# 2026-08-25: `2.27.0-alpha` -> `2.31.1-alpha`, six releases read.
 # ⛔ THIS REF AND `otel` ABOVE ARE ONE DECISION, and the vendor writes the binding down rather than
-# leaving it to be inferred (hazard 15): every release states the SDK it targets, and `2.31.1`
+# leaving it to be inferred: every release states the SDK it targets, and `2.31.1`
 # targets `1.65.0` exactly. Moving one without the other is the mistake this line exists to prevent.
-# ⚠️ We consume exactly THREE artifacts from this train — `opentelemetry-logback-appender-1.0`; since
-# F323 #490 (2026-09-26, track `0AU`), `opentelemetry-jdbc`; and since E388 #567 (2026-09-28, track
-# `4BF`), `opentelemetry-kafka-clients-2.6` — so the interval's large breaking surface is the javaagent
-# and library instrumentations we do not have. ⛔ `opentelemetry-jdbc` and
+# ⚠️ We consume exactly THREE artifacts from this train: `opentelemetry-logback-appender-1.0`,
+# `opentelemetry-jdbc` and `opentelemetry-kafka-clients-2.6`. The interval's large breaking surface is
+# the javaagent and library instrumentations we do not have. ⛔ `opentelemetry-jdbc` and
 # `opentelemetry-kafka-clients-2.6` were each added ON this ref and did not move it: both are published
 # at `2.31.1-alpha` (the kafka one is Maven Central's `<release>` as of 2026-09-28, and its Gradle
 # module requires `opentelemetry-api 1.65.0`, which is `otel` above exactly), so neither alias is a
@@ -296,10 +267,10 @@ otel = "1.65.0"
 # ⛔ What DOES reach us is a DEPRECATION, not a removal: `2.31.0` deprecates the boolean capture
 # settings in favour of `.included`/`.excluded` selectors, and `servista-service-runtime`'s
 # `logback-base.xml` sets `captureExperimentalAttributes` and `captureKeyValuePairAttributes`.
-# `2.31.1` still honours them; migrating is an `I5` item, not a blocker.
+# `2.31.1` still honours them; migration can be qualified separately.
 # Instrumentation requires a newer telemetry API and must wait for the collector upgrade.
 otel-instrumentation = "2.31.1-alpha"
-# `D-86`, 2026-08-25: `1.0.4` -> `2.1.2`, eleven releases read, crossing a major.
+# 2026-08-25: `1.0.4` -> `2.1.2`, eleven releases read, crossing a major.
 # ⛔⛔ THE MAJOR IS AN ARTIFACT SPLIT AND IT IS WHY `pyroscope-agent` BELOW EXISTS. `2.0.0` made
 # `io.pyroscope:otel` the THIN library jar — measured, not read: 5,440,660 B / 2,074 entries at
 # `1.0.4` against 4,916 B / 9 entries at `2.1.2` — and moved everything it used to shade into
@@ -310,17 +281,16 @@ otel-instrumentation = "2.31.1-alpha"
 # ref below is separate rather than implied.
 # ⛔ AND `2.1.0` ADDS A CLIENT -> SERVER ORDERING CONSTRAINT, which is a PHASE II obligation this
 # comment carries because nothing else will: `trace_id` is emitted UNCONDITIONALLY and needs a
-# Pyroscope SERVER with grafana/pyroscope#5220, first shipped in server `v2.1.0`. Ours runs `2.0.6`
-# (D-83). On an older server `trace_id` is promoted to a PER-TRACE SERIES LABEL and inflates the
+# Pyroscope SERVER with the trace-id handling fix first shipped in `v2.1.0`. Ours runs `2.0.6`.
+# On an older server `trace_id` is promoted to a PER-TRACE SERIES LABEL and inflates the
 # index. ⛔ THE SERVER REACHES `>= 2.1.0` BEFORE THE FLEET REBUILD, NOT AFTER.
 # ⚠️ Harmless today only because profiling is off fleet-wide and the store holds zero profiles —
 # a fact about a config, not about the code. One `PYROSCOPE_SERVER_ADDRESS` changes it.
-# ⚠️ And a correction to a sentence three documents quoted forward: the client was NEVER "a major
-# behind the 2.x server". `grafana/otel-profiling-java` and `grafana/pyroscope` are different
+# ⚠️ `grafana/otel-profiling-java` and `grafana/pyroscope` are different
 # projects with independent version lines and the matching numbers are a coincidence.
 # The profiling client must wait for the deployed server to reach 2.1.0.
 pyroscope = "2.1.2"
-# ⛔ NEW REF, 2026-08-25 (`D-86`). It is not a new dependency: it is the un-shaded half of what
+# ⛔ NEW REF, 2026-08-25. It is not a new dependency: it is the un-shaded half of what
 # `io.pyroscope:otel:1.0.4` already carried inside itself, now declared where the build can see it.
 # ⚠️ `2.9.1` is the latest stable and NOT the `2.6.0` the bridge's own POM names. The estate's
 # standing rule is to pin the latest stable, and it is satisfiable here without a compatibility
@@ -334,27 +304,26 @@ pyroscope = "2.1.2"
 pyroscope-agent = "2.9.2"
 micrometer = "1.17.1"
 # ⛔ mockk is the estate's ONE mocking library. `mockito` and `mockito-kotlin`
-# were retired by W2d (F269 #426, decision D-10, 2026-08-19) — RETIRED, not
+# were retired on 2026-08-19 — RETIRED, not
 # bumped: mockito-kotlin is a syntax wrapper over a Java-semantics engine, and
 # its inability to match an inline `value class` in argument position is
 # structural (it matches on the JVM signature, where value classes are unboxed
 # and mangled) rather than a bug that 6.2.0 happened to fix. Do not re-add them.
 mockk = "1.14.11"
-# ASM reads compiled bytecode for ONE test fixture: commons-core's `assertMeterRegistrationsAreHeld`
-# (F1052 #1052), which proves every meter is registered by a `MeterHolder` at construction. It is a
+# ASM reads compiled bytecode for ONE test fixture: commons-core's `assertMeterRegistrationsAreHeld`,
+# which proves every meter is registered by a `MeterHolder` at construction. It is a
 # `testFixturesImplementation` dependency only and must never reach a production artifact.
 asm = "9.11"
 testcontainers = "2.0.5"
 # ⛔ ONE ref for BOTH junit coordinates, and it is only possible because JUnit 6
 # renumbered the Platform from `1.x` to `6.x` to line up with Jupiter — so
 # `junit5 5.14.2 -> 6.1.3` and `junit-platform-launcher 1.14.2 -> 6.1.3` are the
-# SAME release, not two jumps. Until W2e (F269 #426, decision D-11, 2026-08-20)
+# SAME release, not two jumps. Until 2026-08-20,
 # these were two independent version refs that had to be moved together by hand;
 # raising one and forgetting the other is how an engine ends up beside a
 # mismatched API, which reports BUILD SUCCESSFUL over zero executed tests.
-# ⛔ THE LIBRARY ALIAS WAS `junit5` AND IS NOW `junit`, on the platform owner's
-# instruction of 2026-08-20: the `5` was the major, so the alias contradicted the
-# version it pointed at the moment this ref moved. ⚠️ `libs.junit` and
+# ⛔ THE LIBRARY ALIAS WAS `junit5` AND IS NOW `junit`: a major number in the alias
+# would contradict the version as soon as the major changes. ⚠️ `libs.junit` and
 # `libs.junit.platform.launcher` are legal siblings — Gradle generates an
 # accessor that is both a dependency and a namespace — but that was PROVEN on a
 # scratch build resolving both before the 56 call sites were touched, not assumed.
@@ -376,7 +345,7 @@ kotlinx-coroutines = "1.11.0"
 # ⚠️ 0.8.0 "removes Instant and Clock" and removes ZERO CLASSES — they were typealiases, which live
 # in Kotlin metadata rather than bytecode. Measured by diffing the two jars: −0 classes, +2
 # (`LocalIsoWeekDate`), POM dependency identical at both versions.
-# ⛔ ONLY declare this where something IMPORTS it. W1-KD found it declared in 8 build files and
+# ⛔ ONLY declare this where something IMPORTS it. It was declared in 8 build files and
 # imported by NONE, which is how the estate ended up shipping it in 8 fat jars for nothing.
 kotlinx-datetime = "0.8.0"
 # ⛔ 8.x REMOVED 61 PUBLIC METHODS FROM `KLogger` AND THE ESTATE USES NONE OF THEM — measured, not
@@ -391,14 +360,11 @@ kotlinx-datetime = "0.8.0"
 # with `-Dkotlin-logging.logStartupMessage=false` in every entrypoint. ⚠️ It CANNOT be suppressed
 # from Kotlin code — the estate's file-scope `KotlinLogging.logger {}` idiom initialises before
 # `main` — and `8.0.03` is the release that added the external switch, so the target is load-bearing.
-# W2c (F269 #426): governance/servista-planning/work/upgrades/components/W2c-kotlin-logging.md
 kotlin-logging = "8.0.4"
-# ⚠️ 1.6.3 -> 1.6.4 on 2026-09-28 by `F622 #799` (track `0DI`), and F626 #803's decline is deleted
-#   with it (`D-279`): `servista-service-runtime-core`'s POM names `logback-classic`, so this move
-#   and that module's republish are ONE act, which only the release car performs. `logstash-logback-
-#   encoder` stays at 9.0; it is current and 1.6.4 is a patch.
-# ⚠️ 1.6.4 -> 1.6.5 on 2026-09-30 by `F845 #845` (track `0DY`), on `D-338` (the `D-279`
-#   precedent): the same act, because `servista-service-runtime-core` republishes in this release.
+# ⚠️ 1.6.3 -> 1.6.4 on 2026-09-28: `servista-service-runtime-core`'s POM names
+# `logback-classic`, so this move requires that module to republish. `logstash-logback-encoder`
+# stays at 9.0; it is current and 1.6.4 is a patch.
+# ⚠️ 1.6.4 -> 1.6.5 on 2026-09-30: the same requirement to republish runtime-core.
 #   The encoder declares logback-classic 1.5.20 optional and logback-core provided, so a floor and
 #   not a range; 1.6.5 is a patch on the line it already runs on.
 logback = "1.6.5"
@@ -410,9 +376,9 @@ logstash-logback-encoder = "9.0"
 # jackson-databind, jackson-core and the legacy-groupId jackson-annotations it still drags — is
 # advisory-clean. ⚠️ A version catalog cannot force anything on its own; the force is
 # `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
-# declared. Same shape as A274 #431 D2's netty-bom.
+# declared. The same platform-dependency pattern is used for netty-bom.
 jackson = "3.2.3"
-# ⛔ `jackson2` WAS HERE AND IS GONE, 2026-08-21 (W3-OF, F269 #426) — deleted because UPSTREAM FIXED
+# ⛔ `jackson2` WAS HERE AND IS GONE, 2026-08-21 — deleted because UPSTREAM FIXED
 # THE DEFECT IT EXISTED FOR, which is the only reason a workaround ref may be removed rather than
 # bumped. It pinned `com.fasterxml.jackson.core:jackson-databind` at 2.22.2 for exactly one reason:
 # `dev.openfga:openfga-sdk` returns a `com.fasterxml.jackson.databind.ObjectMapper` from
@@ -420,14 +386,14 @@ jackson = "3.2.3"
 # `<scope>runtime</scope>`, so eight repositories' OpenFGA test bootstrap could not compile unless
 # something else put that jar on their compile classpath. (Until 2026-08-19 that something else was
 # `logstash-logback-encoder 8.1`, by ACCIDENT; encoder 9.0 moved to the `tools.jackson` groupId and
-# all eight broke at once. W2b, F269 #426.)
+# all eight broke at once.)
 # ✅ `openfga-sdk 0.9.11` promotes jackson-core, jackson-annotations, jackson-databind, jsr305 and
 # opentelemetry-api from `runtime` to `compile`, so every consumer that declares the SDK now gets
 # the mapper on its own compile classpath from the SDK itself. MEASURED by diffing the 0.9.7 and
 # 0.9.11 POMs, and PROVEN by the gates of the ten repositories that use the idiom.
 # ✅ It also closes the security half without a ref: 0.9.7 imported jackson-bom 2.21.1 (10 OSV
-# advisories) and 0.9.11 imports 2.22.1 (0), so the RUNTIME copy A277 #434 filed — the one this
-# comment used to say was "NOT fixed here" — is fixed by the bump rather than by a force.
+# advisories) and 0.9.11 imports 2.22.1 (0), so the runtime dependency's security exposure
+# is fixed by the bump rather than by a force.
 # ⛔ Do not restore this ref to "pin Jackson 2". It never pinned Jackson 2 for the estate; it put one
 # jar on one compile classpath, and the estate's own Jackson is `jackson` (3.x) above.
 # ⛔ `janino` WAS HERE AND IS GONE, 2026-08-19. It existed for exactly one reason: to evaluate the
@@ -460,18 +426,14 @@ bouncycastle-pkix = "1.86"     # bcpkix-jdk18on (test-only here)
 # The S3 SDK moves with the Garage server qualification.
 aws-sdk = "2.54.9"
 
-# ⛔ FIVE COORDINATES ADOPTED 2026-08-23 (`F285 #442` D3) — AND EVERY ONE IS ADOPTED AT THE VERSION
-# ALREADY IN USE, NOT AT LATEST. That is deliberate and it is the whole point of the clause.
+# ⛔ FIVE COORDINATES ADOPTED 2026-08-23 AT THE VERSIONS ALREADY IN USE.
+# Adoption and version upgrades are separate changes.
 #
-# They were pinned inline in `api-organizations` and `servista-edge-auth-lambda`, governed by
-# nothing, and therefore **reported by nothing** — `check-dependency-currency.mjs` read this file
-# and this file did not mention them, so their drift produced no row at all. ⚠️ *A wrong target is
-# visible; a missing row is not.* D3 exists to make "ungoverned" stop being a silence.
+# They were pinned inline in `api-organizations` and `servista-edge-auth-lambda`, so
+# `check-dependency-currency.mjs` could not report their drift. Catalog adoption makes it visible.
 #
-# ⛔ ADOPTING AT LATEST WOULD HAVE SMUGGLED FIVE VERSION DECISIONS PAST `I2`/`I3` — *one component
-# at a time*, *read every release note in the interval* — inside a row whose subject is governance
-# and not currency. Adopted where they stand, the resolved classpath does not move by a single jar,
-# and the gap becomes an ORDINARY currency finding owned by `F269 #426` and the upgrade programme.
+# ⛔ Adopt existing versions first to preserve the resolved classpath; qualify each upgrade
+# separately by reading every release note in the interval.
 # Measured against Maven Central the same day (`<release>`, with a passing 404 control):
 #
 #   nv-i18n          1.29    = latest — current
@@ -483,8 +445,8 @@ aws-sdk = "2.54.9"
 # ⚠️ So this edit makes the check REPORT FOUR NEW FINDINGS, and that is the deliverable rather than
 # a regression. Do not "fix" them by reverting the adoption.
 #
-# ✅ ALL FOUR CLOSED 2026-08-25 by upgrade unit `W1-CJ` (`D-88`/`D-89`), which took them to the
-# targets listed above together with `aws-sdk 2.54.2 → 2.54.3`. Twelve release notes read, every
+# ✅ ALL FOUR UPGRADED 2026-08-25 to the targets listed above,
+# together with `aws-sdk 2.54.2 → 2.54.3`. Twelve release notes read, every
 # claim measured against the artifact rather than the note:
 #   · libphonenumber   0 class files differ; 22 of 544 metadata blobs do. The estate's ONE call is
 #                      getCountryCodeForRegion, and all 245 regions answer identically on both.
@@ -497,20 +459,17 @@ aws-sdk = "2.54.9"
 #   · typesafe-config  ⛔ NOT a bump: `ktor-server-core 3.5.2` already drags 1.4.9 onto every Ktor
 #                      service, so this ref was BEHIND the resolved graph and the only artifact
 #                      actually on 1.4.3 was `servista-edge-auth-lambda`, which has no Ktor to
-#                      out-vote the catalog. The bump removes a skew. See W1-CJ §3.6.
+#                      out-vote the catalog. The bump removes a skew.
 #   · aws-sdk          0 class bytes move in `s3` (0 of 2,348) or `apache5-client`; only the
-#                      embedded pom files. Control: 2.50.0 → 2.54.3 moves 23.
+#                      embedded POM files. Control: 2.50.0 → 2.54.3 moves 23.
 # ⛔ Read `dependencyInsight --configuration runtimeClasspath` before pricing a catalog bump: a
 # catalog ref moves the version only where the catalog is the WINNING declaration.
-# ⭐ libphonenumber 9.0.37 → 9.0.38 — bumped 2026-08-26 on the platform owner's instruction,
-# during W3-OF/D-108. ⛔ IT APPEARED UPSTREAM MID-SITTING: Maven Central's lastUpdated is
-# 20260826121311, about two hours after a check-docs run that read only two currency findings.
-#
-# ⛔ I3 SAYS READ EVERY RELEASE NOTE IN THE INTERVAL, AND THERE IS NONE. Google has published no
-# GitHub release, tag or changelog entry for v9.0.38 — the jar is on Maven Central and nothing
-# else exists. That is the aws-lambda-events 3.16.1 shape from W1-CJ, and the answer is the same:
-# DERIVE IT FROM THE ARTIFACT.
-#
+# ⭐ libphonenumber 9.0.37 → 9.0.38 — bumped 2026-08-26.
+# Maven Central's lastUpdated is 20260826121311; currency checks can miss releases
+# published after the check ran.
+# ⛔ Read every release note in an upgrade interval; when none exists, derive the change
+# from the artifact. Google published no GitHub release, tag or changelog entry for v9.0.38,
+# only a Maven Central jar, as with aws-lambda-events 3.16.1 above.
 # Measured against the two jars, with a control that fires:
 #   · 0 of 67 class files differ (same class set). ⭐ Control: 9.0.30 → 9.0.38 moves 3, so the
 #     comparison can see a class change.
@@ -530,28 +489,28 @@ aws-sdk = "2.54.9"
 #
 # Consumer: ONE — api-organizations, LibraryCountryCatalog.kt, `getCountryCodeForRegion(alpha2)`.
 nv-i18n = "1.29"
-# 9.0.40 -> 9.0.41 on 2026-10-08 by library train 8's release car (`D-330`): metadata only.
+# 9.0.40 -> 9.0.41 on 2026-10-08: metadata only.
 libphonenumber = "9.0.41"
 aws-lambda-java = "1.4.0"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
 
-# ⚠️ 0.5.0 -> 0.6.0 on 2026-09-05 by `A436 #611`: `commons-rt-events-foss-kafka`'s
+# ⚠️ 0.5.0 -> 0.6.0 on 2026-09-05: `commons-rt-events-foss-kafka`'s
 # `KafkaChannelManagerAdapter` stopped compiling `DEFAULT_PARTITIONS = 1` and
 # `DEFAULT_REPLICATION_FACTOR: Short = 1`. An omitted `partitions` / `replicationFactor` property
 # now becomes an empty `Optional`, which is Kafka's own way of saying *"apply your configured
 # default"*, so the number comes from the cluster that owns it. ⭐ The public ABI did NOT move —
 # `checkKotlinAbi` is green over an unchanged dump, because both constants were `private` — so no
 # consumer is obliged to rebuild; `node tools/rebuild-set.mjs` is what decides that.
-# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-05 by `A383 #561`: `commons-rt-events-foss-kafka` gains
+# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-05: `commons-rt-events-foss-kafka` gains
 # `ReloadingPemSslEngineFactory`, and `KafkaSslConfig` now emits PATHS plus
 # `ssl.engine.factory.class` instead of the certificate and key CONTENTS. ⛔ The ABI DID move —
 # `KafkaSslConfig.certificateChain`/`privateKey` became `certificatePath`/`privateKeyPath` — and
 # `checkKotlinAbi` is what said so; no consumer constructs it directly, they all go through
 # `fromConfig`/`fromEnvironment`, so the source change is nil. ⭐ A rebuild is what makes the fix
 # LIVE, and `node tools/rebuild-set.mjs` names which images that is.
-# ⚠️ 0.12.0 -> 0.13.0 on 2026-09-06 by `A392 #451` (owner decision `D-25` `Q5` -- grant ABAC, do
-# not delete it): a conditioned tuple can be written and evaluated at last. `RelationshipTuple` takes
+# ⚠️ 0.12.0 -> 0.13.0 on 2026-09-06: supports ABAC rather than deleting it;
+# a conditioned tuple can be written and evaluated. `RelationshipTuple` takes
 # an optional `condition`; `AuthorizationPort.checkAccess`/`batchCheck` and
 # `RelationshipPort.listObjects`/`listRelations` take a request `context`; the OpenFGA adapters inject
 # `current_time` from a `kotlin.time.Clock`. ⛔ The ABI DID move and it moved in `checkAccess`, which
@@ -559,7 +518,7 @@ typesafe-config = "1.4.9"
 # every parameter is defaulted so no source edit is needed anywhere, but a stale jar throws
 # `NoSuchMethodError`, so this one is a real rebuild rather than a re-pin. `checkKotlinAbi` refused
 # the first run and named the signature.
-# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-08 by `F477 #653`: `commons-rt-http-foss-ktor` stops declaring
+# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-08: `commons-rt-http-foss-ktor` stops declaring
 # `ktor-client-cio`. It never constructed a client -- `KtorHttpClientAdapter` wraps an injected one
 # -- so the engine bought the adapter nothing and put a SECOND engine on the production runtime
 # classpath of every service in the estate, measured off the published POM. ⛔ NO ABI MOVES and no
@@ -569,7 +528,7 @@ typesafe-config = "1.4.9"
 # ALIAS and left the library ref forty lines away untouched; this release moves the ref and adds no
 # alias. `check-catalog-pins.mjs`'s FOURTH assertion is what makes either half checkable, and it was
 # run against this file before the publish.
-# ⚠️ 0.19.0 -> 0.20.0 on 2026-09-15 by `A520 #696`: `withContextualDsl` routes cases 2 and 3 through
+# ⚠️ 0.19.0 -> 0.20.0 on 2026-09-15: `withContextualDsl` routes cases 2 and 3 through
 # `withTransaction` instead of `withSession`/`withTenantScope`, so the RLS GUC and the query that
 # depends on it share ONE transaction and the adapter stops depending on every pooler in front of it
 # being `pool_mode = session`. ⛔ A BEHAVIOUR CHANGE WITH NO ABI MOVE, which is the hard case: no
@@ -581,7 +540,7 @@ typesafe-config = "1.4.9"
 # ⚠️ It also makes 9 of 329 call sites ATOMIC where they were not. In four of them that is a repair
 # rather than a cost: `api-iam`'s role and group replacements delete a set and insert its
 # replacement, and under autocommit a failed insert left the group holding NO roles.
-# ⛔⛔ 0.20.0 -> 0.20.1 on 2026-09-15 by `A520 #696`: **DO NOT PIN 0.20.0. IT CARRIES A CROSS-TENANT
+# ⛔⛔ 0.20.0 -> 0.20.1 on 2026-09-15: **DO NOT PIN 0.20.0. IT CARRIES A CROSS-TENANT
 # READ.** Routing `withContextualDsl` through `withTransaction` replaced an EXPLICIT GUC reset with
 # `is_local = true`, and those are not equivalent -- `SET LOCAL` reverts to the value the connection
 # ALREADY HELD, not to "unset". A pooled connection carrying a stranded
@@ -593,8 +552,8 @@ typesafe-config = "1.4.9"
 # is strictly stronger than 0.19.0 was: it cannot be skipped by a path that fails before its
 # `finally`, and it does not depend on every other borrower having cleaned up after itself.
 # ⚠️ 0.20.0 was published and can never be withdrawn; no repository ever pinned it beyond the 12
-# that carried catalog 0.46.0 for under an hour, and all 12 move to 0.47.0 in the same sitting.
-# ⚠️ 0.20.1 -> 0.21.0 on 2026-09-16 by `A521 #697` (track `0CS`), decision `D-218`. `HealthRegistry`
+# that carried catalog 0.46.0 for under an hour, and all 12 move to 0.47.0 to adopt the fix.
+# ⚠️ 0.20.1 -> 0.21.0 on 2026-09-16. `HealthRegistry`
 # BOUNDS the readiness response instead of asking each check to cancel and then waiting for it, and
 # reports every outcome -- including the ones it synthesises -- through the new `HealthCheckObserver`.
 # ⛔ MEASURED, not reasoned: 139 `/health/ready` responses exceeded 10 s in fourteen days on
@@ -604,7 +563,7 @@ typesafe-config = "1.4.9"
 # ⛔ ADDITIVE AND BINARY-COMPATIBLE: the one-argument `HealthRegistry(BuildInfo)` is kept as an
 # explicit secondary constructor, so a repository re-pinned but not yet rebuilt keeps working -- on
 # the fallback budget rather than the injected one.
-# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-17 by `A505 #681` `D4` (track `0CO`), decision `D-221`.
+# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-17.
 # `commons-core` gains `UnscopedRequestContext`, a coroutine-context MARKER meaning *an HTTP
 # request arrived carrying neither a tenant nor the platform bypass*, and
 # `commons-rt-db-foss-postgres`'s `withContextualDsl` REFUSES such a read instead of warning.
@@ -614,7 +573,7 @@ typesafe-config = "1.4.9"
 # nothing; a repository that merely moves here behaves exactly as it did.
 # ⭐ ADDITIVE: both `.api` dumps grow and neither loses a declaration, so a repository re-pinned
 # and not yet rebuilt keeps working.
-# ⛔⛔ 0.23.0 -> 0.24.0 on 2026-09-18 by `F526 #702` (track `6FI`), decision `D-236`.
+# ⛔⛔ 0.23.0 -> 0.24.0 on 2026-09-18.
 # EVERY HEALTH CHECK DERIVES ITS PROBE DEADLINE FROM THE DEPLOYMENT'S RESPONSE BUDGET, by one
 # shared rule in `commons-core`: `ProbeBudget.probeTimeoutWithin(budget)`, whose post-condition is
 # an INEQUALITY (strictly smaller than the budget, for every positive budget) rather than a value.
@@ -629,86 +588,78 @@ typesafe-config = "1.4.9"
 # compiled 10 s it already had, which is the direction a fallback should fail in.
 # ⚠️ RE-PINNING ARMS NOTHING BY ITSELF: the derivation is compiled into the jar, so a service takes
 # it at its next REBUILD. `node tools/rebuild-set.mjs` names the ceiling; only one image ships here.
-# ⚠️ 0.25.0 -> 0.26.0 on 2026-09-21 by `A542 #718` `D3`: `SharedValkeyCluster` gains three
+# ⚠️ 0.25.0 -> 0.26.0 on 2026-09-21: `SharedValkeyCluster` gains three
 # replicas. ⛔ A TEST-FIXTURE change that still moves all 57 modules, because this repository
 # publishes one `projectVersion` -- `node tools/rebuild-set.mjs` is what says which images that
 # obliges, and a fixture is on no runtime classpath, so the answer should be none.
 # ⚠️ `ports`/`nodeUris` keep their signatures and change MEANING (every node, not the three
 # masters). ⛔ NO ABI CHECK CAN SEE THAT, which is why it is written here: a consumer that reads
 # them as "the masters" now reads six ports and will not fail to compile.
-# ⚠️ 0.29.0 -> 0.30.0 on 2026-09-24 by `A604 #781` / track `5CU`: `commons-billing-core` gains
+# ⚠️ 0.29.0 -> 0.30.0 on 2026-09-24: `commons-billing-core` gains
 # `PlanOffer` and the engine catalog gains `offers()` / `offer(ref)`, which report a plan's for-sale
 # status and ONLY its published terms -- so a zero is free and an absent term is not sold. ADDITIVE:
 # `plan()` / `plans()` are deprecated, not removed. `api-billing` is the one consumer that moves.
-# ⛔ 0.30.0 -> 0.31.0 on 2026-09-28 by `F622 #799` (track `0DI`): the library train's ONE release
-# (`D-273`/`D-275`), carrying every car landed on commons `main` since 0.30.0 -- among them BREAKING
-# ABI (`F276`'s `withTransaction(DataAccessScope)` and deleted `withContextualDsl`; `F465`'s four
-# classes out of `commons-core` into three new modules, aliased below), the one GLIDE connection
-# core (`F543`), `KafkaClusterIdentity` (`E642`) and the client-side Kafka telemetry (`E388`).
-# Named here ahead of its publish (`DP-1`, the 0.62.0 precedent); compiled by Kotlin 2.4.20.
-# ⛔ 0.31.0 -> 0.32.0 on 2026-09-28 by `F622 #799` (track `0DI`), `D-310` (the platform owner):
-# D-310's three cases. (1) `kafkaTransportModule` / `kafkaDeadLetterModule` gain a `clientTelemetry`
-# overload, so a producer bound through Koin can reach E388's client-side metrics path. (2) BEHAVIOUR
+# ⛔ 0.30.0 -> 0.31.0 on 2026-09-28: BREAKING ABI, including
+# `withTransaction(DataAccessScope)` and deleted `withContextualDsl`, plus four classes moved
+# out of `commons-core` into three new modules aliased below. Also adds the shared GLIDE
+# connection core, `KafkaClusterIdentity` and client-side Kafka telemetry. Compiled by Kotlin 2.4.20.
+# ⛔ 0.31.0 -> 0.32.0 on 2026-09-28: three changes.
+# (1) `kafkaTransportModule` / `kafkaDeadLetterModule` gain a `clientTelemetry`
+# overload, so a producer bound through Koin can reach client-side metrics. (2) BEHAVIOUR
 # CHANGE: `KafkaClientTelemetry.fromConfig` no longer calls its OpenTelemetry supplier; it resolves it
 # at `applyTo`, once per client created (the refusals that can be eager stay eager). (3) `GaugeBinding`,
 # a new public type in commons-core: a module's gauge, registered by the process's MetricsPort. The ABI
 # is ADDITIVE only. 0.31.0 is published and skipped: nothing re-pinned to it.
-# ⛔ 0.32.0 -> 0.33.0 on 2026-09-28 by `F622 #799` (track `0DI`), `D-311` (the platform owner:
-# "Hoist now: commons 0.33.0"): TWO changes in `commons-rt-cache-foss-valkey`. (1) `NodeProbe`, the
+# ⛔ 0.32.0 -> 0.33.0 on 2026-09-28: TWO changes in `commons-rt-cache-foss-valkey`. (1) `NodeProbe`, the
 # direct-node Valkey test client, becomes a PUBLISHED test fixture (a new `-test-fixtures` artifact with
 # its own ABI dump), so servista-kotlin-commons-infra consumes it instead of holding a copy. (2)
 # `ValkeyConnection.onEachNode` gains an OVERLOAD whose block also receives the `ValkeyNode` it runs on,
 # so commons-infra's createSnapshot can save on every master and name one that did not. ABI additive
 # only (one line). 0.32.0 is published and skipped: nothing re-pinned to it.
-# ⛔ 0.33.0 -> 0.34.0 on 2026-09-30 by `F845 #845` (track `0DY`), library train 2's ONE release
-# (`D-316`), named ahead of its publish: a pre-1.0 MINOR because it is BREAKING -- `0DX` retired
-# `openfgaClientModule(lookup)` (`D-324`). It carries every train-2 commons car (E838, F841, F829,
-# F833, F843, F381, A842, F638, F840, A853, E846, F831 D5) plus `C43` car (2) and car (4) (`D-335`) and
-# `C32` S1 (`D-337`: `PlanKind.CLIENT`, a subscription `beneficiary`, billing-postgres `V002`).
-# ⛔ 0.34.0 -> 0.35.0 on 2026-10-01 by `F898 #898` (track `0EA`), library train 3 (`D-349`), named ahead
-# of its publish: NO SOURCE CHANGE. A republish forced by `flyway` 13.9.0 above, because
+# ⛔ 0.33.0 -> 0.34.0 on 2026-09-30: a pre-1.0 MINOR because it is BREAKING —
+# `openfgaClientModule(lookup)` is retired. Adds `PlanKind.CLIENT`, a subscription `beneficiary`
+# and billing-postgres `V002`.
+# ⛔ 0.34.0 -> 0.35.0 on 2026-10-01: NO SOURCE CHANGE. A republish forced by `flyway` 13.9.0 above, because
 # `commons-rt-db-foss-postgres` publishes a POM naming flyway at runtime scope (`check-published-poms`
 # against this catalog: 2 stale pairs, that one module). A minor, as runtime 0.45.0 was.
-# ⛔ 0.35.0 -> 0.36.0 on 2026-10-03 by `F915 #915` (track `0EE`), library train 4 (`D-352`), named ahead
-# of its publish: C32 S2b's commons car (`D-343`; the subscription lifecycle port, billing-postgres
-# `V003`), C908's commons-testing headers car, and C43 D4's car (`SecretSessionRefusalReason`, and
-# `LogCapture`'s `throwable` / `attach(level=)` for A885). `.api` +162/-5: `PostgresBillingStore`'s
-# constructor gains a `MetricsPort` (its one consumer outside commons is api-licensing, re-pinned by
-# `7A` with C908, `D-280`); the other removals are added supertypes.
-# ⛔ 0.36.0 -> 0.37.0 on 2026-10-03 by `F925 #925` (track `0EF`), library train 5, named ahead of its
-# publish: A917's car (`9a8e2234`: a subscription is anchored at millisecond precision and the keyset
-# cursor resumes exactly where a page ended; `SubscriptionRequest.anchor`) and C913's car
-# (`7e1db176`: un-cancelling reads the caller's instant and names its refusals). A pre-1.0 MINOR
+# ⛔ 0.35.0 -> 0.36.0 on 2026-10-03: the subscription lifecycle port, billing-postgres
+# `V003`, commons-testing headers, `SecretSessionRefusalReason` and `LogCapture`'s
+# `throwable` / `attach(level=)`. `.api` +162/-5: `PostgresBillingStore`'s constructor gains
+# `MetricsPort` (api-licensing is its one consumer outside commons); the other removals are
+# added supertypes.
+# ⛔ 0.36.0 -> 0.37.0 on 2026-10-03: subscriptions are anchored at millisecond precision,
+# keyset cursors resume exactly where a page ended (`SubscriptionRequest.anchor`), and
+# un-cancelling reads the caller's instant and names its refusals. A pre-1.0 MINOR
 # because it is BREAKING: `SubscriptionLifecycleRules.uncancellation` becomes `uncancellation(Instant)`,
 # which has 0 callers outside commons. `.api`: commons-billing-core +3/-1, commons-testing +5/-1.
-# 0.37.0 -> 0.38.0 on 2026-10-05, named ahead of its publish: `HttpResponse.namedRefusal` (a refusal
+# 0.37.0 -> 0.38.0 on 2026-10-05: `HttpResponse.namedRefusal` (a refusal
 # is named by its problem document, never by its status alone), `hardenedJson` (a main-source `Json`
 # whose decode failures never quote their input), `EventTransportPort.sendTombstone` (a default method)
 # and commons-testing's `SharedKubeApiServer`. `.api` additive only, +31/-0 (test fixtures +2/-0).
-# 0.38.0 -> 0.39.0 on 2026-10-06, named ahead of its publish: `CompactedChannelReaderPort` and its
+# 0.38.0 -> 0.39.0 on 2026-10-06: `CompactedChannelReaderPort` and its
 # Kafka adapter `KafkaCompactedChannelReader` (a compacted desired-state stream read from the
 # beginning on every start, `read_committed`, a `stop()` before `run()` honoured), and
 # commons-testing's `SharedNessie`. `.api` additive only.
 # 0.39.0 -> 0.39.1 on 2026-10-06: the SAME source as 0.39.0 plus the version bump. 0.39.0's publish
 # was cut off part-way (2 artifacts absent, 6 without their `.pom`/`.module`) and cannot be completed
 # from a rebuild, whose archive bytes differ, so 0.39.0 is ABANDONED in place: never pin it.
-# 0.39.1 -> 0.40.0 on 2026-10-08 (library train 8): A974's bounded pool waits (`DatabaseConfig`'s old JVM
-# <init>/copy are gone: every consumer compiles against 0.40.0), A970's OrganizationStatusVocabulary, F982.
-# 0.40.0 -> 0.41.0 on 2026-10-11 (library train 9, F1054 #1054): A1024's transaction-scoped lock port,
-# A1051's ownedRows hoist, C86's Instant.atStoreResolution, F1052's meter holders + their bytecode fixture.
+# 0.39.1 -> 0.40.0 on 2026-10-08: bounded pool waits (`DatabaseConfig`'s old JVM
+# <init>/copy are gone: every consumer compiles against 0.40.0) and `OrganizationStatusVocabulary`.
+# 0.40.0 -> 0.41.0 on 2026-10-11: transaction-scoped lock port, shared `ownedRows`,
+# `Instant.atStoreResolution`, and meter holders with their bytecode fixture.
 # The ABI is ADDITIVE (two classes gain MeterHolder).
-# 0.41.0 -> 0.42.0 on 2026-10-11 (library train 9, F1054 #1054): FIXTURE-ONLY, commons-core's test fixtures gain
-# the named MetricsPort implementations (B2). Every main jar is byte-equal to 0.41.0's.
+# 0.41.0 -> 0.42.0 on 2026-10-11: FIXTURE-ONLY, commons-core's test fixtures gain
+# the named MetricsPort implementations. Every main jar is byte-equal to 0.41.0's.
 servista-kotlin-commons = "0.42.0"
-# ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06 by `A392 #451`: a REBUILD against the above and nothing else --
+# ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
-# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 by `A297 #461` `D4` (ADR-034's authority half). `AuthSource`
+# ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 (ADR-034's authority half). `AuthSource`
 # gains a SECOND member, `confersBlanketAuthority`, and `PermissionGuard` and
 # `TenantContextSetup.resolvePlatformBypass` -- the estate's only two authorization
 # short-circuits -- now ask that instead of `isServiceToService`. ⛔ THE BEHAVIOUR CHANGE IS THE
 # POINT AND IT IS NARROW: an `AuthSource.MTLS` principal stops receiving blanket authority and
 # resolves its scopes in OpenFGA on `user:<its client certificate CN>`. `INTERNAL` is untouched,
-# which is what lets `D5` convert one edge at a time behind a callee accepting both.
+# which allows one edge at a time to convert behind a callee accepting both.
 # ⭐ ABI: ADDITIVE (a new getter on an enum), so a consumer built against 0.10.0 still LINKS --
 # `checkKotlinAbi` refused the first run unprompted and named it. `node tools/rebuild-set.mjs`
 # decides which images must move; the ABI verdict does not.
@@ -717,7 +668,7 @@ servista-kotlin-commons = "0.42.0"
 # template render, so two annotations give a mismatched cert/key pair), and `ServiceHost` refuses
 # at BOOT when the server key is SEC1 -- OpenBao's default for `key_type=ec` -- because Netty
 # reads only PKCS#8 and would otherwise fail the FIRST HANDSHAKE on a pod that is Ready.
-# ⚠️ 0.11.0 -> 0.12.0 on 2026-09-07 by `A297 #461` `D5` — the CLIENT half of per-identity mTLS, and
+# ⚠️ 0.11.0 -> 0.12.0 on 2026-09-07 — the CLIENT half of per-identity mTLS, and
 # it is one function rather than twenty-five. `bootstrap()` registers ONE `HttpClient` that every
 # outbound adapter in a service resolves, so `mtlsHttpClient` gives every edge of that service its
 # certificate with NO adapter changing. ⛔ Both halves of the TLS config are ADDITIVE: the identity
@@ -725,15 +676,14 @@ servista-kotlin-commons = "0.42.0"
 # the billing engine are untouched), and the S2S anchor is MERGED with the platform default rather
 # than replacing it — assigning `trustManager` alone would leave the client unable to verify any
 # public TLS certificate, which is a service's whole outbound world broken to fix one hop.
-# ⚠️ 0.12.0 -> 0.13.0 on 2026-09-07 by `A297 #461` `D5`, and it was found by DRIVING A REAL EDGE
-# rather than by reading the code. `requirePermission`'s per-organization `member` check is now
+# ⚠️ 0.12.0 -> 0.13.0 on 2026-09-07: `requirePermission`'s per-organization `member` check is now
 # skipped for a principal with no tenant of its own: a service is a member of NO organization, so
 # `api-usage` calling `GET /v1/licensing/orgs/{orgId}/subscriptions` — whose guard carries
 # `orgIdParam` — held the scope and was still refused `403 Not a member of organization`.
-# ⭐ It is `A19 #118`'s reasoning one principal kind over, and it is STRICTLY STRONGER than what it
-# replaced: before `D4` an S2S principal skipped BOTH checks; it now passes the scope check and
+# ⭐ This is STRICTLY STRONGER than the original behaviour: an S2S principal previously
+# skipped BOTH checks; it now passes the scope check and
 # skips only the membership one. A human on the same route is unchanged, asserted with a control.
-# ⚠️ 0.13.0 -> 0.14.0 on 2026-09-07 by `A297 #461`: `ServiceHost`'s PKCS#8 guard FOUND the private
+# ⚠️ 0.13.0 -> 0.14.0 on 2026-09-07: `ServiceHost`'s PKCS#8 guard FOUND the private
 # key block instead of assuming it is the first one. ⛔ IT REFUSED EVERY REAL BUNDLE ON ITS FIRST
 # ROLLOUT — a vault-agent bundle is `{{ .Cert }}` then `{{ .Key }}`, so the first PEM block is a
 # CERTIFICATE and the guard reported "not PKCS#8" about a file whose key was correctly PKCS#8 on
@@ -741,7 +691,7 @@ servista-kotlin-commons = "0.42.0"
 # and the parameter, so one `grep -n -- "-----BEGIN"` in the pod settled it, and the rollout waited
 # with the old pods serving. ⚠️ The tests could not have caught it — all three passed a BARE key
 # file, which is not a shape any pod holds. A control on the wrong shape cannot fail on the real one.
-# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-07 by `F289 #453`: `AuthorizationModel` publishes the authorization
+# ⚠️ 0.14.0 -> 0.15.0 on 2026-09-07: `AuthorizationModel` publishes the authorization
 # model's vocabulary — ten object types, fifteen relation names, one condition name, and the
 # object-id and userset builders — so that a consumer can NAME them. ⛔ ADDITIVE ONLY: one new
 # public object, and `PlatformAuthorization`'s three properties delegate to it instead of holding
@@ -749,7 +699,7 @@ servista-kotlin-commons = "0.42.0"
 # repositories retype these strings as bare literals and CANNOT reference the symbol until it is
 # published. A private constant does not prevent duplication — it compels it, and then hides the
 # copies from every tool that could have found them.
-# ⚠️ 0.15.0 -> 0.16.0 on 2026-09-08 by `A472 #648` `D2`: the outbound HTTP client moves off the
+# ⚠️ 0.15.0 -> 0.16.0 on 2026-09-08: the outbound HTTP client moves off the
 # CIO engine onto `ktor-client-java`, because CIO ships its own TLS implementation that cannot
 # present an EC client certificate at all.
 # ⛔⛔ AND THIS LINE IS WHY THE CATALOG IS AT 0.28.0 AND NOT 0.27.0. 0.27.0 added the
@@ -760,46 +710,41 @@ servista-kotlin-commons = "0.42.0"
 # a pass: it diffed the catalog's entry SET and reported "1 added, 0 removed, 0 CHANGED" — and
 # `0 CHANGED` was the finding, for a release whose whole purpose was to change a version.
 # ⭐ A check that can only confirm what you set out to do cannot see what you forgot.
-# ⛔⛔ 0.16.0 -> 0.17.0 on 2026-09-09 by `A297 #461`'s `D8`, AND THE INTERESTING PART IS WHY IT WAS
-# NEEDED: `A470 #646`'s `D5` widened `requireHumanSelf` — which had refused `isMachine` ONLY, so a
-# service CERTIFICATE fell straight past it into `requireAccountId` and got an accidental
-# `400 not a valid numeric ID` — and that commit (`5f9fe56`) landed AFTER `0.16.0` was published.
-# Under immutable semver (`F418 #594`) a version is published once, so the fix was in NO artifact
-# and running on NO pod for a day, while the row that made it read as done.
+# ⛔⛔ 0.16.0 -> 0.17.0 on 2026-09-09: widens `requireHumanSelf`, which had refused
+# `isMachine` ONLY, so a service CERTIFICATE fell through into `requireAccountId` and received
+# an accidental `400 not a valid numeric ID`. The fix landed after 0.16.0 was published.
+# Under immutable semver a version is published once, so the fix requires a new release.
 # ⚠️ NOTHING REPORTS AN UNRELEASED `src/main` COMMIT. `check-catalog-pins` asserts that every ref
 # names the version its library PUBLISHES, and it was green throughout — the library published
 # 0.16.0 and this file said 0.16.0. The two agreed about a version that did not contain the fix.
-# ⭐ It was found by asking what `A297`'s next edge NEEDED rather than by any gate:
-# `api-accounts`' human family holds five `requireHumanSelf` routes and five of its seventeen
-# service-to-service landings are in that family, so `D5` could not open it until this shipped.
-# ⚠️ 0.17.0 -> 0.18.0 on 2026-09-09 by `A297 #461`, on the platform owner's instruction that every
-# service follow one architectural pattern: the published TEST FIXTURES gain
-# `assertCertificatePlaneBoundary`, so the estate-wide rule about which routes a service
-# certificate may reach is written ONCE instead of copied into every converting service. It was
-# byte-identical in four repositories within a single sitting before this.
+# ⭐ `api-accounts`' human family holds five `requireHumanSelf` routes and five of its
+# seventeen service-to-service landings, so those conversions require the fix to ship first.
+# ⚠️ 0.17.0 -> 0.18.0 on 2026-09-09: published TEST FIXTURES gain
+# `assertCertificatePlaneBoundary`, so all services share the same rule about which routes a
+# service certificate may reach.
 # ⛔ The MAIN artifacts are unchanged — `checkKotlinAbi` stayed green throughout, and
-# `checkTestFixturesAbi` went RED until the fixtures dump was regenerated, which is `F476 #652`
-# guard proven able to fire by exactly this change rather than argued about.
-# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-10 by `F487 #663`: `mountRouteTree`'s DEVELOPMENT lane gives each
+# `checkTestFixturesAbi` went RED until the fixtures dump was regenerated, proving the
+# guard detects changes to published fixtures.
+# ⚠️ 0.21.0 -> 0.22.0 on 2026-09-10: `mountRouteTree`'s DEVELOPMENT lane gives each
 # route family its own child `Route`, so a route-scoped plugin installed in a `family { }` block is
 # installed once per family instead of twice on one pipeline. Before this a two-family service
 # refused to start with `DuplicatePluginException` — in the development lane only, every deployed
 # posture green. ⭐ It also moves the route-declaration render-and-assert case into the published
 # TEST FIXTURES (`assertMountedRouteDeclaration`), where it stood as seventeen copies in two shapes.
-# ⛔ MAIN ABI unchanged (the selector is private); the published fixtures dump grew, which is
-# `F476 #652`'s guard firing on exactly the change that should move it.
-# ⚠️ 0.28.0 -> 0.29.0 on 2026-09-15 by `F396 #569`: `-core` gains ONE public function,
+# ⛔ MAIN ABI unchanged (the selector is private); the published fixtures dump grew,
+# which is detected by `checkTestFixturesAbi`.
+# ⚠️ 0.28.0 -> 0.29.0 on 2026-09-15: `-core` gains ONE public function,
 # `eu.servista.service.runtime.context.withCommandScope`, which is the tenant-or-bypass decision the
 # event lane makes -- it stood as SEVEN byte-identical copies in two shapes plus one inline site
-# across EIGHT repositories, and `servista/CLAUDE.md` §4 says it belongs in the shared runtime.
+# across EIGHT repositories. Shared event-lane context handling belongs in the runtime.
 # ⛔ ADDITIVE ONLY and NOT a behaviour change anywhere: the eight sites were correct and proven in
 # production, so nothing existing moves and `checkKotlinAbi`'s dump only grew. A consumer that does
-# not call it is unaffected and, under `F418 #594`, is allowed not to move.
-# ⚠️ 0.29.0 -> 0.30.0 the same day, same row: `-events` gains `eventErrorType`, the event lane's
+# not call it is unaffected and, under immutable versioning, is allowed not to move.
+# ⚠️ 0.29.0 -> 0.30.0 the same day: `-events` gains `eventErrorType`, the event lane's
 # error-classification vocabulary, which stood as EIGHT byte-identical copies in the same eight
 # repositories with zero tests anywhere. ⛔ Additive in both modules; a consumer that calls neither
 # new function is unaffected and is allowed not to move.
-# ⚠️ 0.30.0 -> 0.31.0 on 2026-09-16 by `A521 #697` (track `0CS`), decision `D-218`, riding
+# ⚠️ 0.30.0 -> 0.31.0 on 2026-09-16, riding
 # `servista-kotlin-commons` 0.21.0 in catalog 0.48.0. `MeteredHealthCheck` is GONE and
 # `MicrometerHealthObserver` replaces it: a DECORATOR around each check can only see the outcomes the
 # CHECK produces, and `HealthRegistry` manufactures the `DOWN` for a check that never answers OUTSIDE
@@ -809,7 +754,7 @@ servista-kotlin-commons = "0.42.0"
 # `health: HealthConfig`, and any added constructor parameter on a data class moves the `$default`
 # signature. ⚠️ SOURCE-compatible — the parameter is defaulted, so no service's `Application.kt`
 # changes and the re-pin is a one-line commit per repository.
-# ⚠️ 0.38.0 -> 0.39.0 on 2026-09-17 by `A505 #681` `D4` (track `0CO`), decision `D-221`.
+# ⚠️ 0.38.0 -> 0.39.0 on 2026-09-17.
 # `TenantContextPlugin`'s third branch installs commons 0.22.0's `UnscopedRequestContext`, so
 # `withContextualDsl` REFUSES an unscoped read on the HTTP REQUEST LANE instead of warning.
 # ⛔ AND THE INSTALL IS BEHIND A PER-SERVICE FLAG THAT DEFAULTS OFF --
@@ -819,16 +764,16 @@ servista-kotlin-commons = "0.42.0"
 # act, asserted by `check-unscoped-refusal-armed.mjs` rather than trusted.
 # ⛔ The EVENT LANE is untouched by construction -- consumers, outbox pollers, boot passes and
 # reconcilers run no `TenantContextPlugin`, carry no marker, and keep the warning.
-# ⛔ 0.40.0 -> 0.41.0 on 2026-09-18 by `F526 #702` (track `6FI`), decision `D-236`.
+# ⛔ 0.40.0 -> 0.41.0 on 2026-09-18.
 # IT CHANGES NO VALUE AND NO SIGNATURE -- `checkKotlinAbi` reports ZERO lines moved. What it removes
 # is a SECOND COPY of the inequality `timeout < budget` and a SECOND READER of
 # `HEALTH_RESPONSE_BUDGET_MS`: both now live once, in `commons-core`'s `ProbeBudget`, because the
 # fifteen shared-library health checks derive their deadlines from them and `commons` cannot see
-# `servista-service-runtime`. `servista/CLAUDE.md` §4 and §5.
+# `servista-service-runtime`.
 # ✅ `bootstrap` also WARNS when a service overrides the budget in code -- the registry would take
 # the in-code value while every check kept the environment's. 0 of 20 services do, so it fires
 # nowhere today; it is a WARN and not a refusal because the outcome is a reporting defect.
-# ⚠️ 0.42.0 -> 0.43.0 on 2026-09-21 by `F317 #484`: one new gauge,
+# ⚠️ 0.42.0 -> 0.43.0 on 2026-09-21: one new gauge,
 # `servista_reconciler_interval_seconds{reconciler}`, registered by `ReconcilerRunner` at
 # CONSTRUCTION for every registered reconciler. PURELY ADDITIVE -- `checkKotlinAbi`'s dump is
 # UNMOVED, so a consumer re-pinning this catalog needs no source edit, and `node
@@ -840,59 +785,55 @@ servista-kotlin-commons = "0.42.0"
 # value, so the enumeration could only leave the GAUGE form, never the counter form.
 # ⭐ Only the six services that construct a `ReconcilerRunner` publish the series at all, so under
 # immutability the other consumers of `-saga` are allowed not to move.
-# ⚠️ 0.43.0 -> 0.44.0 on 2026-09-23 by `A597 #773` (`D-259`): NO SOURCE CHANGE. A republish forced by
+# ⚠️ 0.43.0 -> 0.44.0 on 2026-09-23: NO SOURCE CHANGE. A republish forced by
 # two refs this catalog moved under it: `servista-service-runtime-events` publishes a POM naming
 # `servista-avro-schemas`, and `servista-service-runtime-core` one naming `tools.jackson:jackson-bom`,
 # so moving either ref left a published POM naming a version the catalog no longer does
 # (`check-published-poms`). ⛔ `rebuild-set` answers who owes an image; this line does not.
-# ⛔ 0.45.0 -> 0.46.0 on 2026-09-28 by `F622 #799` (track `0DI`), the train's ONE release: BREAKING
-# ABI (`A641`'s `ServiceConfig` constructor and `copy`, `A645`'s `IdempotencyStore`), the new
-# `-outbox` slice (`F647`, aliased below), and the bindings `F622` owes inside its sequence
-# (`A641`'s Valkey worker lease `D-301`, `E642` `D2` `D-305`, `F543`'s `-cache` port `D-298`).
-# ⛔ 0.46.0 -> 0.47.0 on 2026-09-30 by `F845 #845` (track `0DY`), named ahead of its publish: the
-# runtime halves of train 2 (F834, F831 D5, E838 D2 bound inside the release) against commons 0.34.0.
-# ⛔ 0.47.0 -> 0.48.0 on 2026-10-01 by `F898 #898` (track `0EA`), named ahead of its publish: `F886`'s
-# runtime-core car (`Types.INTEGRATION`, `Relations.EXECUTOR`; ABI additive, +2/-0) against commons 0.35.0.
-# ⛔ 0.48.0 -> 0.49.0 on 2026-10-03 by `F915 #915` (track `0EE`), named ahead of its publish: the outbox
-# `created_at = clock_timestamp()` order fix (C32 decision 8), two test cars (a test-fixtures overload,
-# `.api` +2/-0), and `A885`'s request-body decode helper (lands inside the release, `D-352`), against
-# commons 0.36.0.
-# 0.49.0 -> 0.50.0 on 2026-10-05, named ahead of its publish: the outbox relays a TOMBSTONE
+# ⛔ 0.45.0 -> 0.46.0 on 2026-09-28: BREAKING ABI (`ServiceConfig` constructor and
+# `copy`, `IdempotencyStore`), the new `-outbox` slice aliased below, and bindings for the
+# Valkey worker lease, Kafka cluster identity and the `-cache` port.
+# ⛔ 0.46.0 -> 0.47.0 on 2026-09-30: runtime updates against commons 0.34.0.
+# ⛔ 0.47.0 -> 0.48.0 on 2026-10-01: runtime-core's `Types.INTEGRATION` and
+# `Relations.EXECUTOR` (ABI additive, +2/-0) against commons 0.35.0.
+# ⛔ 0.48.0 -> 0.49.0 on 2026-10-03: outbox `created_at = clock_timestamp()` order fix,
+# a test-fixtures overload (`.api` +2/-0) and a request-body decode helper, against commons 0.36.0.
+# 0.49.0 -> 0.50.0 on 2026-10-05: the outbox relays a TOMBSTONE
 # (`OutboxEvent.payload` becomes nullable; source-breaking for a Kotlin reader of it as `ByteArray`,
 # the JVM signature unchanged) and the runtime's own `Json` instances move to `hardenedJson`,
 # against commons 0.38.0.
-# 0.50.0 -> 0.51.0 on 2026-10-06, named ahead of its publish: `AuthorizationModel.Types.PIPELINE`,
+# 0.50.0 -> 0.51.0 on 2026-10-06: `AuthorizationModel.Types.PIPELINE`,
 # and a domain-event consumer graph (the contract and start-up in -core, `domainEventConsumerModule`
 # in -messaging): a consumer waits for cluster verification, reconnects with backoff, and reads
 # DOWN when terminated. `.api` additive only, against commons 0.39.0.
-# 0.51.0 -> 0.52.0 on 2026-10-08 (library train 8): 8L's AuthorizationModel lake_table/reader, 7F X1's
-# DataAccessGrantEvents, F982 (two fixture signatures replaced: 6 consumer call sites adapt at re-pin).
-# 0.52.0 -> 0.53.0 on 2026-10-08 (library train 8, widened by the owner, #998 c19497): 8K's
-# `ReconcilerRunner.wake()` (A1001), `.api` additive only (one `wake` line against 0.52.0).
-# 0.53.0 -> 0.54.0 on 2026-10-12 (library train 9, F1054 #1054), PUBLISHED before this catalog names it (7b4ab6f8):
-# F1052's meter holders, step 5's runtime real scan, boot channel and declare-only health checks. `.api` additive.
+# 0.51.0 -> 0.52.0 on 2026-10-08: AuthorizationModel lake_table/reader and
+# DataAccessGrantEvents (two fixture signatures replaced: 6 consumer call sites adapt at re-pin).
+# 0.52.0 -> 0.53.0 on 2026-10-08: `ReconcilerRunner.wake()`, `.api` additive only
+# (one `wake` line against 0.52.0).
+# 0.53.0 -> 0.54.0 on 2026-10-12: meter holders, runtime scanning, boot channel
+# and declare-only health checks. `.api` additive.
 servista-service-runtime = "0.54.0"
-# ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03 by `A417 #592`: six new payload artifacts, three each for
+# ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
-# THAT IS THE POINT — under immutability (`F418 #594`) `0.2.0` resolves for ever, so the fifteen
-# other repositories that declare this coordinate are allowed not to move, and only the two
-# producers this row edits take the new catalog.
-# ⚠️ 0.3.0 -> 0.4.0 on 2026-09-23 by `A597 #773` (`D-259`): ONE additive field,
+# THAT IS THE POINT — under immutable versioning `0.2.0` resolves for ever, so the fifteen
+# other repositories that declare this coordinate are allowed not to move; only producers
+# needing the new payloads require the new catalog.
+# ⚠️ 0.3.0 -> 0.4.0 on 2026-09-23: ONE additive field,
 # `TenantLifecyclePayload.offboard_due_at` (`["null","long"]`, default null) -- the date `servista-tcp`
 # tears a tenant down unless a tenant licence is activated first, published so that no other
 # service keeps a second copy of the retention window. Compatible in BOTH directions against
 # 0.3.0 (asserted by the library's own test). ⛔ The all-args constructor of the generated class
 # CHANGED ARITY -- binary-incompatible for a caller of it, and the estate has 0 (2 `newBuilder` sites).
-# ⚠️ 0.4.0 -> 0.5.0 on 2026-09-28 by `F622 #799` (track `0DI`): `A643`'s `DeadLetterRedrivePayload`
-# (`D-296`) with its `D-303` override-audit fields, the one schema the train admitted.
+# ⚠️ 0.4.0 -> 0.5.0 on 2026-09-28: `DeadLetterRedrivePayload`
+# with override-audit fields.
 # 0.5.0 -> 0.6.0 on 2026-10-05: `servista.integrations.config`, the four registry values of the
 # integration registry (integration, connection reference, acquisition subscription, adapter
 # override), keyed by the vendor's source object.
-# 0.6.0 -> 0.7.0 on 2026-10-06, named ahead of its publish: the pipeline service's two control
+# 0.6.0 -> 0.7.0 on 2026-10-06: the pipeline service's two control
 # streams, `servista.data-pipelines.config` and `.events`, and the key service's `servista.keys.events`
 # (carried, not yet registered), all FULL_TRANSITIVE; `servista.integrations.config` moves to
 # FULL_TRANSITIVE. `.api` additive only.
-# 0.7.0 -> 0.8.0 on 2026-10-08 (library train 8): iamgrants/DataAccessGrantPayload, additive.
+# 0.7.0 -> 0.8.0 on 2026-10-08: iamgrants/DataAccessGrantPayload, additive.
 servista-avro-schemas = "0.8.0"
 
 [libraries]
@@ -919,45 +860,24 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 
 # Ktor Client
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-# ⛔⛔ KEEP THIS ALIAS. `F477 #653` `D3` was a decision NOT TO DELETE IT, and it has TWO reasons —
-# the second of which nothing in the estate had written down until 2026-09-08:
-#   1. `servista-service-runtime`'s `MtlsOutboundClientTest` builds a client the OLD way and asserts
-#      it CANNOT present the estate's EC identity. That case is what makes `A472 #648`'s fix
-#      attributable to the ENGINE rather than to a certificate, a policy or a callee, and it is what
-#      goes red the day somebody puts CIO back. Deleting the alias deletes the regression guard.
-#   2. ⛔ `servista-tenant-control-plane` USES CIO IN PRODUCTION, deliberately and explicitly:
-#      `PrivateProfileModule` registers `single { HttpClient(CIO) }` for the one connection pool its
-#      nine `tcp-*-http` adapters share, and those nine modules each declare
-#      `implementation(libs.ktor.client.cio)`. ⚠️ It is safe TODAY only because that client presents
-#      NO client certificate — it authenticates with `X-Internal-Api-Key` over ClusterIP — so
-#      `A472`'s EC defect cannot bite it. ⛔ THE DAY ANY TCP -> INFRA-SERVICE EDGE IS CONVERTED TO
-#      mTLS UNDER ADR-034, IT HITS `A472 #648` VERBATIM. That is what
-#      `node tools/check-http-engines.mjs` in servista-planning exists to say out loud.
+# ⛔⛔ KEEP THIS ALIAS as a test regression guard. `MtlsOutboundClientTest` builds a CIO
+# client and asserts it CANNOT present an EC identity, attributing the fix to the engine
+# rather than to a certificate, policy or callee. Production mTLS clients must use
+# `ktor-client-java`; CIO was previously also used for API-key-authenticated ClusterIP calls,
+# which did not exercise its EC client-certificate defect.
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-# ⛔⛔ THE ENGINE THE BACKEND SERVICES USE IS `ktor-client-java` — `A472 #648` `D2`, decided by the
-# platform owner 2026-09-08.
-# ⛔ THIS BLOCK OPENED "AND `ktor-client-cio` IS NOW A TEST-SCOPE REGRESSION GUARD" AND THAT WAS
-# FALSE IN TEN DECLARATION SITES WHEN IT WAS WRITTEN — corrected 2026-09-08 by `F477 #653`, which
-# made the first half of it true and MEASURED the second. `commons-rt-http-foss-ktor` held it at
-# `implementation` scope while never constructing a client, putting it on the production runtime
-# classpath of EVERY service (removed in commons 0.15.0); and the nine `tcp-*-http` modules of
-# `servista-tenant-control-plane` held it at `implementation` scope for a client that repository
-# built on purpose. ⭐ THE GENERALISABLE HALF: a claim about SCOPE is a claim about every declaration
-# site in the estate, and this one was written from the one site its author had just edited.
-#
-# ⛔⛔ AND THOSE NINE ARE GONE — 2026-09-10, `A297 #461` `D5`, which converted the seven
-# `servista-tcp -> infra` edges to per-identity mTLS. Those declarations existed for
-# `PrivateProfileModule`'s `single { HttpClient(CIO) }`, and their own comments said so and said
-# when to remove them: *"THE DAY ANY TCP -> INFRA-SERVICE EDGE IS CONVERTED TO mTLS UNDER ADR-034,
-# THIS ENGINE MUST MOVE FIRST"*. That client is deleted; `bootstrap()` registers the one outbound
+# ⛔⛔ THE ENGINE THE BACKEND SERVICES USE IS `ktor-client-java`.
+# CIO was removed from `commons-rt-http-foss-ktor` in commons 0.15.0: the adapter wraps an
+# injected client, so declaring an engine there only added a second production engine.
+# The tenant control plane's nine CIO declarations were removed when its seven infrastructure
+# edges converted to per-identity mTLS on 2026-09-10. `bootstrap()` now registers the outbound
 # `HttpClient` from `ServiceConfig.httpClient = true`, on `ktor-client-java`.
-# ✅ SO THE SENTENCE `F477` HAD TO STRIKE OUT IS NOW TRUE, AND IT IS A MEASUREMENT RATHER THAN A
-# RESTORED CLAIM: `ktor-client-cio` is declared at **5 sites, ALL of them test scope** —
+# ✅ `ktor-client-cio` is declared at **5 sites, ALL of them test scope** —
 # `testImplementation` in `servista-api-gateway`, `servista-service-runtime-core` and
 # `commons-infra-gateway-foss-apisix`, `integrationTestImplementation` in `api-authentication`
 # and `servista-auth-bridge` — and at **0 production sites** anywhere in the estate. Derive it,
 # do not quote it: `grep -rn 'libs.ktor.client.cio' --include='*.gradle.kts'` from the estate root.
-# ⚠️ AND NOTHING BRINGS IT TRANSITIVELY EITHER, which is the half `F477` bought: `check-http-engines`
+# ⚠️ `check-http-engines` also checks transitive engines: it
 # resolves 70 published POMs and reaches `java` via `servista-service-runtime-core` and no second
 # engine at all. ⛔ A THIRD-PARTY POM remains out of that check's reach by its own admission, so a
 # green run is not a proof that no classpath anywhere carries two.
@@ -975,20 +895,15 @@ ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 # declared there. `ktor-client-cio` brings it TRANSITIVELY at runtime, which is not the same
 # as having the symbol on a compile classpath: an `implementation` dependency does not
 # export its own.
-# ⛔ THE REASON THIS ALIAS EXISTS CHANGED ON 2026-09-08 AND THE OLD ONE READ AS A LICENCE. It
-# said "named here because `servista-service-runtime` compiles against it (`A297 #461` `D5`)",
-# which was a statement about PRODUCTION code. `A472 #648` moved production onto
-# `ktor-client-java`, and THIS alias is declared at TEST scope only — one site,
+# ⛔ This alias is a TEST-scope regression guard, not a production dependency.
+# Production uses `ktor-client-java`. The one declaration is
 # `servista-service-runtime-core`'s `testImplementation(libs.ktor.network.tls)`, for
 # `MtlsOutboundClientTest`, which builds a client the OLD way and asserts it CANNOT present the
 # estate's EC identity. ⭐ That case is what makes the fix attributable to the ENGINE, and it is
 # what goes red the day somebody puts CIO back — so this alias is a REGRESSION GUARD, not a
 # production dependency, and a reader must not take it as licence to build one.
-# ⛔ IT USED TO SAY "both this and `ktor-client-cio`", AND THAT HALF WAS WRONG — `F477 #653`,
-# 2026-09-08. `ktor-network-tls` really is test-only, at one site, verified by a sweep of every
-# `*.gradle.kts` in the estate; `ktor-client-cio` was at TEN sites, one of which was production in
-# a shared library and nine of which are production in `servista-tenant-control-plane`. The two
-# aliases are kept for different reasons and must not be described together again.
+# ⛔ Verify scope at every declaration site. `ktor-network-tls` is test-only at one site;
+# `ktor-client-cio` has separate consumers and its scope must be checked independently.
 # ⚠️ Verified against the jar with `javap` rather than the docs: this version has
 # `addCertificateChain` and `addKeyStoreNullablePassword`, and NO `addKeyStore`.
 ktor-network-tls = { module = "io.ktor:ktor-network-tls", version.ref = "ktor" }
@@ -1052,7 +967,7 @@ bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref 
 # AWS (S3 SDK used for Garage S3-compatible storage)
 aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk" }
 aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
-# ⛔ DECLARED, NOT INHERITED — D-50, 2026-08-23. At aws-sdk 2.46.0 the SDK replaced the
+# ⛔ DECLARED, NOT INHERITED. At aws-sdk 2.46.0 the SDK replaced the
 # default `apache-client` with `apache5-client`, so a synchronous S3Client that configures
 # no HTTP client silently changed which one it uses (and `Expect: 100-Continue` from on to
 # off). That was filed under "Features", in a MINOR release. Servista's sync S3Client is
@@ -1063,7 +978,7 @@ aws-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk" }
 aws-apache5-client = { module = "software.amazon.awssdk:apache5-client", version.ref = "aws-sdk" }
 # ⛔ `iceberg-aws` declares the AWS SDK `compileOnly`, and its properties classes reference KMS and
 # STS model classes at CLASS INIT — so any consumer of `S3FileIO` must supply both, though it calls
-# neither. Measured (A849 D3, D-348), in this order: `NoClassDefFoundError:
+# neither. Measured, in this order: `NoClassDefFoundError:
 # software/amazon/awssdk/services/kms/model/EncryptionAlgorithmSpec`, then `…/sts/model/Tag`.
 aws-kms = { module = "software.amazon.awssdk:kms", version.ref = "aws-sdk" }
 aws-sts = { module = "software.amazon.awssdk:sts", version.ref = "aws-sdk" }
@@ -1093,11 +1008,10 @@ servista-commons-rt-http-foss-ktor = { module = "eu.servista:commons-rt-http-fos
 servista-commons-rt-o11y-foss-otel = { module = "eu.servista:commons-rt-o11y-foss-otel", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-validation-foss-konform = { module = "eu.servista:commons-rt-validation-foss-konform", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-lakehouse-foss-trino = { module = "eu.servista:commons-rt-lakehouse-foss-trino", version.ref = "servista-kotlin-commons" }
-# ⚠️ Added 2026-09-28 by `F622 #799` (#799 c15848): three modules `F465`'s car created by moving
-# concrete implementations out of `commons-core` (`D-278`). `SnowflakeGenerator` now lives in the
-# first, in package `eu.servista.commons.rt.id.snowflake`; a consumer that imported it from
-# `commons-core` needs this DEPENDENCY as well as the new import (#799 c16042). All three carry
-# `// distribution: distributable`.
+# ⚠️ Three modules added 2026-09-28 move concrete implementations out of `commons-core`.
+# `SnowflakeGenerator` now lives in the first, in package `eu.servista.commons.rt.id.snowflake`;
+# a consumer that imported it from `commons-core` needs this DEPENDENCY as well as the new
+# import. All three carry `// distribution: distributable`.
 servista-commons-rt-id-snowflake = { module = "eu.servista:commons-rt-id-snowflake", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-o11y-foss-slf4j = { module = "eu.servista:commons-rt-o11y-foss-slf4j", version.ref = "servista-kotlin-commons" }
 servista-commons-rt-secrets-token = { module = "eu.servista:commons-rt-secrets-token", version.ref = "servista-kotlin-commons" }
@@ -1117,9 +1031,9 @@ servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons
 
 # servista Commons — Infra: MOVED OUT OF THIS CATALOG AT 0.3.0
 #
-# ⛔⛔ THE 25 `commons-infra-*` AND `commons-wiring-koin-infra-*` ALIASES ARE GONE FROM HERE, AND
-# THAT IS THE POINT OF `F419 #595`. They named the tenant-provisioning control plane — the part of
-# this platform a third party must never receive — and THIS catalog is resolved by every consumer
+# ⛔⛔ THE 25 `commons-infra-*` AND `commons-wiring-koin-infra-*` ALIASES ARE GONE FROM HERE.
+# They name the tenant-provisioning control plane, which is restricted to internal consumers.
+# This catalog is resolved by every consumer
 # of the distributable set, a contractor included. Anything holding it could read the whole
 # inventory by typing `libs.servista.commons.infra.` into an editor, and would resolve coordinates
 # its credential is not meant to reach.
@@ -1129,8 +1043,7 @@ servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons
 # declare BOTH catalogs; nothing else declares the second one.
 #
 # ⚠️ `eu.servista:commons-infra-*:0.1.0` and `:0.2.0` still RESOLVE and always will — versions are
-# immutable and nothing is deleted. They are frozen, not removed, and that residue is stated in
-# `work/shared-libraries/07-STAGE-3-DISTRIBUTION-BOUNDARY.md` §5 rather than left to be discovered.
+# immutable and nothing is deleted. They are frozen, not removed.
 
 # servista Service Runtime
 #
@@ -1138,7 +1051,7 @@ servista-commons-wiring-koin-rt-o11y-foss-otel = { module = "eu.servista:commons
 # was ONE artifact that every service took and that declared every infrastructure adapter
 # unconditionally — jOOQ, Kafka, the AWS SDK, Lettuce, OpenBao and a block-storage adapter with no
 # consumer at all — so 70% of a real service's runtime classpath and ≈444 MB across the fleet was
-# code no service loads (`work/shared-libraries/01-ANALYSIS.md` §3).
+# code no service loads.
 #
 # ⚠️ The coordinate `eu.servista:servista-service-runtime:0.1.0` still RESOLVES and always will —
 # nothing is deleted under the immutable scheme. It has simply had NO VERSION SINCE — not 0.2.0,
@@ -1160,8 +1073,8 @@ servista-service-runtime-saga = { module = "eu.servista:servista-service-runtime
 servista-service-runtime-idempotency = { module = "eu.servista:servista-service-runtime-idempotency", version.ref = "servista-service-runtime" }
 servista-service-runtime-webhook = { module = "eu.servista:servista-service-runtime-webhook", version.ref = "servista-service-runtime" }
 servista-service-runtime-events = { module = "eu.servista:servista-service-runtime-events", version.ref = "servista-service-runtime" }
-# ⚠️ Added 2026-09-28 by `F622 #799` (#799 c15991): the transactional outbox slice (`F647`,
-# `D-304`), hoisted from six hand-written `OutboxRelay` copies. It depends on `-saga`, the
+# ⚠️ Added 2026-09-28: the transactional outbox slice, hoisted from six hand-written
+# `OutboxRelay` copies. It depends on `-saga`, the
 # library's one deliberate slice-to-slice edge. `// distribution: distributable`.
 servista-service-runtime-outbox = { module = "eu.servista:servista-service-runtime-outbox", version.ref = "servista-service-runtime" }
 
@@ -1178,31 +1091,25 @@ otel-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extensio
 otel-extension-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "otel" }
 otel-sdk-logs = { module = "io.opentelemetry:opentelemetry-sdk-logs", version.ref = "otel" }
 otel-logback-appender = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0", version.ref = "otel-instrumentation" }
-# F323 #490 (`D-79`'s mechanism, named): DB query spans from a LIBRARY wrap around the pool
-# `commons-rt-db-foss-postgres`'s `migrateDatabase()` returns, never the javaagent (see the deleted
-# `otel-agent` ref below). ⛔ Until the release car `F622 #799` publishes this catalog, the two builds
-# that use it (`servista-kotlin-commons`, `servista-tenant-control-plane`) declare the same alias in
-# their `settings.gradle.kts` catalog block; the re-pin deletes those lines. ⚠️ A forgotten one fails
-# the build rather than lingering: measured on Gradle 9.8.0, a settings `library("otel-jdbc", …)`
-# over a catalog that already carries `otel-jdbc` fails configuration (`Undefined version reference`).
+# DB query spans come from a LIBRARY wrap around the pool that
+# `commons-rt-db-foss-postgres`'s `migrateDatabase()` returns, never the javaagent.
+# ⛔ Consumers migrating from a local `otel-jdbc` settings-catalog alias must remove it:
+# on Gradle 9.8.0, `library("otel-jdbc", …)` over a catalog already carrying the alias fails
+# configuration with `Undefined version reference`.
 otel-jdbc = { module = "io.opentelemetry.instrumentation:opentelemetry-jdbc", version.ref = "otel-instrumentation" }
-# E388 #567 (the owner's `D2`, c15293): the CLIENT-SIDE Kafka client-metrics path —
-# `KafkaTelemetry.metricConfigProperties()` merged into producer and consumer configuration by
-# `commons-rt-events-foss-kafka`'s `KafkaClientTelemetry`, OFF by flag on a broker that runs the KIP-714
-# plugin and ON where the broker loads no plugins (design: impl-docs `architecture/kafka-client-telemetry`).
-# ⛔ Until `F622 #799` publishes this catalog, `servista-kotlin-commons` declares the same alias in its
-# `settings.gradle.kts` catalog block, and the re-pin deletes that line. ⚠️ A forgotten one FAILS
-# configuration, as the `otel-jdbc` note above says — re-measured 2026-09-28 by `4BF` on Gradle 9.8.0 for
-# this exact shape (`library(…).versionRef("otel-instrumentation")` over a catalog that already carries the
-# alias → `Undefined version reference`; control: the same settings over the catalog without the alias
-# resolve `2.31.1-alpha`). The WARN-and-win behaviour `F543 #719` measured is the inline `.version(…)`
-# shape, not this one.
+# CLIENT-SIDE Kafka client metrics use `KafkaTelemetry.metricConfigProperties()`, merged
+# into producer and consumer configuration by `commons-rt-events-foss-kafka`'s
+# `KafkaClientTelemetry`. The flag is OFF on a broker running the KIP-714 plugin and ON
+# where the broker loads no plugins.
+# ⛔ Remove local settings-catalog declarations of this alias when adopting it here.
+# Measured on Gradle 9.8.0: `library(…).versionRef("otel-instrumentation")` over a catalog
+# already carrying the alias fails with `Undefined version reference`; the same settings
+# without the catalog alias resolve `2.31.1-alpha`. The inline `.version(…)` form instead
+# warns and wins, so the two forms must not be assumed to behave alike.
 otel-kafka-clients = { module = "io.opentelemetry.instrumentation:opentelemetry-kafka-clients-2.6", version.ref = "otel-instrumentation" }
-# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24 (W3-O11Y act 2, `D-79`). Nothing resolved it — 0
-# build files, 0 repositories, 0 of 304 containers, every count with a firing control. See the
-# deleted `otel-agent` version comment above for the measurement, for why `CLAUDE.md` §1's
-# "never delete working plumbing" does not reach a ref with no plumbing behind it, and for the row
-# that carries the capability forward with its mechanism named.
+# ⛔ `otel-agent` WAS HERE AND IS GONE, 2026-08-24. Nothing resolved it: 0 build files,
+# 0 repositories and 0 of 304 containers, every count with a firing control. See the version
+# comment above for the evidence and the library-based JDBC mechanism that replaces it.
 pyroscope-otel = { module = "io.pyroscope:otel", version.ref = "pyroscope" }
 # The un-shaded agent `pyroscope-otel` needs on the COMPILE classpath since its `2.0.0` split;
 # see the `pyroscope-agent` version comment above for why this is a declaration rather than a
@@ -1217,7 +1124,7 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 # Applied as a platform where the encoder is declared — see the `jackson` version comment above.
 jackson-bom = { module = "tools.jackson:jackson-bom", version.ref = "jackson" }
-# ⛔ `jackson2-databind` WAS HERE AND IS GONE, 2026-08-21 (W3-OF). It was test-scope-only and existed
+# ⛔ `jackson2-databind` WAS HERE AND IS GONE, 2026-08-21. It was test-scope-only and existed
 # solely because openfga-sdk's public API returned a type its POM declared runtime-only.
 # `openfga-sdk 0.9.11` declares it `compile`; see the deleted `jackson2` version comment above.
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
@@ -1230,7 +1137,7 @@ kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
-# Reference data and platform runtimes — adopted 2026-08-23 (F285 #442 D3); see the version block.
+# Reference data and platform runtimes — adopted 2026-08-23; see the version block.
 # ⚠️ Single-consumer today, and that is NOT an argument against governing them: the catalog is the
 # estate's single version source, and the two edge-auth `bcprov 1.80` pins that sat through the
 # batch bumping this file OFF 1.80 (for a CRITICAL) were single-consumer too.
@@ -1271,22 +1178,17 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor-plugin" }
 jooq-codegen = { id = "org.jooq.jooq-codegen-gradle", version.ref = "jooq" }
-# ⚠️ ZERO LIVE CONSUMERS since W1-FY (D-93, 2026-08-25). Six repositories applied this plugin and
+# ⚠️ ZERO LIVE CONSUMERS since 2026-08-25. Six repositories applied this plugin and
 # configured none of them — 0 `flyway { }` blocks, 0 task references, 0 invocations anywhere in
 # scripts, Dockerfiles or GitOps; `api-accounts` runs the identical jOOQ DDLDatabase codegen
 # without it. Those six applications were deleted.
 #
-# ⛔ THE ALIAS IS KEPT BECAUSE `D-93` NAMED THE SIX APPLICATIONS AND NOT THE ALIAS — deleting it is
-# a decision nobody has taken, not a tidy-up.
+# ⛔ Keep the alias available independently of the removed plugin applications;
+# removing unused applications does not require removing the published alias.
 #
-# ⚠️ AND THE REASON THIS COMMENT FIRST GAVE WAS FALSE, WHICH IS WHY IT IS WRITTEN OUT RATHER THAN
-# QUIETLY REPLACED. It said the alias had to stay because `retired/servista-api-subscriptions`
-# still applies it and would become unconfigurable. Tested rather than asserted:
-# `./gradlew help --refresh-dependencies` in that repository fails with `Unresolved reference
-# 'junit5'` — a ref `W2e` renamed to `junit` on 2026-08-20, five days before this unit and for an
-# unrelated reason. That build file has not changed since 2026-07-09. **It was already
-# unconfigurable, so the alias was never what was protecting it.** The last remaining consumer of
-# this alias is a repository that cannot configure at all.
+# ⚠️ The remaining declaration in `retired/servista-api-subscriptions` does not establish
+# a working consumer: that repository already fails configuration with an unresolved `junit5`
+# reference after the alias was renamed to `junit`. Keeping this plugin alias does not repair it.
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
