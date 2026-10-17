@@ -1,0 +1,44 @@
+# Dependency currency declines and batches, keyed by [versions] alias.
+# NOT published: the dependency-currency check in servista-planning reads this sidecar.
+
+[kafka]
+kind = "declined"
+reason = "Class II QUALIFICATION HOLD, not an incompatibility: nothing measured says 4.4.0 fails against the deployed broker (kafka-clients is cross-version compatible by design, so the client need not equal the broker). Measured 2026-10-13: broker 4.3.1 under Strimzi operator 1.2.0 (supports brokers 4.2.0-4.3.1; a BROKER bound, not a client bound). `kafka-clients:4.4.0` reached Maven Central metadata the same day, but kafka.apache.org lists no 4.4 download, release notes or upgrade section (404 at that timestamp), so its client changes are unread and unqualified. We run producers, consumers (incl. `group.protocol`), AdminClient, PEM mTLS (`ssl.*`) and client telemetry push (`enable.metrics.push` to the broker's OTLP reporter)."
+owner = "F510 #686"
+date = "2026-10-13"
+reopen = "the official Kafka 4.4 release and upgrade notes are published and the 4.4.0 client passes producer, consumer, AdminClient, mTLS and telemetry-push checks against the 4.3.1 broker, or the coordinated broker/operator/client upgrade is authorized"
+
+[openfga]
+kind = "declined"
+reason = "Class II and THE SERVER MOVES FIRST: client 2.1.x needs server >= 2.1.0 for `trace_id`, and the deployed server is OpenFGA v1.15.0. Moving the client first breaks the authorization plane."
+owner = "F510 #686"
+date = "2026-09-14"
+reopen = "the deployed OpenFGA server is upgraded"
+
+[otel]
+kind = "declined"
+reason = "Class II, pairs with the observability unit: the collector deployed here is otelcol-servista 0.159.0 and the SDK moves with it, never ahead of it."
+owner = "F510 #686"
+date = "2026-09-14"
+reopen = "the collector image is upgraded"
+
+[otel-instrumentation]
+kind = "declined"
+reason = "one decision with `otel` above: every `2.32.0-alpha` artifact consumed here requires opentelemetry-api 1.66.0 (read from their POMs), and `otel` stays on 1.65.0 until the collector moves."
+owner = "F510 #686"
+date = "2026-10-05"
+reopen = "the collector image is upgraded"
+
+[pyroscope]
+kind = "declined"
+reason = "Class II and the server is BEHIND the client already: client 2.1.x needs server >= 2.1.0 and the deployed Pyroscope is 2.0.6."
+owner = "F510 #686"
+date = "2026-09-14"
+reopen = "the deployed Pyroscope server reaches 2.1.0"
+
+[aws-sdk]
+kind = "declined"
+reason = "Class II, pairs with the Garage unit (S3 API, Garage v2.3.0). `F418 #594` removed the AWS SDK from 17 of 20 service images, so it now reaches only api-audit-query, servista-object-storage and servista-audit-writer — a smaller consumer set than any table written before F418 records."
+owner = "F510 #686"
+date = "2026-09-14"
+reopen = "the Garage unit is scheduled"
