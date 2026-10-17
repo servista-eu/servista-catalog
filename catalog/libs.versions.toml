@@ -384,7 +384,7 @@ testcontainers = "2.0.5"
 # party that declares junit HIGHER than we do, and the only one that declares it
 # at all (`kotlin-test-junit5`, at 5.10.1) declares it lower.
 junit = "6.1.3"
-kotest = "6.2.5"
+kotest = "6.2.6"
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
 # ⛔ PIN THE BARE `0.8.0`, NEVER `0.8.0-0.6.x-compat` — and note that `maven-metadata.xml`'s
