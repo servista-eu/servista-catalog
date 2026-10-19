@@ -9,6 +9,17 @@ plugins {
     `version-catalog`
 }
 
+// ⛔ F978 #978 D1: every archive this build makes is byte-reproducible at a sha, so a publish cut
+// mid-way is completed by uploading only the missing files (each published file is `409`-immutable
+// and a rebuild's `.module` must carry the checksums of the bytes already stored). Today this build
+// makes NO archive: the published files are the generated `.toml`, the `.pom` and the `.module`,
+// none of which carries a timestamp. The setting is here so an archive added later is born
+// reproducible rather than discovered not to be after a partial publish.
+tasks.withType<AbstractArchiveTask>().configureEach {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+}
+
 // The shared jvm-library CI pipeline invokes `test` and `detekt`. This project
 // is a pure version catalog with no sources, so register them as no-ops.
 // ⛔ F359 #534: a no-op `test` would also never compile or run a `@Test` someone adds here, the
