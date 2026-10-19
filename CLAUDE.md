@@ -20,7 +20,7 @@ A pure Gradle version catalog providing centralized dependency version alignment
 - TOML - Version catalog definition (`catalog/libs.versions.toml`)
 
 ## Runtime
-- Gradle 9.3.1 (via wrapper)
+- Gradle 9.8.1 (via wrapper)
 
 ## Build System
 - `maven-publish` + `version-catalog` plugins
