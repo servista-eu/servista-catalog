@@ -650,7 +650,11 @@ typesafe-config = "1.4.9"
 # The ABI is ADDITIVE (two classes gain MeterHolder).
 # 0.41.0 -> 0.42.0 on 2026-10-11: FIXTURE-ONLY, commons-core's test fixtures gain
 # the named MetricsPort implementations. Every main jar is byte-equal to 0.41.0's.
-servista-kotlin-commons = "0.42.0"
+# 0.42.0 -> 0.43.0 on 2026-10-20: a pre-1.0 MINOR, PUBLISHED before this catalog names it.
+# The 1-arg `kafkaTransportModule` and 1-arg `kafkaDeadLetterModule` are REMOVED: pass
+# `KafkaClientTelemetry.DISABLED` to keep Kafka telemetry off. Konform field paths lose the leading dot.
+# New in commons-core: `AuditMetrics`, `SecurityEventPublisherMeters`, `HttpLicensingAdapterMeters`, `isSnowflakeId`.
+servista-kotlin-commons = "0.43.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 (ADR-034's authority half). `AuthSource`
