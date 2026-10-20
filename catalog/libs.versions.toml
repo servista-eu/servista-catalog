@@ -92,7 +92,7 @@ jooq = "3.21.9"
 #   migrate/validate/checksum change. `RuntimeRoleLedgerTest` re-runs on it inside this release, and the
 #   roll reads every service's Flyway at boot. It stales `commons-rt-db-foss-postgres`' POM, which
 #   must republish with this change.
-flyway = "13.10.0"
+flyway = "13.10.3"
 hikari = "7.1.0"
 # ⛔ 42.7.13 -> 42.7.14 on 2026-10-08: a SECURITY release.
 #   CVE-2026-107315: the driver padded an over-declared value with bytes from EARLIER messages, up to
