@@ -313,7 +313,7 @@ mockk = "1.14.11"
 # ASM reads compiled bytecode for ONE test fixture: commons-core's `assertMeterRegistrationsAreHeld`,
 # which proves every meter is registered by a `MeterHolder` at construction. It is a
 # `testFixturesImplementation` dependency only and must never reach a production artifact.
-asm = "9.11"
+asm = "9.11.1"
 testcontainers = "2.0.5"
 # ⛔ ONE ref for BOTH junit coordinates, and it is only possible because JUnit 6
 # renumbered the Platform from `1.x` to `6.x` to line up with Jupiter — so
@@ -335,7 +335,7 @@ testcontainers = "2.0.5"
 # at all (`kotlin-test-junit5`, at 5.10.1) declares it lower.
 junit = "6.1.3"
 kotest = "6.2.6"
-kotlinx-serialization = "1.11.0"
+kotlinx-serialization = "1.12.0"
 kotlinx-coroutines = "1.11.0"
 # ⛔ PIN THE BARE `0.8.0`, NEVER `0.8.0-0.6.x-compat` — and note that `maven-metadata.xml`'s
 # `<latest>` AND `<release>` BOTH name the compat variant, because it was published last. The
@@ -377,7 +377,7 @@ logstash-logback-encoder = "9.0"
 # advisory-clean. ⚠️ A version catalog cannot force anything on its own; the force is
 # `implementation(platform(libs.jackson.bom))` in servista-service-runtime, where the encoder is
 # declared. The same platform-dependency pattern is used for netty-bom.
-jackson = "3.2.3"
+jackson = "3.2.4"
 # ⛔ `jackson2` WAS HERE AND IS GONE, 2026-08-21 — deleted because UPSTREAM FIXED
 # THE DEFECT IT EXISTED FOR, which is the only reason a workaround ref may be removed rather than
 # bumped. It pinned `com.fasterxml.jackson.core:jackson-databind` at 2.22.2 for exactly one reason:
@@ -412,7 +412,7 @@ konform = "0.11.1"
 #   Apache-2.0, zero runtime dependencies, a documented evaluation timeout and recursion limit.
 #   0.9.10 is the latest release on Maven Central at the time it was pinned (2026-10-05).
 jsonata = "0.9.10"
-tink = "1.23.0"
+tink = "1.24.0"
 # ⛔ TWO refs on purpose — bcpkix is NOT behind.
 # BC patches per module: 1.85.2 was published for bcprov ONLY
 # (upstream: "only the bcprov jars are being published for this
@@ -491,7 +491,7 @@ aws-sdk = "2.54.9"
 nv-i18n = "1.29"
 # 9.0.40 -> 9.0.41 on 2026-10-08: metadata only.
 libphonenumber = "9.0.41"
-aws-lambda-java = "1.4.0"          # aws-lambda-java-core
+aws-lambda-java = "1.4.1"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
 
