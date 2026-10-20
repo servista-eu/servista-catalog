@@ -104,10 +104,10 @@ oracle-jdbc = "23.26.3.0.0"
 # Trino JDBC — the client for the Iceberg lakehouse, on BOTH sides of the audit trail: the
 # audit writer (Phase 8 WP5) and the audit query API (WP6). ADR-028 settles it as the driver
 # rather than a hand-rolled REST client, because halt-not-degrade is exactly the property a
-# hand-written protocol client gets subtly wrong. ⚠️ The coordinators run 480 and this is 483:
+# hand-written protocol client gets subtly wrong. ⚠️ The coordinators run 484 and this is 484:
 # a driver ahead of the server is the normal upgrade order for Trino, and 483 is what the ADR
 # measured — 10.44 MB against 480's 13.10 MB, well inside the image's margin under the edge cap.
-trino-jdbc = "483"
+trino-jdbc = "484"
 # Apache Iceberg, read OFF-ENGINE.
 # The audit chain's scheduled verifier re-walks `iceberg.audit.records` straight from its metadata
 # and Parquet, so a full-table read puts 0 load on Trino. `iceberg-core` +
