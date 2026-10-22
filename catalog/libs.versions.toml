@@ -819,7 +819,7 @@ servista-kotlin-commons = "0.43.1"
 # 0.54.0 -> 0.55.0 on 2026-10-20: PUBLISHED before this catalog names it. `receiveBody` decodes AND
 # validates (a refused body is a 422 with wire field names); `installAuth` refuses to start with no
 # usable signing key; the outbox carries trace context. Built on commons 0.43.0.
-# 0.55.0 -> 0.55.1 on 2026-10-22: PUBLISHED before this catalog names it. F362's reconciler
+# 0.55.0 -> 0.55.1 on 2026-10-22: PUBLISHED before this catalog names it. The reconciler
 # counter preseed removal; a patch, no ABI change.
 servista-service-runtime = "0.55.1"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03: six new payload artifacts, three each for
