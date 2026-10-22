@@ -654,7 +654,7 @@ typesafe-config = "1.4.9"
 # The 1-arg `kafkaTransportModule` and 1-arg `kafkaDeadLetterModule` are REMOVED: pass
 # `KafkaClientTelemetry.DISABLED` to keep Kafka telemetry off. Konform field paths lose the leading dot.
 # New in commons-core: `AuditMetrics`, `SecurityEventPublisherMeters`, `HttpLicensingAdapterMeters`, `isSnowflakeId`.
-servista-kotlin-commons = "0.43.0"
+servista-kotlin-commons = "0.43.1"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 (ADR-034's authority half). `AuthSource`
