@@ -56,3 +56,10 @@ reason = "Class I, 9.0.41 -> 9.0.42 moved upstream: rides the next servista-cata
 owner = "F1054 #1054"
 date = "2026-10-23"
 catalog = "0.92.0"
+
+[flyway]
+kind = "declined"
+reason = "Class II QUALIFICATION HOLD, not an incompatibility: nothing measured says 13.11.1 fails against our server. Measured 2026-10-23: the deployed Postgres primary (derived by Patroni role, read only) answers `SHOW server_version` with 18.6, and Flyway's `PostgreSQLDatabase.ensureSupported` is identical at the tags flyway-13.10.3 and flyway-13.11.1 (recent enough from 9.0, upgrade recommended only above major 18), so 13.11.1 keeps support for it. The 13.11.0 and 13.11.1 release notes drop no database support; 13.11.0 changes PostgreSQL behaviour (issue 4286: a session role set in an `afterConnect` callback now persists into migrations), a migration-engine change against live schema history that must be qualified. Every flyway bump stales the `commons-rt-db-foss-postgres` POM and forces commons to republish (the catalog's flyway history comment), and the owner ruled no catalog release on 2026-10-23, so 13.11.1 rides the next release, qualified at its roll."
+owner = "F510 #686"
+date = "2026-10-23"
+reopen = "the next servista-catalog release (F1054 #1054), which carries flyway 13.11.1 qualified by every service's Flyway at boot on the roll"
