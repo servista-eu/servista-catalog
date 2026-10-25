@@ -825,7 +825,8 @@ servista-kotlin-commons = "0.43.1"
 # counter preseed removal; a patch, no ABI change.
 # 0.55.1 -> 0.55.2 on 2026-10-22: PUBLISHED before this catalog names it. The WorkerLeaseFence
 # start-order race fix; a patch, no ABI change.
-servista-service-runtime = "0.55.2"
+# 0.55.2 -> 0.56.0 on 2026-10-25: PUBLISHED before this catalog names it. BREAKING: AuditMetrics is removed from the runtime; built on logback 1.6.6 and micrometer 1.17.2; .api dumps otherwise unchanged.
+servista-service-runtime = "0.56.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutable versioning `0.2.0` resolves for ever, so the fifteen
