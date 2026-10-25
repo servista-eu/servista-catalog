@@ -302,7 +302,7 @@ pyroscope = "2.1.2"
 # the shadowJar handling that used to be written against `io.pyroscope:otel`. A build file that
 # still excludes the OLD coordinate excludes 4.9 KB and lets 5.7 MB through unhandled.
 pyroscope-agent = "2.9.2"
-micrometer = "1.17.1"
+micrometer = "1.17.2"
 # ⛔ mockk is the estate's ONE mocking library. `mockito` and `mockito-kotlin`
 # were retired on 2026-08-19 — RETIRED, not
 # bumped: mockito-kotlin is a syntax wrapper over a Java-semantics engine, and
@@ -367,7 +367,8 @@ kotlin-logging = "8.0.4"
 # ⚠️ 1.6.4 -> 1.6.5 on 2026-09-30: the same requirement to republish runtime-core.
 #   The encoder declares logback-classic 1.5.20 optional and logback-core provided, so a floor and
 #   not a range; 1.6.5 is a patch on the line it already runs on.
-logback = "1.6.5"
+# ⚠️ 1.6.5 -> 1.6.6 on 2026-10-25: the same requirement to republish runtime-core; a patch on the same line.
+logback = "1.6.6"
 logstash-logback-encoder = "9.0"
 # ⛔ THE ENCODER'S JACKSON, AND IT IS A FORCE RATHER THAN A CHOICE. logstash-logback-encoder 9.0 is a
 # Jackson 3 migration (`com.fasterxml.jackson.core` -> `tools.jackson.core`, a groupId change) and it
@@ -490,7 +491,8 @@ aws-sdk = "2.54.9"
 # Consumer: ONE — api-organizations, LibraryCountryCatalog.kt, `getCountryCodeForRegion(alpha2)`.
 nv-i18n = "1.29"
 # 9.0.40 -> 9.0.41 on 2026-10-08: metadata only.
-libphonenumber = "9.0.41"
+# 9.0.41 -> 9.0.42 on 2026-10-25: a patch; the estate's one call is getCountryCodeForRegion (api-organizations).
+libphonenumber = "9.0.42"
 aws-lambda-java = "1.4.1"          # aws-lambda-java-core
 aws-lambda-java-events = "3.16.1"  # versioned separately by upstream — NOT one ref with core
 typesafe-config = "1.4.9"
