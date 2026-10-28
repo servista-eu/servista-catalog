@@ -4,6 +4,8 @@
 //   (`F419 #595`) because a catalog a contractor holds is an inventory a contractor reads.
 // See DISTRIBUTION.md. Asserted by `node tools/check-distribution-boundary.mjs` in servista-planning.
 
+import org.gradle.api.tasks.bundling.AbstractArchiveTask
+
 plugins {
     `maven-publish`
     `version-catalog`
@@ -41,6 +43,14 @@ catalog {
     versionCatalog {
         from(files("catalog/libs.versions.toml"))
     }
+}
+
+// F978 #978 D1: archives are byte-reproducible by declaration, so a half-published release can be
+// re-published identical. The catalog's only publication file is the generated TOML, which no
+// archive task produces, so today this reaches no task; it holds for any archive added later.
+tasks.withType<AbstractArchiveTask>().configureEach {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
 }
 
 // Publishing configuration -- version catalog to Forgejo Maven registry
