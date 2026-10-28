@@ -37,6 +37,9 @@ tasks.register("test") {
 
 tasks.register("detekt") { group = "verification" }
 
+// The gate line `ktfmtCheck detekt test` names this task too; there is no Kotlin source to format.
+tasks.register("ktfmtCheck") { group = "verification" }
+
 // Published version catalog -- loaded from catalog/ directory.
 // Consumers import via: from("eu.servista:servista-catalog:x.y.z")
 catalog {
