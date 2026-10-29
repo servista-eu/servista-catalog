@@ -8,6 +8,13 @@ owner = "F532 #708"
 date = "2026-10-29"
 catalog = "0.94.0"
 
+[oracle-jdbc]
+kind = "batched"
+reason = "Class I patch behind upstream, deliberately NOT moved in the 0.95.0 car: oracle-jdbc is a third-party ref, so moving it makes the published POMs of the libraries released today stale and obliges a republish. It rides the NEXT catalog release (see the comment above the ref)."
+owner = "F532 #708"
+date = "2026-10-29"
+catalog = "0.94.0"
+
 [kafka]
 kind = "declined"
 reason = "Class II QUALIFICATION HOLD, not an incompatibility: nothing measured says 4.4.0 fails against the deployed broker (kafka-clients is cross-version compatible by design, so the client need not equal the broker). Measured 2026-10-13: broker 4.3.1 under Strimzi operator 1.2.0 (supports brokers 4.2.0-4.3.1; a BROKER bound, not a client bound). `kafka-clients:4.4.0` reached Maven Central metadata the same day, but kafka.apache.org lists no 4.4 download, release notes or upgrade section (404 at that timestamp), so its client changes are unread and unqualified. We run producers, consumers (incl. `group.protocol`), AdminClient, PEM mTLS (`ssl.*`) and client telemetry push (`enable.metrics.push` to the broker's OTLP reporter)."
