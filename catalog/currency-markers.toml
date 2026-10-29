@@ -6,14 +6,14 @@ kind = "batched"
 reason = "Class I patch 3.6.0 -> 3.6.1, deliberately NOT moved in the 0.95.0 car: ktor is a third-party ref, so moving it makes every already-published POM that names it stale and obliges a republish of commons, commons-infra and runtime. A ktor upgrade also needs a shadowJar and image-layer qualification first (see the comment above the ref)."
 owner = "F532 #708"
 date = "2026-10-29"
-catalog = "0.94.0"
+catalog = "0.95.0"
 
 [oracle-jdbc]
 kind = "batched"
 reason = "Class I patch behind upstream, deliberately NOT moved in the 0.95.0 car: oracle-jdbc is a third-party ref, so moving it makes the published POMs of the libraries released today stale and obliges a republish. It rides the NEXT catalog release (see the comment above the ref)."
 owner = "F532 #708"
 date = "2026-10-29"
-catalog = "0.94.0"
+catalog = "0.95.0"
 
 [kafka]
 kind = "declined"
