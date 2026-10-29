@@ -656,7 +656,8 @@ typesafe-config = "1.4.9"
 # The 1-arg `kafkaTransportModule` and 1-arg `kafkaDeadLetterModule` are REMOVED: pass
 # `KafkaClientTelemetry.DISABLED` to keep Kafka telemetry off. Konform field paths lose the leading dot.
 # New in commons-core: `AuditMetrics`, `SecurityEventPublisherMeters`, `HttpLicensingAdapterMeters`, `isSnowflakeId`.
-servista-kotlin-commons = "0.43.1"
+# 0.43.1 -> 0.44.0 on 2026-10-29: a pre-1.0 MINOR, PUBLISHED before this catalog names it. Additions only: lifecycle and integration constants consumers can share, and LogCapture test fixtures; a consumer sees new symbols and nothing removed.
+servista-kotlin-commons = "0.44.0"
 # ⚠️ 0.9.0 -> 0.10.0 on 2026-09-06: a REBUILD against the above and nothing else --
 # zero lines of that repository's source changed.
 # ⚠️ 0.10.0 -> 0.11.0 on 2026-09-07 (ADR-034's authority half). `AuthSource`
@@ -826,7 +827,8 @@ servista-kotlin-commons = "0.43.1"
 # 0.55.1 -> 0.55.2 on 2026-10-22: PUBLISHED before this catalog names it. The WorkerLeaseFence
 # start-order race fix; a patch, no ABI change.
 # 0.55.2 -> 0.56.0 on 2026-10-25: PUBLISHED before this catalog names it. BREAKING: AuditMetrics is removed from the runtime; built on logback 1.6.6 and micrometer 1.17.2; .api dumps otherwise unchanged.
-servista-service-runtime = "0.56.0"
+# 0.56.0 -> 0.57.0 on 2026-10-29: a pre-1.0 MINOR, PUBLISHED before this catalog names it. Additions only: event-type and integration-config value constants, a declared API version reader, an app_capability object-id encoder, non-positive path ids refused, tracing fixes (server span kind, pass span), PORT read from the environment, LogCapture-based test fixtures, and byte-reproducible archives; a consumer sees new symbols and reproducible archives.
+servista-service-runtime = "0.57.0"
 # ⚠️ 0.2.0 -> 0.3.0 on 2026-09-03: six new payload artifacts, three each for
 # `servista-object-storage` and `servista-secrets`, one per AGGREGATE. ⭐ NOTHING ELSE MOVES AND
 # THAT IS THE POINT — under immutable versioning `0.2.0` resolves for ever, so the fifteen
@@ -848,7 +850,8 @@ servista-service-runtime = "0.56.0"
 # (carried, not yet registered), all FULL_TRANSITIVE; `servista.integrations.config` moves to
 # FULL_TRANSITIVE. `.api` additive only.
 # 0.7.0 -> 0.8.0 on 2026-10-08: iamgrants/DataAccessGrantPayload, additive.
-servista-avro-schemas = "0.8.0"
+# 0.8.0 -> 0.9.0 on 2026-10-29: additive, PUBLISHED before this catalog names it, registered by tag v0.9.0. A consumer sees new schemas and nothing changed or removed.
+servista-avro-schemas = "0.9.0"
 
 [libraries]
 # Ktor Server
