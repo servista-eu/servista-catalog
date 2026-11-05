@@ -1188,6 +1188,7 @@ gradle-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serializat
 gradle-detekt = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 gradle-ktfmt = { module = "com.ncorti.ktfmt.gradle:plugin", version.ref = "ktfmt" }
+gradle-shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
 gradle-jooq-codegen = { module = "org.jooq:jooq-codegen-gradle", version.ref = "jooq" }
 jooq-meta = { module = "org.jooq:jooq-meta", version.ref = "jooq" }
 
